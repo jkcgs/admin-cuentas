@@ -7,7 +7,7 @@ if(!isset($_GET['t']) || empty($_GET['t'])) {
 
 $ex = array(
 	"cuentas" => "order by id desc, fecha_facturacion desc",
-	"haber" => "order by id desc, fecha desc",
+	"deudas" => "order by id desc, fecha desc",
 	"deudores" => "order by id asc"
 );
 

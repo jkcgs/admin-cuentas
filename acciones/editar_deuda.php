@@ -1,6 +1,6 @@
 <?php defined("INCLUDED") or die("nel");
 
-$id = verificar_id('haber');
+$id = verificar_id('deudas');
 
 $gump = new GUMP();
 $_POST = $gump->sanitize($_POST);
@@ -28,7 +28,7 @@ if($data === false) {
     die(jerr(var_export($gump->get_readable_errors(), true)));
 }
 
-$stmt = $db->prepare('UPDATE haber SET deudor = ?, descripcion = ?, monto = ?, fecha = ?, pagada = ? WHERE id = ?');
+$stmt = $db->prepare('UPDATE deudas SET deudor = ?, descripcion = ?, monto = ?, fecha = ?, pagada = ? WHERE id = ?');
 
 if(!isset($data['pagada'])) $data['pagada'] = 0;
 $stmt->bind_param('isisii', $data['deudor'], $data['descripcion'], $data['monto'], $data['fecha'], $data['pagada'], $id);

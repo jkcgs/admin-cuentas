@@ -32,13 +32,13 @@ var deudas = new ObjBase({
     strings: {
         t_agregar: "Agregar deuda",
         t_agregar_btn: "Agregar",
-        t_editar: "Editar deuda #",
+        t_editar: "Editar deuda #"
     },
     acciones: {
         agregar: "agregar_deuda",
         editar: "editar_deuda",
-        borrar: "borrar&t=haber",
-        get: "get&t=haber"
+        borrar: "borrar&t=deudas",
+        get: "get&t=deudas"
     },
     form_elements: [
         'deudor', 'descripcion', 'monto', 'fecha', 'pagada'

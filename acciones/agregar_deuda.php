@@ -27,7 +27,7 @@ if($data === false) {
 }
 
 $stmt = $db->prepare(
-    'INSERT INTO haber (deudor, descripcion, monto, fecha, pagada) VALUES (?, ?, ?, ?, ?)');
+    'INSERT INTO deudas (deudor, descripcion, monto, fecha, pagada) VALUES (?, ?, ?, ?, ?)');
    
 if(!$stmt) {
     die(jerr($db->error));

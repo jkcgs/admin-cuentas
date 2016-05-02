@@ -12,19 +12,38 @@ for($i = 0; $i < count($ids); $i++) {
 }
 
 $idsjoin = join(', ', $ids);
-$s = $db->prepare("SELECT id FROM cuentas WHERE id IN (".$idsjoin.")");
-$els = stmt_fetch_all($s);
 
-if(count($els) != count($ids)) {
-    if((string)(int)$ids[$i] != $ids[$i]) {
-        die(jerr('Uno o más IDs enviados no existe'));
+if(isset($_GET['deudas'])) {
+    $s = $db->prepare("SELECT id FROM deudas WHERE id IN (".$idsjoin.")");
+    $els = stmt_fetch_all($s);
+
+    if(count($els) != count($ids)) {
+        if((string)(int)$ids[$i] != $ids[$i]) {
+            die(jerr('Uno o más IDs enviados no existe'));
+        }
+    }
+
+    $s = $db->prepare("UPDATE deudas SET pagada = '1' WHERE id IN (".$idsjoin.")");
+    $s->execute();
+    if($s->error) {
+        die(jerr('Error DB: ' . $s->error));
+    }
+} else {
+    $s = $db->prepare("SELECT id FROM cuentas WHERE id IN (".$idsjoin.")");
+    $els = stmt_fetch_all($s);
+
+    if(count($els) != count($ids)) {
+        if((string)(int)$ids[$i] != $ids[$i]) {
+            die(jerr('Uno o más IDs enviados no existe'));
+        }
+    }
+
+    $s = $db->prepare("UPDATE cuentas SET pagado = '1' WHERE id IN (".$idsjoin.")");
+    $s->execute();
+    if($s->error) {
+        die(jerr('Error DB: ' . $s->error));
     }
 }
 
-$s = $db->prepare("UPDATE cuentas SET pagado = '1' WHERE id IN (".$idsjoin.")");
-$s->execute();
-if($s->error) {
-    die(jerr('Error DB: ' . $s->error));
-}
 
 die(jmsg('Actualizado correctamente'));

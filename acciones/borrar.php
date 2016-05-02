@@ -3,7 +3,7 @@ if(!isset($_GET['t'])) {
 	die(jerr("Tipo no definido"));
 }
 
-if(!in_array($_GET['t'], array("cuentas", "deudores", "haber"))) {
+if(!in_array($_GET['t'], array("cuentas", "deudores", "deudas"))) {
 	die(jerr("Tipo incorrecto"));
 }
 
