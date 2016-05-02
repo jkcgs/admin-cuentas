@@ -154,13 +154,23 @@ var ObjBase = Ractive.extend({
         return null;
     },
     
-    dset: function(id, data) {
+    dset: function(id, prop, data) {
+        if(typeof data == "undefined") {
+            data = prop;
+            prop = null;
+        }
+
         var d = this.get(this.obj_name);
         for(var i = 0; i < d.length; i++) {
             var e = d[i];
             if(e.hasOwnProperty("id") && e.id == id) {
-                data.id = e.id; // no cambiar id
-                this.set(this.obj_name+'.'+i, data);
+                if(prop == null) {
+                    data.id = e.id; // no cambiar id
+                    this.set(this.obj_name+'.'+i, data);
+                } else {
+                    this.set(this.obj_name+'.'+i+'.'+prop, data);
+                }
+
                 break;
             }
         }

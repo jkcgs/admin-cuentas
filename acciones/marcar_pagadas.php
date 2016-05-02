@@ -12,6 +12,7 @@ for($i = 0; $i < count($ids); $i++) {
 }
 
 $idsjoin = join(', ', $ids);
+$pagadas = (!isset($_GET['pagadas']) || (!empty($_GET['pagadas']) && $_GET['pagadas'] == 1)) ? 1 : 0;
 
 if(isset($_GET['deudas'])) {
     $s = $db->prepare("SELECT id FROM deudas WHERE id IN (".$idsjoin.")");
@@ -23,7 +24,7 @@ if(isset($_GET['deudas'])) {
         }
     }
 
-    $s = $db->prepare("UPDATE deudas SET pagada = '1' WHERE id IN (".$idsjoin.")");
+    $s = $db->prepare("UPDATE deudas SET pagada = '$pagadas' WHERE id IN (".$idsjoin.")");
     $s->execute();
     if($s->error) {
         die(jerr('Error DB: ' . $s->error));
@@ -38,7 +39,7 @@ if(isset($_GET['deudas'])) {
         }
     }
 
-    $s = $db->prepare("UPDATE cuentas SET pagado = '1' WHERE id IN (".$idsjoin.")");
+    $s = $db->prepare("UPDATE cuentas SET pagado = '$pagadas' WHERE id IN (".$idsjoin.")");
     $s->execute();
     if($s->error) {
         die(jerr('Error DB: ' . $s->error));

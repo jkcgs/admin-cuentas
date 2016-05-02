@@ -49,6 +49,29 @@ var deudas = new ObjBase({
     }
 });
 
+deudas.on('pagar', function(e, id){
+    $('[data-deuda-id="'+id+'"').addClass("btn-loading").prop("disabled", true);
+    deudas.jget('acciones/?marcar_pagadas&deudas&ids='+id, function(e, data){
+        if(e != null) {
+            alert(e.message);
+        } else {
+            deudas.dset(id, 'pagada', "1");
+        }
+        $('[data-deuda-id="'+id+'"').removeClass("btn-loading").prop("disabled", false);
+    });
+});
+deudas.on('despagar', function(e, id){
+    $('[data-deuda-id="'+id+'"').addClass("btn-loading").prop("disabled", true);
+    deudas.jget('acciones/?marcar_pagadas&deudas&pagadas=0&ids='+id, function(e, data){
+        if(e != null) {
+            alert(e.message);
+        } else {
+            deudas.dset(id, 'pagada', "0");
+        }
+        $('[data-deuda-id="'+id+'"').removeClass("btn-loading").prop("disabled", true);
+    });
+});
+
 deudas.form = document.agregar_deuda;
 deudores.observe('deudores', function(m,v,c){
     deudas.set('deudores', deudores.get('deudores'));

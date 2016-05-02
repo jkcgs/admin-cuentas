@@ -35,6 +35,17 @@
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                     Eliminar
                                 </a>
+                                {{#if pagada != 1}}
+                                <a href="javascript:;" on-click="pagar:{{id}}" class="btn btn-xs btn-success" title="Marcar pagada"
+                                    data-deuda-id="{{id}}">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                </a>
+                                {{else}}
+                                <a href="javascript:;" on-click="despagar:{{id}}" class="btn btn-xs btn-danger" title="Desmarcar pagada"
+                                    data-deuda-id="{{id}}">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </a>
+                                {{/if}}
                             </td>
                         </tr>
                     {{/each}}
