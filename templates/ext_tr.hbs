@@ -1,0 +1,51 @@
+<div id="extrip-cont"></div>
+<script type="text/ractive" id="tpl-extrip">
+    <div class="modal fade" id="ext-rip">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <a href="javascript:rip.update();" class="pull-right" style="margin-right: 4px"><span class="glyphicon glyphicon-refresh"></span></a>
+                    <h4 class="modal-title">Importar cuentas</h4>
+                </div>
+                <div class="modal-body">
+                    {{#if loading}}
+                        <center><span class="mini-loading"></span> Cargando...</center>
+                    {{else}}
+                        {{#if cuentas.length > 0}}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Comercio</th>
+                                            <th>Fecha</th>
+                                            <th>Monto</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each cuentas}}
+                                            <tr>
+                                                <td>{{comercio}}</td>
+                                                <td>{{fecha}}</td>
+                                                <td>${{valor}}</td>
+                                                <td>
+                                                    <a href="javascript:;" on-click="crearcuenta:{{@index}}" class="btn btn-xs btn-primary">
+                                                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        {{else}}
+                        <p class="lead">No se cargaron cuentas</p>
+                        {{/if}}
+                    {{/if}}
+                </div>
+            </div>
+         </div>
+    </div>
+</script>

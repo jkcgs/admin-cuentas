@@ -1,0 +1,103 @@
+<script type="text/ractive" id="tpl-cuentas">
+    {{#if loading}}
+        <center>
+            <span class="mini-loading"></span> Cargando...
+        </center>
+    {{else}}
+        <div class="pull-right">
+            <a type="button" class="btn btn-primary" href="javascript:rip.show();">
+                <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+                Importar cuentas
+            </a>
+            <a type="button" class="btn btn-primary" href="javascript:cuentas.mostrar_agregar();">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Agregar cuenta
+            </a>
+        </div>
+
+        {{#if cuentas.length > 0}}
+
+            {{#if no_pagadas().length > 0}}
+                <p class="lead">
+                    Cuentas no pagadas
+                    <button class="btn btn-default btn-xs" id="btn-pagar" onclick="cuentas.pagar_nopagadas()">
+                        Marcar como pagadas
+                    </button>
+                </p>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Facturación</th>
+                                <th class="text-right">Pagar</th>
+                                <th class="text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each no_pagadas()}}
+                                {{>tpl-cuenta}}
+                            {{/each}}
+
+                            <tr>
+                                <td colspan="3"></td>
+                                <td class="text-right"><b>Total</b></td>
+                                <td class="text-right">{{formatearDinero(sumar_np())}}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            {{/if}}
+
+            <p class="lead">Todas las cuentas</p>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Facturación</th>
+                            <th class="text-right">Pagar</th>
+                            <th class="text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {{#each cuentas}}
+                        {{>tpl-cuenta}}
+                    {{/each}}
+                    </tbody>
+                </table>
+            </div>
+
+        {{else}}
+            <p class="lead">No tienes cuentas para mostrar</p>
+        {{/if}}
+    {{/if}}
+</script>
+
+<script type="text/ractive" id="tpl-cuenta">
+    <tr>
+        <td>{{id}}</td>
+        <td>{{nombre}}</td>
+        <td>{{descripcion}}{{#info}}<br><small class="text-muted">{{info}}</small>{{/}}</td>
+        <td>{{fecha_facturacion}}</td>
+        <td class="text-right">{{formatearDinero(monto)}}</td>
+        <td class="text-right">
+            <a href="javascript:;" on-click="creardeuda:{{id}}" class="btn btn-xs btn-primary">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+            </a>
+            <a href="javascript:;" on-click="editar:{{id}}" class="btn btn-xs btn-primary">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+            </a>
+            <a href="javascript:;" on-click="borrar:{{id}}" class="btn btn-xs btn-danger">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </a>
+        </td>
+    </tr>
+</script>
