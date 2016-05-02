@@ -5,7 +5,7 @@ var deudores = new ObjBase({
         deudores: [],
         totalDeuda: function(id) {
             var all = deudas.get('deudas').filter(function(e){
-                return 'deudor' in e && e.deudor == id && e.pagado != "1";
+                return 'deudor' in e && e.deudor == id && e.pagada != "1";
             });
 
             var suma = 0;
