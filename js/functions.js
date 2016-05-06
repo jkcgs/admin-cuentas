@@ -19,6 +19,12 @@ function formatearDinero(s) {
 	return "$" + s.reverse().match(/[0-9]{1,3}/g).join('.').reverse();
 }
 
+function btnLoading(sel, loading) {
+    var e = $(sel);
+    e[loading ? 'addClass' : 'removeClass']("btn-loading");
+    e.prop("disabled", !!loading);
+}
+
 $('.navbar-nav a').on('click', function(){
     var nt = $('.navbar-toggle');
     if(nt.is(':visible')) nt.click();
