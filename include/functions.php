@@ -112,7 +112,7 @@ function stmt_fetch_all($stmt) {
     eval($statment);
     while($stmt->fetch()){
         //Now the data is contained in the assoc array $column. Useful if you need to do a foreach, or 
-        //if your lazy and didn't want to write out each param to bind.
+        //if you're lazy and didn't want to write out each param to bind.
         $res[] = $column;
     }
 
