@@ -99,8 +99,9 @@ var ObjBase = Ractive.extend({
         for(var i in this.form_elements) {
             if(!this.form_elements.hasOwnProperty(i)) continue;
             var x = this.form_elements[i];
+            if(!this.form[x]) continue;
 
-            if(this.form[x].type == "checkbox") {
+            if(this.form[x] && this.form[x].type == "checkbox") {
                 this.form[x].checked = e[x] == 1;
             } else {
                 var defval = ('form_defaults' in this && x in this.form_defaults) ? this.form_defaults[x] : '';
