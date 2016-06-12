@@ -1,6 +1,57 @@
 Ractive.DEBUG = false;
 var ObjBase = Ractive.extend({
     data: function(){
+        this.on('editar', function(e, id){ _t.mostrar_editar(id); });
+        this.on('borrar', function(e, id){
+            if(_t.working) return;
+            if(!confirm('¿Realmente quieres eliminar este elemento?')) return;
+            
+            _t.set('working', true);
+            $.get("acciones/?"+_t.acciones.borrar+"&id="+id, function(data){
+                if(data.error) {
+                    alert("Error: " + data.error);
+                    if(data.hasOwnProperty('ne') && data.ne) {
+                        _t.ddel(id);
+                    }
+                } else {
+                    if(!data.hasOwnProperty('message')) {
+                        alert("Error: No se recibió OK\n"+data);
+                    } else {
+                        _t.ddel(id);
+                    }
+                }
+            })
+            .error(function(req, status, err){
+                alert("Error: " + err.message + "\n" + req.responseText);
+            })
+            .always(function(){
+                _t.set('working', false);
+            });
+        });
+
+        var _t = this;
+        setTimeout( function () {
+            _t.set('loading', true);
+            $.get('acciones/?'+_t.acciones.get, function(data){
+                if(typeof data !== "object") {
+                    try{
+                        JSON.parse(data);
+                    } catch(e) {
+                        alert("Error JSON: " + e.message + "\n" + data);
+                        return;
+                    }
+                }
+
+                if(data.error) {
+                    alert("Error: " + data.error);
+                } else {
+                    _t.set(_t.obj_name, data);
+                }
+                
+                _t.set('loading', false);
+            });
+        });
+
         return {
             loading: false,
             working: false,
@@ -200,59 +251,6 @@ var ObjBase = Ractive.extend({
         })
         .always(function(){
             _t.set('working', false);
-        });
-    },
-
-    onrender: function(){
-        var _t = this;
-
-        this.on('borrar', function(e, id){
-            if(this.working) return;
-            if(!confirm('¿Realmente quieres eliminar este elemento?')) return;
-            
-            _t.set('working', true);
-            $.get("acciones/?"+_t.acciones.borrar+"&id="+id, function(data){
-                if(data.error) {
-                    alert("Error: " + data.error);
-                    if(data.hasOwnProperty('ne') && data.ne) {
-                        _t.ddel(id);
-                    }
-                } else {
-                    if(!data.hasOwnProperty('message')) {
-                        alert("Error: No se recibió OK\n"+data);
-                    } else {
-                        _t.ddel(id);
-                    }
-                }
-            })
-            .error(function(req, status, err){
-                alert("Error: " + err.message + "\n" + req.responseText);
-            })
-            .always(function(){
-                _t.set('working', false);
-            });
-        });
-
-        this.on('editar', function(e, id){ _t.mostrar_editar(id); });
-
-        this.set('loading', true);
-        $.get('acciones/?'+this.acciones.get, function(data){
-            if(typeof data !== "object") {
-                try{
-                    JSON.parse(data);
-                } catch(e) {
-                    alert("Error JSON: " + e.message + "\n" + data);
-                    return;
-                }
-            }
-
-            if(data.error) {
-                alert("Error: " + data.error);
-            } else {
-                _t.set(_t.obj_name, data);
-            }
-            
-            _t.set('loading', false);
         });
     }
 });

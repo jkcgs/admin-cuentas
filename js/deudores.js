@@ -2,7 +2,8 @@ var deudores = new ObjBase({
     el: "#deudores-cont",
     template: "#tpl-deudores",
     data: {
-        deudores: []
+        deudores: [],
+        total_no_pagadas: 0
     },
     obj_name: "deudores",
     modal: "#agregar-deudor",
@@ -23,12 +24,14 @@ var deudores = new ObjBase({
     deudasPara: function(id, pagadas) {
         pagadas = pagadas && pagadas == true ? "1" : "0";
         return deudas.get('deudas').filter(function(e){
-            return 'deudor' in e && e.deudor == id && e.pagada == pagadas;
+            return (id == null || e.deudor == id) && e.pagada == pagadas;
         });
     },
     
     totalNoPagadas: function(id) {
-        var all = deudores.deudasPara(id, false), suma = 0;
+        if(typeof id == "undefined") id = null;
+        var all = deudores.deudasPara(id, false);
+        var suma = 0;
 
         all.forEach(function(e){ suma += parseFloat(e.monto); });
         return suma;
@@ -39,6 +42,8 @@ var deudores = new ObjBase({
         for(var i = 0; i < all.length; i++) {
             deudores.dset(all[i].id, "no_pagadas", deudores.totalNoPagadas(all[i].id));
         }
+
+        this.set('total_no_pagadas', this.totalNoPagadas());
     }
 });
 
@@ -72,5 +77,4 @@ $(function(){
     deudas.observe("deudas.*", function(){
         deudores.actNoPagadas();
     });
-    deudores.actNoPagadas();
 });
