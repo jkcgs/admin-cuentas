@@ -13,6 +13,15 @@
     top: -1px;
 }
 
+.lead > nav {
+    display: inline;
+    font-size: 13px;
+}
+
+.lead nav > ul {
+    margin: -9px 10px;
+}
+
 #cont-cuentas td:nth-child(2) {
     max-width: 200px;
     overflow: hidden;

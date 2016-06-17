@@ -54,7 +54,10 @@
 
             {{/if}}
 
-            <p class="lead">Todas las cuentas</p>
+            <p class="lead">
+                Todas las cuentas
+                {{>tpl-cuenta-nav}}
+            </p>
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
@@ -68,13 +71,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {{#each cuentas}}
+                    {{#each get_page(pagina_actual)}}
                         {{>tpl-cuenta}}
                     {{/each}}
                     </tbody>
                 </table>
             </div>
 
+            {{>tpl-cuenta-nav}}
         {{else}}
             <p class="lead">No tienes cuentas para mostrar</p>
         {{/if}}
@@ -101,3 +105,25 @@
         </td>
     </tr>
 </script>
+
+
+<script type="text/ractive" id="tpl-cuenta-nav">
+    <nav>
+      <ul class="pagination">
+        <li>
+          <a href="javascript:;" aria-label="Anterior" on-click="pagina_ant">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {{#each get_page_numbers():i}}
+            <li {{#if i == pagina_actual}}class="active"{{/if}}><a href="javascript:;" on-click="pagina:{{i}}">{{i+1}}</a></li>
+        {{/each}}
+        <li>
+          <a href="javascript:;" aria-label="Siguiente" on-click="pagina_sig">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+</script>
+

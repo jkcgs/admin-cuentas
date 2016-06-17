@@ -2,7 +2,9 @@ var cuentas = new ObjBase({
     el: "#cont-cuentas",
     template: "#tpl-cuentas",
     data: {
-        cuentas: [], 
+        cuentas: [],
+        pagina_actual: 0,
+        n_display: 20,
         no_pagadas: function(event) {
             return cuentas.get('cuentas').filter(function(e){
                 return 'pagado' in e && e.pagado != "1";
@@ -16,6 +18,19 @@ var cuentas = new ObjBase({
             }
 
             return suma;
+        },
+
+        get_page: function(p) {
+            var n = cuentas.get('n_display');
+            if(p*n >= cuentas.get('cuentas').length) {
+                p = 0;
+            }
+
+            return cuentas.get('cuentas').slice(p*n, p*n+n);
+        },
+
+        get_page_numbers: function() {
+            return new Array(Math.ceil(cuentas.get('cuentas').length/cuentas.get('n_display')));
         }
     },
 
@@ -81,4 +96,19 @@ cuentas.on('creardeuda', function(e, id){
         fecha: x.fecha_compra,
         monto: x.monto
     });
+});
+
+cuentas.on('pagina', function(e, p) {
+    cuentas.set('pagina_actual', p);
+});
+
+cuentas.on('pagina_ant', function(e) {
+    var p = cuentas.get('pagina_actual');
+    cuentas.set('pagina_actual', p <= 0 ? 0 : p-1);
+});
+
+cuentas.on('pagina_sig', function(e) {
+    var p = cuentas.get('pagina_actual'),
+        l = cuentas.get('get_page_numbers')().length-1;
+    cuentas.set('pagina_actual', p >= l ? l : p+1);
 });
