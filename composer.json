@@ -1,0 +1,6 @@
+{
+    "require": {
+        "php-curl-class/php-curl-class": "^4.11",
+        "paquettg/php-html-parser": "^1.7"
+    }
+}
