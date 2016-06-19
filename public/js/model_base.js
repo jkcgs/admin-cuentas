@@ -1,7 +1,24 @@
+/**
+ * Objeto Ractive base para elementos CRUD
+ */
+
+// Desactivar debug de Ractive
 Ractive.DEBUG = false;
+
 var ObjBase = Ractive.extend({
+    /**
+     * Inicialización de datos
+     */
     data: function(){
-        this.on('editar', function(e, id){ _t.mostrar_editar(id); });
+        var _t = this;
+
+        ////// Proxy-events
+        // Muestra modal para editar elemento
+        this.on('editar', function(e, id){ 
+            _t.mostrar_editar(id); 
+        });
+
+        // Ejecuta el borrado de un elemento
         this.on('borrar', function(e, id){
             if(_t.working) return;
             if(!confirm('¿Realmente quieres eliminar este elemento?')) return;
@@ -29,7 +46,7 @@ var ObjBase = Ractive.extend({
             });
         });
 
-        var _t = this;
+        ////// Precarga de elementos
         setTimeout( function () {
             _t.set('loading', true);
             $.get('acciones/?'+_t.acciones.get, function(data){
@@ -52,13 +69,19 @@ var ObjBase = Ractive.extend({
             });
         });
 
+        // Se retornan los datos base
         return {
-            loading: false,
-            working: false,
+            loading: false, // Se están cargando los datos
+            working: false, // Se está realizando una acción
             formatearDinero: formatearDinero
         };
     },
 
+    ////// Funciones base
+    /**
+     * Muestra un modal para agregar un objeto
+     * @param  {object} objfill Como completar el formulario
+     */
     mostrar_agregar: function(objfill) {
         if(this.form) this.form.reset();
         objfill = objfill || {};
@@ -83,6 +106,11 @@ var ObjBase = Ractive.extend({
         }
     },
 
+    /**
+     * Muestra un modal para editar un elemento
+     * @param  {string} id El ID del elemento a editar
+     * @return {[type]}
+     */
     mostrar_editar: function(id) {
         var e = this.dget(id);
         if(e == null) {
@@ -112,6 +140,9 @@ var ObjBase = Ractive.extend({
         m.modal('show');
     },
 
+    /**
+     * Agrega un elemento
+     */
     agregar: function(){
         if(!this.form.checkValidity() || this.get('working')) return;
         var _t = this;
@@ -145,6 +176,10 @@ var ObjBase = Ractive.extend({
         });
     },
 
+    /**
+     * Edita un elemento según su ID
+     * @param  string id El ID del elemento
+     */
     editar: function(id){
         if(!this.form.checkValidity() || this.get('working')) return;
         var _t = this;
@@ -183,6 +218,10 @@ var ObjBase = Ractive.extend({
         });
     },
 
+    /**
+     * Se elimina un objeto guardado
+     * @param  {string} id El ID del objeto a eliminar
+     */
     ddel: function(id) {
         var d = this.get(this.obj_name);
         for(var i = 0; i < d.length; i++) {
@@ -194,6 +233,10 @@ var ObjBase = Ractive.extend({
         }
     },
 
+    /**
+     * Obtener un elemento según su ID
+     * @param  {string} id El ID del elemento
+     */
     dget: function(id) {
         var d = this.get(this.obj_name);
         for(var i = 0; i < d.length; i++) {
@@ -206,6 +249,10 @@ var ObjBase = Ractive.extend({
         return null;
     },
     
+    /**
+     * Configurar un elemento según su ID
+     * @param  {string} id El ID del elemento
+     */
     dset: function(id, prop, data) {
         if(typeof data == "undefined") {
             data = prop;
@@ -228,12 +275,18 @@ var ObjBase = Ractive.extend({
         }
     },
 
+    /**
+     * Carga datos JSON según un formato especificado
+     * { error: (en caso de que haya error), (etc...) }
+     * @param  {string}     url         La URL a cargar
+     * @param  {Function}   callback    La función a ejecutar, function(error, data)
+     */
     jget: function(url, callback) {
         if(this.working) return;
         var _t = this;
 
         _t.set('working', true);
-        $.get(url, function(data){
+        $.getJSON(url, function(data){
             if(data.error) {
                 callback(new Error(data.error), data);
             } else {

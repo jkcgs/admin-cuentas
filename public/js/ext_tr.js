@@ -1,26 +1,36 @@
 var rip = new Ractive({
     el: "#extrip-cont",
     template: "#tpl-extrip",
-    data: {loading: false, cuentas: []},
+
+    data: {
+        loading: false,
+        errorMsg: false,
+        cuentas: []
+    },
     
     load: function(callback){
         if(this.get('loading')) return;
         this.set('loading', true);
+        this.set('errorMsg', false);
         var _t = this;
 
-        $.get('acciones/?external/ripley', function(data){
+        $.getJSON('acciones/?external/ripley', function(data){
             if(data.error) {
                 callback(new Error(data.error), data);
-            } else {
-                if(!data.hasOwnProperty('message')) {
-                    var e = new Error("No se recibió OK");
-                    callback(e);
-                    console.log(e, data);
-                }
-
-                _t.set('cuentas', data.data);
-                callback(null);
+                return;
             }
+
+            if(!data.hasOwnProperty('message')) {
+                var errorMsg = data.hasOwnProperty('error') ? data.error : "No se recibió OK",
+                    e = new Error(errorMsg);
+
+                callback(e);
+                console.log(e, data);
+                return;
+            }
+
+            _t.set('cuentas', data.data);
+            callback(null);
         })
         .error(function(req, status, err){
             callback(new Error("Error al cargar datos externos"));
@@ -39,8 +49,9 @@ var rip = new Ractive({
     },
 
     update: function() {
+        var _t = this;
         this.load(function(e){
-            if(e) alert("Error: " + e.message);
+            _t.set('errorMsg', e ? e.message : false);
         });
     }
 });
