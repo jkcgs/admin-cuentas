@@ -1,31 +1,12 @@
 <?php defined("INCLUDED") or die("nel");
 
-// Imports
-require '../vendor/autoload.php';
-use \Curl\Curl;
-use PHPHtmlParser\Dom;
-
-// Pre-definiciones
-
-// Se debe retornar json
+//// Inicialización
 header('Content-Type: text-json');
 
-// User-Agent (Chrome 51)
-$UA = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
+use PHPHtmlParser\Dom;
+$curl = init_curl();
 
-// Inicializar Curl
-$curl = new Curl();
-$curl->setUserAgent($UA);
-$curl->setCookieFile(NULFILE);
-$curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
-$curl->setOpt(CURLOPT_RETURNTRANSFER, true);
-$curl->setOpt(CURLOPT_FOLLOWLOCATION, true);
-
-// Funciones
-
-function clear_html($s) {
-    return str_replace("<", "&lt;", $s);
-}
+//// Funciones
 
 function check_error($c) {
     // revisar error

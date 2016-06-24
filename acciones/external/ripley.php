@@ -1,50 +1,61 @@
 <?php defined("INCLUDED") or die("nel");
 
-$is_win = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
-$nullfile = $is_win ? 'NUL' : '/dev/null';
+//// Init
+use PHPHtmlParser\Dom;
 
-$rut = $config['tr_user'];
-$pass = $config['tr_pass'];
-$url_login = "https://www.ripley.cl/tarjeta/login.do";
-$url_mov = "https://www.ripley.cl/tarjeta/movimientos/movimientos.do";
+$randint = random_int(PHP_INT_MIN, PHP_INT_MAX);
+$urlBase = "https://www.ripley.cl/tarjeta/";
+$urlLogin = $urlBase."login.do";
+$urlMov = $urlBase."movimientos/movimientos.do";
+$urlLogout = $urlBase."cerrarSesion.do?_r=$randint";
 
-$data = array('rut' => $rut, 'password' => $pass);
-$ch = curl_init();
-$result = wpost($url_login, $data, $ch);
+$ch = init_curl();
+$data = array(
+    'rut' => $config['tr_user'],
+    'password' => $config['tr_pass']
+);
+
+//// Login
+$result = $ch->post($urlLogin, $data);
 
 if(strpos($result, "\"logueado\" : true") === false) {
-    die(jerr("No se pudo iniciar sesión en el sitio externo"));
+    die(jerr("No se pudo iniciar sesión en el sitio externo: " . $result));
 }
 
-$movimientos = wget($url_mov, $ch);
-curl_close($ch);
+// Cargar movimientos y cerrar sesión
+$movimientos = $ch->get($urlMov);
+$ch->get($urlLogout);
+$ch->close();
 
-$d = "cellspacing=\"0\">-->";
-$a = strpos($movimientos, $d);
-$b = strpos($movimientos, "</table>", $a);
-$cont = substr($movimientos, $a + strlen($d), $b - $a);
+// Parsear página buscando movimientos
+$dom = new Dom;
+$dom->load($movimientos);
 
-$res = null;
-preg_match_all("/<td( class=\"bgDest\")?>(.*)<\/td>/", $cont, $res);
-$res = array_map(function($d){ return str_replace("&nbsp;", "", $d); }, $res[2]);
-$res = array_map('trim', $res);
-$res = array_chunk($res, 6);
+$cuentasPags = $dom->getElementsByClass('datos_no_facturados');
+$cuentas = [];
 
-$res2 = array();
-$conv = explode(",", "fecha,comercio,monto,cuotas,valor,documento");
-for($i = 0; $i < count($res); $i++) {
-    $d = array();
-    for($j = 0; $j < count($res[$i]); $j++) {
-        if($conv[$j] == "monto" || $conv[$j] == "valor") {
-            $d[$conv[$j]] = intval(preg_replace("/[\$\.]/", "", $res[$i][$j]));
-        } else {
-            $d[$conv[$j]] = $res[$i][$j];
+foreach($cuentasPags as $pag) {
+    $cols = $pag->find('tbody tr');
+    foreach($cols as $cuenta) {
+        $conts = $cuenta->find('td');
+        if(count($conts) < 1) continue;
+
+        $contf = [];
+        foreach($conts as $cont) {
+            $contf[] = str_replace("&nbsp;", "", $cont->text);
         }
 
-    }
+        $nc = [
+            'fecha' => trim($contf[0]),
+            'comercio' => trim($contf[1]),
+            'monto' => intval(preg_replace("/[\$\.]/", "", $contf[2])),
+            'cuotas' => intval(trim($contf[3])),
+            'valor' => intval(preg_replace("/[\$\.]/", "", $contf[4])),
+            'documento' => trim($contf[5])
+        ];
 
-    $res2[] = $d;
+        $cuentas[] = $nc;
+    }
 }
 
-header("Content-Type: text/json");
-echo json_encode(array("message" => "ok", "data" => $res2));
+echo json_encode(array("message" => "ok", "data" => $cuentas));

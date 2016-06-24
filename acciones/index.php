@@ -1,4 +1,6 @@
 <?php define("INCLUDED", 1);
+
+require '../vendor/autoload.php';
 include "../include/config.php";
 include "../include/auth.php";
 include "../include/functions.php";
