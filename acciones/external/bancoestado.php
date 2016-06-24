@@ -22,7 +22,7 @@ function check_error($c) {
 
 function throw_wrong() {
     echo json_encode([
-        'error' => 'Wrong page',
+        'error' => 'Página incorrecta',
         'code' => -1
     ]);
     exit;
@@ -85,8 +85,9 @@ $cuentas = [];
 foreach($domcuentas as $cuenta) {
     $conts = $cuenta->find('td');
     $nc = [
-        'nombre' => trim($conts[0]->find('span')[0]->text),
-        'numero' => trim($conts[1]->text),
+        'nombre_banco' => 'Banco Estado',
+        'nombre_cuenta' => trim($conts[0]->find('span')[0]->text),
+        'numero_cuenta' => trim($conts[1]->text),
         'moneda' => trim($conts[2]->text),
         'dinero' => preg_replace('/[^0-9]/', '', trim($conts[3]->text))
     ];
@@ -94,7 +95,7 @@ foreach($domcuentas as $cuenta) {
     $cuentas[] = $nc;
 }
 
-echo json_encode($cuentas);
+echo json_encode(array("message" => "ok", "data" => $cuentas));
 
 //////// Paso 4: Logout
 

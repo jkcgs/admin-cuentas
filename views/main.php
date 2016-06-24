@@ -35,7 +35,6 @@
                 <ul class="nav navbar-nav">
                     <li><a href="#cuentas">Cuentas</a></li>
                     <li><a href="#deudores">Deudores</a></li>
-                    <li><a href="#estadisticas">Estadísticas</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -79,10 +78,10 @@
     <?= file_get_contents("templates/cuentas.hbs") ?>
     <?= file_get_contents("templates/deudores.hbs") ?>
     <?= file_get_contents("templates/deudas.hbs") ?>
-    <?= file_get_contents("templates/estadisticas.hbs") ?>
     <?= file_get_contents("templates/ext_tr.hbs") ?>
+    <?= file_get_contents("templates/bancarias.hbs") ?>
 
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script src="https://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
 
@@ -90,11 +89,12 @@
     <script src='public/js/functions.js'></script>
     <script src='public/js/navigation.js'></script>
     <script src='public/js/model_base.js'></script>
+
     <script src='public/js/cuentas.js'></script>
     <script src='public/js/deudores.js'></script>
     <script src='public/js/deudas.js'></script>
-    <script src='public/js/estadisticas.js'></script>
     <script src='public/js/ext_tr.js'></script>
+    <script src='public/js/bancarias.js'></script>
 
   </body>
 </html>
