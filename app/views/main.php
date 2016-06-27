@@ -70,16 +70,16 @@
     <footer class="container text-center text-muted">
         <hr>
         Creado por Jonathan Gutiérrez &copy; 2016<br>
-        Todos los derechos reservados.
+        Todos los derechos reservados. - Versión <?= VERSION ?>
         <br>&nbsp;
     </footer>
 
     <?php /* Carga de templates */ ?>
-    <?= file_get_contents("templates/cuentas.hbs") ?>
-    <?= file_get_contents("templates/deudores.hbs") ?>
-    <?= file_get_contents("templates/deudas.hbs") ?>
-    <?= file_get_contents("templates/ext_tr.hbs") ?>
-    <?= file_get_contents("templates/bancarias.hbs") ?>
+    <?= file_get_contents("app/views/templates/cuentas.hbs") ?>
+    <?= file_get_contents("app/views/templates/deudores.hbs") ?>
+    <?= file_get_contents("app/views/templates/deudas.hbs") ?>
+    <?= file_get_contents("app/views/templates/ext_tr.hbs") ?>
+    <?= file_get_contents("app/views/templates/bancarias.hbs") ?>
 
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>

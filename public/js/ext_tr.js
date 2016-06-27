@@ -14,7 +14,7 @@ var rip = new Ractive({
         this.set('errorMsg', false);
         var _t = this;
 
-        $.getJSON('acciones/?external/ripley', function(data){
+        $.getJSON('?ext=ripley', function(data){
             if(data.error) {
                 callback(new Error(data.error), data);
                 return;

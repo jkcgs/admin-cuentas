@@ -3,4 +3,4 @@
 *.iml
 
 # Config file
-include/config.php
+app/config/config.php

@@ -1,10 +1,6 @@
 <?php
 define("INCLUDED", 1);
+define("VERSION", "0.0.1-alpha");
 
 require 'vendor/autoload.php';
-include "include/config.php";
-include "include/auth.php";
-include "include/db.php";
-include "include/functions.php";
-
-include "views/main.php";
+require 'app/init.php';

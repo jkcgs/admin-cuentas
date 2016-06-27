@@ -14,7 +14,7 @@ var bancarias = new Ractive({
         this.set('errorMsg', false);
         var _t = this;
 
-        $.getJSON('acciones/?external/bancoestado', function(data){
+        $.getJSON('?ext=bancoestado', function(data){
             if(data.error) {
                 callback(new Error(data.error), data);
                 return;

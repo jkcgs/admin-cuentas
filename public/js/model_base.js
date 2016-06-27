@@ -6,6 +6,7 @@
 Ractive.DEBUG = false;
 
 var ObjBase = Ractive.extend({
+    base_url: '?action=', 
     /**
      * Inicialización de datos
      */
@@ -24,7 +25,7 @@ var ObjBase = Ractive.extend({
             if(!confirm('¿Realmente quieres eliminar este elemento?')) return;
             
             _t.set('working', true);
-            $.get("acciones/?"+_t.acciones.borrar+"&id="+id, function(data){
+            $.get(_t.base_url+_t.acciones.borrar+"&id="+id, function(data){
                 if(data.error) {
                     alert("Error: " + data.error);
                     if(data.hasOwnProperty('ne') && data.ne) {
@@ -49,7 +50,7 @@ var ObjBase = Ractive.extend({
         ////// Precarga de elementos
         setTimeout( function () {
             _t.set('loading', true);
-            $.get('acciones/?'+_t.acciones.get, function(data){
+            $.get(_t.base_url+_t.acciones.get, function(data){
                 if(typeof data !== "object") {
                     try{
                         JSON.parse(data);
@@ -150,7 +151,7 @@ var ObjBase = Ractive.extend({
         $("[type=submit]", this.form).addClass("btn-loading").prop("disabled", true);
         this.set('working', true);
 
-        $.post("acciones/?"+this.acciones.agregar, $(this.form).serialize(), function(data){
+        $.post(this.base_url+this.acciones.agregar, $(this.form).serialize(), function(data){
             if(typeof data !== "object") {
                 try{
                     JSON.parse(data);
@@ -187,7 +188,7 @@ var ObjBase = Ractive.extend({
         $("[type=submit]", this.form).addClass("btn-loading").prop("disabled", true);
         this.set('working', true);
 
-        $.post("acciones/?"+this.acciones.editar+"&id="+id, $(this.form).serialize(), function(data){
+        $.post(this.base_url+this.acciones.editar+"&id="+id, $(this.form).serialize(), function(data){
             if(typeof data !== "object") {
                 try{
                     JSON.parse(data);
