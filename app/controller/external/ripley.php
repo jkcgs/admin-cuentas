@@ -18,7 +18,7 @@ $data = array(
 //// Login
 $result = $ch->post($urlLogin, $data);
 
-if(strpos($result, "\"logueado\" : true") === false) {
+if (strpos($result, "\"logueado\" : true") === false) {
     die(jerr("No se pudo iniciar sesión en el sitio externo: " . $result));
 }
 
@@ -34,14 +34,16 @@ $dom->load($movimientos);
 $cuentasPags = $dom->getElementsByClass('datos_no_facturados');
 $cuentas = [];
 
-foreach($cuentasPags as $pag) {
+foreach ($cuentasPags as $pag) {
     $cols = $pag->find('tbody tr');
-    foreach($cols as $cuenta) {
+    foreach ($cols as $cuenta) {
         $conts = $cuenta->find('td');
-        if(count($conts) < 1) continue;
+        if (count($conts) < 1) {
+            continue;
+        }
 
         $contf = [];
-        foreach($conts as $cont) {
+        foreach ($conts as $cont) {
             $contf[] = str_replace("&nbsp;", "", $cont->text);
         }
 
@@ -58,4 +60,4 @@ foreach($cuentasPags as $pag) {
     }
 }
 
-echo json_encode(array("message" => "ok", "data" => $cuentas));
+echo json_encode(array("message" => "ok", "data" => array_reverse($cuentas)));
