@@ -59,3 +59,62 @@ footer {
     color: #FFF;
     text-shadow: 0 0 3px #000;
 }
+
+.loading-block {
+    background: rgba(255, 255, 255, 0.92);
+    display: block;
+    margin: 0 auto;
+    max-width: 150px;
+    padding: 10px 0;
+    border-radius: 6px;
+}
+
+.btn-loading,
+.btn-loading:hover,
+.btn-loading:active,
+.btn-loading:focus {
+    position: relative;
+    color: transparent !important;
+    outline: 0;
+}
+
+.btn-loading::before {
+    position: absolute;
+    background-image: url("../img/loading_circle.svg");
+    background-position: center;
+    background-size: 100% 80%;
+    background-repeat: no-repeat;
+    content: " ";
+    animation: spin 1s linear infinite;
+    bottom: 0;
+
+    left: 50%;
+    width: 20px;
+    margin-left: -10px;
+    
+    top: 50%;
+    height: 28px;
+    margin-top: -14px;
+}
+
+.btn-loading.btn-xs::before {
+    width: 15px;
+    height: 18px;
+    margin-left: -7.5px;
+    margin-top: -9px;
+}
+
+.mini-loading {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background: url("../img/loading_circle.svg") center no-repeat;
+    background-size: 100% 100%;
+    animation: 1s spin linear infinite;
+    padding: 5px;
+    vertical-align: top;
+    position: relative;
+    top: 2px;
+}
+
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

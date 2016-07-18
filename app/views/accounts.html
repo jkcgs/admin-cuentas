@@ -1,6 +1,11 @@
 <menubar></menubar>
 
-<div class="container">
+<center class="loading-block" ng-hide="loaded">
+    <span class="mini-loading"></span><br>
+    Cargando...
+</center>
+
+<div class="container" ng-if="loaded">
     <div class="panel panel-primary">
         <div class="panel-heading">
             <span class="panel-title">Deudas sin pagar</span>

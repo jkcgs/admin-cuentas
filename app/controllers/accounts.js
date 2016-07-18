@@ -33,6 +33,7 @@
         function init() {
             accounts.get().success(function(data){
                 $scope.accounts = data;
+                $scope.loaded = true;
             });
         }
     }
