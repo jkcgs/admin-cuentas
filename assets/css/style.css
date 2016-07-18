@@ -1,0 +1,61 @@
+@media (max-width: 768px) {
+	.navbar-collapse .navbar-nav .navbar-text {
+		margin-right: 15px;
+		margin-left: 15px;
+	}
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background: url(../img/bg.jpg) no-repeat bottom fixed;
+    background-size: cover;
+}
+
+.has-feedback.has-feedback-left input {
+	padding-left: 31.5px;
+	padding-right: 0;
+}
+.has-feedback.has-feedback-left .form-control-feedback {
+	left: 0;
+}
+
+footer {
+	margin-top: 30px;
+}
+
+.navbar-static-top {
+	position: fixed;
+    width: 100%;
+	box-shadow: 0 1px 50px #000;
+}
+
+.navbar .glyphicon {
+    position: relative;
+    top: 2px;
+}
+
+.mtop {
+	margin-top: 15px;
+}
+
+.navbar .container {
+	padding-top: 0;
+}
+
+.input-label {
+	text-align: right;
+}
+
+.panel-heading .btn-xs {
+	position: relative;
+	top: -2px;
+}
+
+footer {
+    margin-top: 0;
+    color: #FFF;
+    text-shadow: 0 0 3px #000;
+}

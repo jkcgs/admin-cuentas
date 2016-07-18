@@ -1,0 +1,9 @@
+#acc-list-heading input[type=text] {
+    display: inline-block;
+    width: 220px;
+    height: 24px;
+}
+
+#acc-list-heading .btn-xs {
+    top: -1px;
+}

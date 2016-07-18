@@ -1,6 +1,2 @@
-# IntelliJ project files
-.idea
-*.iml
-
 # Config file
-app/config/config.php
+app/includes/config.php

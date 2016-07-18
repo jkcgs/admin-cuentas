@@ -1,0 +1,31 @@
+<div class="container" id="login">
+	<div class="col-sm-8 col-sm-offset-2 col-lg-4 col-lg-offset-4">
+		<form ng-submit="send()" id="loginform" name="loginForm" method="POST" role="form" class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Gestión de Cuentas</h3>
+				<p>Ingreso al panel</p>
+			</div>
+			<div class="panel-body">
+				<div class="form-group has-feedback has-feedback-left">
+				    <label class="control-label" for="username">Usuario</label>
+				    <input type="text" name="username" id="username" class="form-control"
+						placeholder="Ingrese su usuario" required ng-model="username" />
+				    <i class="form-control-feedback glyphicon glyphicon-user"></i>
+				</div>
+				<div class="form-group has-feedback has-feedback-left">
+				    <label for="password" class="control-label">Contraseña</label>
+				    <input type="password" class="form-control" name="password" id="password"
+						placeholder="Ingrese su contraseña" maxlength="100" required ng-model="password" />
+				    <i class="form-control-feedback glyphicon glyphicon-lock"></i>
+				</div>
+			</div>
+			<div class="panel-footer text-right">
+				<button type="submit" class="btn btn-primary">Iniciar sesión</button>
+			</div>
+		</form>
+	</div>
+
+	<footer class="col-sm-6 col-sm-offset-3 text-center">
+		&copy; 2016 Todos los derechos reservados
+	</footer>
+</div>
