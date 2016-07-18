@@ -17,7 +17,9 @@
     }
 
     function AccountsController($scope, accounts){
+        $scope.loaded = false;
         $scope.accounts = [];
+
         $scope.getSumUnpaid = function() {
             var total = 0;
             for(var i = 0; i < $scope.accounts.length; i++){
@@ -25,7 +27,7 @@
                 total += parseInt($scope.accounts[i].monto);
             }
             return total;
-        }
+        };
 
         init();
         function init() {
@@ -33,8 +35,6 @@
                 $scope.accounts = data;
             });
         }
-
-        console.log($scope.path);
     }
 
 }());

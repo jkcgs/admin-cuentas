@@ -6,7 +6,8 @@
         'ngCookies',
         'routeStyles',
         'app.login',
-        'app.accounts'
+        'app.accounts',
+        'app.debtors'
     ])
     .service('authInterceptor', authInterceptor)
     .config(config)
@@ -30,7 +31,9 @@
             });
         };
 
-        $rootScope.path = $location.path();
+        $rootScope.$on('$locationChangeStart', function(event){
+            $rootScope.path = $location.path();
+        });        
     }
 
     authInterceptor.$inject = ['$q'];
