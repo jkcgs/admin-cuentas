@@ -11,8 +11,7 @@
         $routeProvider
         .when('/accounts', {
             controller: 'AccountsController',
-            templateUrl: 'app/views/accounts.html',
-            css: 'assets/css/accounts.css'
+            templateUrl: 'app/views/accounts.html'
         });
     }
 

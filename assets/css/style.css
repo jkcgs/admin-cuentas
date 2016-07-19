@@ -60,6 +60,16 @@ footer {
     text-shadow: 0 0 3px #000;
 }
 
+.panel-heading .pull-right input[type=text] {
+    display: inline-block;
+    width: 220px;
+    height: 24px;
+}
+
+.panel-heading .pull-right .btn-xs {
+    top: -1px;
+}
+
 .loading-block {
     background: rgba(255, 255, 255, 0.92);
     display: block;

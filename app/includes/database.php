@@ -18,6 +18,14 @@ switch ($db->connect_errno) {
 		break;
 }
 
+function dbGetAll($q) {
+    $r = array();
+    while ($row = $q->fetch_assoc()) {
+	    $r[] = $row;
+	}
+
+    return $r;
+}
 
 function get_id($obj, $id = true) {
     global $db;
