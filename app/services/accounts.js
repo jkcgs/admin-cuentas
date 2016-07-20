@@ -9,6 +9,7 @@
         this.get = get;
         this.add = add;
         this.edit = edit;
+        this.del = del;
 
         function get(id){
             var ep = 'api.php?accounts/get';
@@ -21,19 +22,18 @@
 
         function add(data) {
             var ep = 'api.php?accounts/add';
-            return $http.get(ep);
+            return $http.post(ep, $.param(data));
         }
 
-        function edit(id){
-            if(typeof id == "undefined") {
-                alert("accounts.edit: Must send ID");
-                return;
-            }
-
-            var ep = 'api.php?accounts/edit&id='+id;
-            return $http.get(ep);
+        function edit(data){
+            var ep = 'api.php?accounts/edit&id='+data.id;
+            return $http.post(ep, $.param(data));
         }
 
+        function del(id) {
+            var ep = 'api.php?accounts/delete&id='+id;
+            return $http.get(ep);
+        }
     }
 
 }());

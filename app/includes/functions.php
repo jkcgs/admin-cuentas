@@ -1,13 +1,39 @@
-<?php
+<?php defined("INCLUDED") or die("Denied");
 
-function throw_error($msg) {
+require "gump.class.php";
+GUMP::add_filter("upper", function($value, $params = NULL) {
+    return strtoupper($value);
+});
+GUMP::add_filter("default", function($value, $params = array('')) {
+    return empty($value) ? $params[0] : $value;
+});
+GUMP::add_validator("yearmonth", function($field, $input, $param = NULL) {
+    if(!isset($input[$field])) return false;
+    $val = $input[$field];
+    return strlen($val) == 7 && preg_match("/[0-9]{4}\-[0-9]{2}/", $val);
+});
+GUMP::add_validator("text", function($field, $input, $param = NULL) {
+    if(!isset($input[$field])) return false;
+    $val = $input[$field];
+    return preg_match("/[a-zA-Z0-9 \\-_\\$\\.\X]*/", $val);
+});
+
+
+function throw_error($msg, $data = null) {
     $m = json_encode([
         "success" => false,
         "message" => $msg,
-        "data" => null
+        "data" => $data
     ]);
 
     die($m);
+}
+
+function throw_success($data = null) {
+    die(json_encode([
+        "success" => true,
+        "data" => $data
+    ]));
 }
 
 function json_data($data) {

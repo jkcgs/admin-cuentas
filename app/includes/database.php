@@ -1,4 +1,4 @@
-<?php defined("INCLUDED") or die("nel");
+<?php defined("INCLUDED") or die("Denied");
 
 $db_error = false;
 @$db = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
@@ -47,5 +47,67 @@ function get_id($obj, $id = true) {
         } else {
             return json_encode($r);
         }
+    }
+}
+
+
+function delete_obj($obj, $id = true, $ddie = true) {
+    global $db;
+    if($id === true) {
+        $id = verify_id($obj);
+    }
+
+    $s = $db->prepare("DELETE FROM $obj WHERE id = ? LIMIT 1");
+    $s->bind_param('i', $id);
+    $s->execute();
+
+    if($ddie) {
+        if($s->error) {
+            throw_error($s->error);
+        } else {
+            throw_success();
+        }
+    } else {
+        return $s->error ? $s->error : true;
+    }
+}
+
+function exists_obj($itm, $id) {
+    global $db;
+    
+    $s = $db->prepare("SELECT * FROM $itm WHERE id = ? LIMIT 1");
+    if(!$s) {
+        throw_error($db->error);
+    }
+
+    $s->bind_param('i', $id);
+    $s->execute();
+    $s->store_result();
+    
+    if($s->error) {
+        return null;
+    } else {
+        $num = $s->num_rows;
+        $s->close();
+        return $num > 0;
+    }
+}
+
+// Checks if an ID has been sent and if exists
+function verify_id($obj) {
+    if(!isset($_GET['id'])) {
+        throw_error("ID no ingresado");
+    } else {
+        $id = $_GET['id'];
+        if((string)(int)$id != $id) {
+            throw_error("ID no numérica");
+        }
+        
+        if(!exists_obj($obj, $id)) {
+            throw_error("ID no numérica");
+            die('{"error":"La cuenta no existe", "ne": true}');
+        }
+
+        return $id;
     }
 }

@@ -21,6 +21,18 @@
         $httpProvider.interceptors.push('authInterceptor');
         $locationProvider.hashPrefix('!');
         $routeProvider.otherwise({ redirectTo: '/login' });
+
+        $httpProvider.interceptors.push(function($q) {
+            return {
+                'responseError': function(response) {
+                    if(response.headers()['content-type'] == "application/json") {
+                        alert("Error: " + response.data.message);
+                    }
+
+                    return $q.reject(response);
+                }
+            };
+        });
     }
 
     run.$inject = ['$rootScope', '$location', 'session'];
@@ -38,11 +50,13 @@
 
     authInterceptor.$inject = ['$q'];
     function authInterceptor($q) {
-        this.responseError = function(response) {
-            if (response.status == 401){
-                location.hash = "!/login";
+        return {
+            'responseError': function(response) {
+                if (response.status == 401){
+                    location.hash = "!/login";
+                }
+                return $q.reject(response);
             }
-            return $q.reject(response);
         };
     }
 

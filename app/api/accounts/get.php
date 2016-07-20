@@ -1,5 +1,4 @@
 <?php defined("INCLUDED") or die("Acceso denegado."); try_logged();
-require "app/includes/database.php";
 
 if(!isset($_GET['id'])) {
     $q = $db->query("SELECT * FROM cuentas order by id desc, fecha_facturacion desc");

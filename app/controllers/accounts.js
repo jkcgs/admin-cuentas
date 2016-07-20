@@ -6,12 +6,31 @@
         .config(config)
         .controller('AccountsController', ['$scope', 'accounts', AccountsController]);
     
-    config.$inject = ['$routeProvider', '$locationProvider'];
-    function config($routeProvider, $locationProvider) {
+    config.$inject = ['$routeProvider', '$locationProvider', '$httpProvider'];
+    function config($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider
         .when('/accounts', {
             controller: 'AccountsController',
             templateUrl: 'app/views/accounts.html'
+        });
+
+        $httpProvider.interceptors.push(function($q, $timeout) {
+            return {
+                // Reset loading elements on error
+                'responseError': function(response) {
+                    $('#modal-cuenta [type="submit"]').removeClass("btn-loading");
+                    $('[data-del-id]').removeClass("btn-loading");
+
+                    var scope = angular.element($('[ng-view]')).scope();
+                    $timeout(function(){
+                        scope.$apply(function(){
+                            scope.saving = false;
+                        });
+                    }, 0);
+                    
+                    return $q.reject(response);
+                }
+            };
         });
     }
 
@@ -77,7 +96,7 @@
         };
 
         $scope.showEdit = function(id) {
-            var account = angular.copy($scope.getByID(id));
+            var account = angular.copy(getByID(id));
             if(!account) {
                 alert("Cuenta no encontrada");
                 return;
@@ -103,11 +122,20 @@
             $scope.accform = angular.copy($scope.masterForm);
         };
 
+        // Add and edit
         $scope.sendForm = function() {
+            var form = angular.copy($scope.accform);
+            if(!form.divisa_original) {
+                form.divisa_original = "CLP";
+            }
+
+            form.fecha_compra = dateToForm(form.fecha_compra);
+            form.fecha_facturacion = dateToForm(form.fecha_facturacion, false);
+
             $scope.saving = true;
             $('#modal-cuenta [type="submit"]').addClass("btn-loading");
-            if($scope.accform.id) {
-                accounts.edit($scope.accform).success(function(res){
+            if(form.id) {
+                accounts.edit(form).success(function(res){
                     $scope.saving = false;
                     $('#modal-cuenta [type="submit"]').removeClass("btn-loading");
                     if(!res.success) {
@@ -115,22 +143,51 @@
                         return;
                     }
 
-                    var idx = $scope.getIndexByID($scope.accform.id);
+                    var idx = getIndexByID(form.id);
                     $scope.accounts[idx] = res.data;
+                    $('#modal-cuenta').modal('hide');
                 });
                 return;
             } else {
-                accounts.add($scope.accform).success(function(res){
+                accounts.add(form).success(function(res){
                     $scope.saving = false;
                     $('#modal-cuenta [type="submit"]').removeClass("btn-loading");
                     if(!res.success) {
-                        alert(res.message);
+                        alert("Error: " + res.message);
                         return;
                     }
 
-                    $scope.accounts.push(res.data);
+                    $('#modal-cuenta').modal('hide');
+                    $scope.accounts.splice(0, 0, res.data);
                 });
             }
+        };
+
+        $scope.delAccount = function(id) {
+            var accIndex = getIndexByID(id);
+            
+            if(accIndex === null) {
+                alert("La cuenta no existe");
+                return;
+            }
+
+            if(!confirm("¿Realmente quieres eliminar esta cuenta? Esta acción es irreversible")) {
+                return;
+            }
+
+            $scope.saving = true;
+            $('[data-del-id="'+id+'"]').addClass("btn-loading");
+
+            accounts.del(id).success(function(res){
+                $scope.saving = false;
+                $('[data-del-id="'+id+'"]').removeClass("btn-loading");
+                if(!res.success) {
+                    alert(res.message);
+                    return;
+                }
+
+                $scope.accounts.splice(accIndex, 1);
+            });
         };
 
         init();

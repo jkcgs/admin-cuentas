@@ -1,5 +1,4 @@
 <?php defined("INCLUDED") or die("Acceso denegado."); try_logged();
-require "app/includes/database.php";
 
 $q1 = $db->query("SELECT * FROM deudores order by nombre asc");
 if(!$q1) {

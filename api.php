@@ -8,6 +8,7 @@ if(!isset($_SESSION['logged'])) {
 
 require "app/includes/config.php";
 require "app/includes/functions.php";
+require "app/includes/database.php";
 header("Content-Type: application/json");
 
 reset($_GET);
@@ -22,4 +23,10 @@ if(!file_exists($route)) {
     throw_error("API no encontrada");
 }
 
-require $route;
+try {
+    require $route;
+} catch(Exception $e) {
+    header("HTTP/1.1 500 Internal Server Error");
+    throw_error("PHP Error: " . $e->getMessage() . "\n" . $e->getTraceAsString());
+}
+
