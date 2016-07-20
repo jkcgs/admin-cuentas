@@ -19,7 +19,7 @@ if($route != preg_replace("/[^a-zA-Z0-9_\-\/]/", "", $route)) {
 
 $route = "app/api/$route.php";
 if(!file_exists($route)) {
-    throw_error("No existe la API " . "$route");
+    throw_error("API no encontrada");
 }
 
 require $route;
