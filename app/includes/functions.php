@@ -44,6 +44,10 @@ function json_data($data) {
     ]);
 }
 
+function throw_data($data) {
+    die(json_data($data));
+}
+
 function try_logged() {
     if(!isset($_SESSION['logged']) || !$_SESSION['logged']) {
         header("HTTP/1.1 401 Unauthorized");

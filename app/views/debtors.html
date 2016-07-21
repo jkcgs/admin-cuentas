@@ -8,13 +8,19 @@
 <div class="container" ng-if="loaded">
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title">Deudores con saldo a favor</h3>
+            <span class="panel-title">Deudores<small ng-if="!options.showAllDebtors"> (con saldo)</small></span>
+            <div class="pull-right">
+                <label><input type="checkbox" ng-model="options.showAllDebtors"> Mostrar todos&nbsp;&nbsp;</label>
+                <button type="button" class="btn btn-success btn-xs" ng-click="debtorShowAdd()">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    Agregar
+                </button>
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>#</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Total deuda</th>
@@ -23,7 +29,6 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="debtor in debtors | filter:hasDebt">
-                        <td>{{debtor.id}}</td>
                         <td>{{debtor.nombre}}</td>
                         <td>{{debtor.descripcion}}</td>
                         <td>{{sumDebt(debtor.id) | formatMoney}}</td>
@@ -32,18 +37,18 @@
                                 title="Marcar pagadas">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                             </a>
-                            <a href="javascript:;" class="btn btn-xs btn-primary">
+                            <a href="javascript:;" class="btn btn-xs btn-primary" ng-click="debtorShowEdit(debtor.id)">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                 Editar
                             </a>
-                            <a href="javascript:;" class="btn btn-xs btn-danger">
+                            <a href="javascript:;" class="btn btn-xs btn-danger" data-debtor-del="{{debtor.id}}" ng-click="deleteDebtor(debtor.id)">
                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                 Eliminar
                             </a>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" class="text-right"><b>Total:</b></td>
+                        <td colspan="2" class="text-right"><b>Total:</b></td>
                         <td colspan="2">{{sumDebtTotal() | formatMoney}}</td>
                     </tr>
                 </tbody>
@@ -57,7 +62,7 @@
             <span class="panel-title">Todas las deudas</span>
             <div class="pull-right">
                 <input class="form-control input-sm" type="text" placeholder="Búsqueda..." ng-model="debtListText">
-                <button type="button" class="btn btn-success btn-xs">
+                <button type="button" class="btn btn-success btn-xs" ng-click="debtShowAdd()">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     Agregar
                 </button>
@@ -77,33 +82,120 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="debt in debts | filter:debtListText">
+                    <tr ng-repeat="debt in debts | filter:debtListText as results">
                         <td>{{debt.id}}</td>
                         <td>{{debt.nombreDeudor}}</td>
                         <td>{{debt.descripcion}}</td>
                         <td class="text-right">{{debt.monto | formatMoney}}</td>
                         <td>{{debt.fecha}}</td>
-                        <td>{{debt.pagada == 1 ? "Si" : "No"}}</td>
                         <td>
-                            <a href="javascript:;" class="btn btn-xs btn-primary">
-                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                Editar
-                            </a>
-                            <a href="javascript:;"  class="btn btn-xs btn-danger">
-                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                Eliminar
-                            </a>
-                            <!--a href="javascript:;" class="btn btn-xs btn-success" title="Marcar pagada">
+                            <a href="javascript:;" class="btn btn-xs btn-success" title="Desmarcar pagada" ng-if="debt.pagada == 1">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                             </a>
-                            <a href="javascript:;" class="btn btn-xs btn-danger" title="Desmarcar pagada">
+                            <a href="javascript:;" class="btn btn-xs btn-danger" title="Marcar pagada" ng-if="debt.pagada == 0">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                            </a-->
+                            </a>
                         </td>
+                        <td>
+                            <a href="javascript:;" class="btn btn-xs btn-primary" ng-click="debtShowEdit(debt.id)">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                            </a>
+                            <a href="javascript:;"  class="btn btn-xs btn-danger" data-debt-del="{{debt.id}}" ng-click="deleteDebt(debt.id)">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr ng-if="results.length == 0">
+                        <td colspan="7" class="text-center"><i>Sin resultados...</i></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    
 </div>
+
+<form class="modal fade" id="modal-debtor" role="form" ng-submit="sendDebtorForm()">
+    <fieldset class="modal-dialog" ng-disabled="saving">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{debtorModal.title}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="nombre" class="col-sm-3 control-label">Nombre</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" ng-model="debtorData.nombre" placeholder="Nombre del deudor" required="required">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcion" class="col-sm-3 control-label">Descripción</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" ng-model="debtorData.descripcion" placeholder="Sin descripción">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-default" ng-click="debtorFormReset()" ng-hide="debtorData.id">Reiniciar</button>
+                <button type="submit" class="btn btn-success">{{debtorModal.submitText}}</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<form class="modal fade" id="modal-debt" role="form" ng-submit="sendDebtForm()">
+    <fieldset class="modal-dialog" ng-disabled="saving">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{debtModal.title}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="deudor" class="col-sm-3 control-label">Deudor</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" ng-model="debtData.deudor">
+                                <option ng-repeat="debtor in debtors" value="{{debtor.id}}">{{debtor.nombre}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcion" class="col-sm-3 control-label">Descripción</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" ng-model="debtData.descripcion" placeholder="Sin descripción" required="required">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="monto" class="col-sm-3 control-label">Monto</label>
+                        <div class="col-sm-9">
+                            <input type="number" ng-model="debtData.monto" class="form-control" value="" required="required">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha" class="col-sm-3 control-label">Fecha</label>
+                        <div class="col-sm-9">
+                            <input type="date" ng-model="debtData.fecha" class="form-control" value="" required="required">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pagado" class="col-sm-3 control-label">Pagada</label>
+                        <div class="col-sm-9">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="debtData.pagada" ng-true-value="'1'" ng-false-value="'0'">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-success">{{debtModal.submitText}}</button>
+            </div>
+        </div>
+    </fieldset>
+</form>

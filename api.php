@@ -18,7 +18,7 @@ if($route != preg_replace("/[^a-zA-Z0-9_\-\/]/", "", $route)) {
     throw_error("Carácteres inválidos en la ruta");
 }
 
-$route = "app/api/$route.php";
+$route = is_dir($route) ? "app/api/$route/index.php" : "app/api/$route.php";
 if(!file_exists($route)) {
     throw_error("API no encontrada");
 }

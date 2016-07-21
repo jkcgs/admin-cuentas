@@ -50,6 +50,21 @@ function get_id($obj, $id = true) {
     }
 }
 
+function get_by_id($obj, $id = true) {
+    global $db;
+
+    if($id === true) {
+        $id = verificar_id($obj);
+    }
+
+    $q = $db->query("SELECT * FROM $obj WHERE id = $id LIMIT 1");
+    
+    if(!$q) {
+        return null;
+    } else {
+        return $q->fetch_assoc();
+    }
+}
 
 function delete_obj($obj, $id = true, $ddie = true) {
     global $db;
