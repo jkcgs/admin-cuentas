@@ -4,6 +4,12 @@ String.prototype.reverse = function() {
     return this.split('').reverse().join('');
 };
 
+Promise.prototype.finally = function(onResolveOrReject) {
+    return this.catch(function(reason){
+        return reason;
+    }).then(onResolveOrReject);
+};
+
 function strPadding(str, pad, num) {
     if(str.length >= num) {
         return str;

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.accounts', ['ngRoute'])
+        .module('app')
         .config(config)
         .controller('AccountsController', ['$scope', 'accounts', AccountsController]);
     

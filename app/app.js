@@ -4,10 +4,7 @@
     angular.module('app', [
         'ngRoute',
         'ngCookies',
-        'routeStyles',
-        'app.login',
-        'app.accounts',
-        'app.debtors'
+        'routeStyles'
     ])
     .service('authInterceptor', authInterceptor)
     .config(config)
@@ -45,7 +42,10 @@
 
         $rootScope.$on('$locationChangeStart', function(event){
             $rootScope.path = $location.path();
-        });        
+            session.isLogged();
+        });  
+        
+        session.isLogged();      
     }
 
     authInterceptor.$inject = ['$q'];

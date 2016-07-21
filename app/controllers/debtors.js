@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.debtors', ['ngRoute'])
+        .module('app')
         .config(config)
         .controller('DebtorsController', ['$scope', 'debts', DebtorsController]);
     

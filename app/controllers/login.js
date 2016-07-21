@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.login', ['ngRoute'])
+        .module('app')
         .config(config)
         .controller('LoginController', ['$scope', 'session', LoginController]);
     
@@ -19,8 +19,10 @@
     function LoginController($scope, session){
         $scope.username = "";
         $scope.password = "";
+        $scope.loading = false;
 
         $scope.send = function() {
+            $scope.loading = true;
             session.login($scope.username, $scope.password)
                 .then(function(res){
                     if(!res.data.success) {
@@ -28,6 +30,8 @@
                     }
 
                     location.hash = "!/accounts";
+                }).finally(function(){
+                    $scope.loading = false;
                 });
         };
 

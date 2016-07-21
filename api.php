@@ -6,6 +6,7 @@ if(!isset($_SESSION['logged'])) {
     $_SESSION['logged'] = false;
 }
 
+require "vendor/autoload.php";
 require "app/includes/config.php";
 require "app/includes/functions.php";
 require "app/includes/database.php";

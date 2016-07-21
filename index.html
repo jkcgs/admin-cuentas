@@ -13,7 +13,9 @@
         <link href="assets/css/style.css" rel="stylesheet">
     </head>
     <body>
+        <menubar ng-if="logged"></menubar>
         <div ng-view></div>
+        <div ng-if="logged" ng-controller="ExternalDebts as vm" ng-include="'app/views/extdebts.html'"></div>
 
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
@@ -30,8 +32,10 @@
         <script src="app/controllers/login.js"></script>
         <script src="app/controllers/accounts.js"></script>
         <script src="app/controllers/debtors.js"></script>
+        <script src="app/controllers/extdebts.js"></script>
         <script src="app/services/session.js"></script>
         <script src="app/services/accounts.js"></script>
         <script src="app/services/debts.js"></script>
+        <script src="app/services/external.js"></script>
     </body>
 </html>

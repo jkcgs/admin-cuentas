@@ -1,5 +1,8 @@
 <?php defined("INCLUDED") or die("Denied");
 
+$is_win = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+define('NULFILE', $is_win ? 'NUL' : '/dev/null');
+
 require "gump.class.php";
 GUMP::add_filter("upper", function($value, $params = NULL) {
     return strtoupper($value);
@@ -17,7 +20,6 @@ GUMP::add_validator("text", function($field, $input, $param = NULL) {
     $val = $input[$field];
     return preg_match("/[a-zA-Z0-9 \\-_\\$\\.\X]*/", $val);
 });
-
 
 function throw_error($msg, $data = null) {
     $m = json_encode([
@@ -53,4 +55,22 @@ function try_logged() {
         header("HTTP/1.1 401 Unauthorized");
         throw_error("Not logged");
     }
+}
+
+////// Funciones cURL
+use \Curl\Curl;
+
+// User-Agent (Chrome 51, Win10 64 bits)
+define("UA", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
+
+// Inicializar Curl
+function init_curl() {
+    $curl = new Curl();
+    $curl->setUserAgent(UA);
+    $curl->setCookieFile(NULFILE);
+    $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
+    $curl->setOpt(CURLOPT_RETURNTRANSFER, true);
+    $curl->setOpt(CURLOPT_FOLLOWLOCATION, true);
+
+    return $curl;
 }

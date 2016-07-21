@@ -1,0 +1,48 @@
+<div class="modal fade" id="ext-debts">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <a href="" class="pull-right" style="margin-right: 4px" ng-click="vm.load()"><span class="glyphicon glyphicon-refresh"></span></a>
+                <h4 class="modal-title">Importar cuentas</h4>
+            </div>
+            <div class="modal-body">
+                <center ng-if="vm.loading"><span class="mini-loading"></span> Cargando...</center>
+
+                <div class="table-responsive" ng-hide="vm.loading || vm.data.length == 0">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Comercio</th>
+                                <th>Fecha</th>
+                                <th>Monto</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="account in vm.data">
+                                <td>{{account.comercio}}</td>
+                                <td>{{account.fecha}}</td>
+                                <td>{{account.valor | formatMoney}}</td>
+                                <td>
+                                    <a href="javascript:;" class="btn btn-xs btn-primary">
+                                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div ng-if="!vm.loading && vm.data.length == 0">
+                    <p>No se cargaron cuentas</p>
+                </div>
+
+                <div ng-if="vm.error">
+                    <p><b>Error</b>: {{vm.errorMsg}}</p>
+                    <p>Intenta nuevamente.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

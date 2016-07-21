@@ -1,6 +1,6 @@
 <?php defined("INCLUDED") or die("nel");
 
-$config = array(
+$config = [
     # Datos de cuenta
     'web-user' => "",
     'web-pass' => "",
@@ -9,5 +9,16 @@ $config = array(
     'db_host' => "",
     'db_user' => "",
     'db_pass' => "",
-    'db_name' => ""
-);
+    'db_name' => "",
+
+    'external' => [
+        'ripley' => [
+            'user' => '', # RUT sin puntos ni guión
+            'pass' => ''
+        ],
+        'bestado' => [
+            'user' => '', # RUT con puntos y guión
+            'pass' => ''
+        ]
+    ]
+];
