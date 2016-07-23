@@ -7,7 +7,7 @@ $_POST = $gump->sanitize($_POST);
 
 $gump->validation_rules(array(
     'nombre'            => 'required|text',
-    'descripcion'       => 'required|text'
+    'descripcion'       => 'text'
 ));
 $gump->filter_rules(array(
     'nombre'            => 'trim',

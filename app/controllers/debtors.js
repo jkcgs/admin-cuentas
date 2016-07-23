@@ -18,10 +18,15 @@
             return {
                 // Reset loading elements on error
                 'responseError': function(response) {
-                    $('#modal-debtor [type="submit"]').removeClass("btn-loading");
-                    $('#modal-debt [type="submit"]').removeClass("btn-loading");
-                    $('[data-debtor-del]').removeClass("btn-loading");
-                    $('[data-debt-del]').removeClass("btn-loading");
+                    var btnls = [
+                        '#modal-debtor [type="submit"]',
+                        '#modal-debt [type="submit"]',
+                        '[data-debtor-del]',
+                        '[data-debt-del]',
+                        '[data-debt-ptb]'
+                    ];
+
+                    $(btnls.join(", ")).removeClass("btn-loading");
 
                     var scope = angular.element($('[ng-view]')).scope();
                     $timeout(function(){
@@ -132,6 +137,35 @@
 
             return null;
         }
+
+        $scope.togglePaid = function(id) {
+            if($scope.loading) {
+                return;
+            }
+
+            var debt = getDebtByID(id);
+            var idx = getDebtIdxByID(id);
+            
+            if(debt === null) {
+                alert("La deuda no existe");
+                return;
+            }
+
+            var pagada = debt.pagada=="1";
+
+            $scope.loading = true;
+            $('[data-debt-ptb="'+id+'"]').addClass("btn-loading");
+            debts.setPaid(id, !pagada).success(function(data){
+                $scope.loading = false;
+                $('[data-debt-ptb="'+id+'"]').removeClass("btn-loading");
+
+                if(!data.success) {
+                    alert("Error: " + data.message);
+                } else {
+                    $scope.debts[idx].pagada = (!pagada) ? "1" : "0";
+                }
+            });
+        };
 
         // Modal debtors
         $scope.debtorModal = {

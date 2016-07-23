@@ -21,6 +21,13 @@
                 var url = 'api.php?debts/edit&id='+data.id;
                 return $http.post(url, $.param(data));
             },
+
+            setPaid: function(id, paid) {
+                paid = paid ? "1" : "0";
+
+                var url = 'api.php?debts/paid&id='+id+'&paid='+paid;
+                return $http.get(url);
+            },
             
             deleteDebt: function(id) {
                 var url = 'api.php?debts/delete&id='+id;

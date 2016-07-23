@@ -59,7 +59,7 @@
             <span class="panel-title">Todas las cuentas</span>
             <div class="pull-right text-right" id="acc-list-heading">
                 <input class="form-control input-sm" type="text" placeholder="Búsqueda..." ng-model="accListText">
-                <button type="button" class="btn btn-success btn-xs">
+                <button type="button" class="btn btn-success btn-xs" ng-click="showAdd()">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     Agregar
                 </button>
@@ -180,7 +180,7 @@
                         <div class="col-sm-9">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" ng-model="accform.paid" id="paid" value="1">
+                                    <input type="checkbox" ng-model="accform.pagado" id="paid" ng-true-value="'1'" ng-false-value="'0'">
                                 </label>
                             </div>
                         </div>
@@ -196,7 +196,8 @@
             <div class="modal-footer">
                 <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 <button class="btn btn-default" ng-click="formReset()">Reiniciar</button>
-                <button type="submit" class="btn btn-success">{{modalSubmit}}</button>
+                <button class="btn btn-default" ng-if="accform.id" ng-click="cloneAcc(accform.id)" onclick="return false">Duplicar</button>
+                <button class="btn btn-success" type="submit">{{modalSubmit}}</button>
             </div>
         </div>
     </fieldset>

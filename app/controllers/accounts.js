@@ -88,15 +88,37 @@
             return null;
         }
 
-        $scope.showAdd = function() {
+        function dataPreprocess(data) {
+            if(data === null) {
+                return null;
+            }
+
+            var account = angular.copy(data);
+            // Preformatting
+            account.monto_original = parseFloat(account.monto_original);
+            account.monto = parseFloat(account.monto);
+            account.num_cuotas = parseInt(account.num_cuotas);
+            account.fecha_compra = new Date(account.fecha_compra);
+            account.fecha_facturacion = new Date(account.fecha_facturacion);
+
+            return account;
+        }
+
+        $scope.showAdd = function(filldata) {
+            $scope.formReset();
+            if(typeof filldata !== "undefined") {
+                $scope.accform = dataPreprocess(filldata);
+                $scope.accform.id = "";
+            }
+            
             $scope.modalTitle = "Agregar cuenta";
             $scope.modalSubmit = "Agregar";
-            $scope.formReset();
+            
             $('#modal-cuenta').modal('show');
         };
 
         $scope.showEdit = function(id) {
-            var account = angular.copy(getByID(id));
+            var account = dataPreprocess(getByID(id));
             if(!account) {
                 alert("Cuenta no encontrada");
                 return;
@@ -106,15 +128,18 @@
             $scope.modalSubmit = "Guardar";
             $scope.formReset();
 
-            // Preformatting
-            account.monto_original = parseFloat(account.monto_original);
-            account.monto = parseFloat(account.monto);
-            account.num_cuotas = parseInt(account.num_cuotas);
-            account.fecha_compra = new Date(account.fecha_compra);
-            account.fecha_facturacion = new Date(account.fecha_facturacion);
-
             $scope.accform = account;
             $('#modal-cuenta').modal('show');
+        };
+
+        $scope.cloneAcc = function(id) {
+            var account = getByID(id);
+            if(!account) {
+                alert("Cuenta no encontrada");
+                return;
+            }
+
+            $scope.showAdd(account);
         };
 
         // Reset form
