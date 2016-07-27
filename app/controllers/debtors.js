@@ -4,7 +4,7 @@
     angular
         .module('app')
         .config(config)
-        .controller('DebtorsController', ['$scope', 'debts', DebtorsController]);
+        .controller('DebtorsController', ['$rootScope', '$scope', 'debts', DebtorsController]);
     
     config.$inject = ['$routeProvider', '$locationProvider', '$httpProvider'];
     function config($routeProvider, $locationProvider, $httpProvider) {
@@ -41,7 +41,7 @@
         });
     }
 
-    function DebtorsController($scope, debts){
+    function DebtorsController($rootScope, $scope, debts){
         $scope.loaded = false;
         $scope.saving = false;
         $scope.debtors = [];
@@ -373,6 +373,16 @@
                 $scope.debts.splice(idx, 1);
             });
         };
+
+        angular.element(window).ready(function() {
+            if($rootScope.debtAddData) {
+                var data = angular.copy($rootScope.debtAddData);
+                $rootScope.debtAddData = null;
+                $scope.debtShowAdd();
+
+                $scope.debtData = $.extend($scope.debtData, data);
+            }
+        });
 
     } // DebtorsController
 }());

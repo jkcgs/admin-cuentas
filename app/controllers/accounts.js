@@ -112,6 +112,23 @@
             return account;
         }
 
+        $scope.createDebt = function(id) {
+            var account = getByID(id);
+            if(!account) {
+                alert("Cuenta no encontrada");
+                return;
+            }
+
+            var debtData = {
+                descripcion: account.descripcion,
+                monto: parseInt(account.monto),
+                fecha: new Date(),
+                pagada: 0
+            };
+
+            $rootScope.addDebt(debtData);
+        };
+
         // Reset form
         var formReset = function() {
             $scope.accform = angular.copy($scope.masterForm);

@@ -42,12 +42,23 @@
 
         $rootScope.addAccount = function(data) {
             $rootScope.accAddData = data;
-            $('#ext-debts').modal("hide");
+            $('.modal').modal("hide");
 
             if($rootScope.path == "/accounts") {
                 $route.reload();
             } else {
                 location.hash = "!/accounts";
+            }
+        };
+
+        $rootScope.addDebt = function(data) {
+            $rootScope.debtAddData = data;
+            $('.modal').modal("hide");
+
+            if($rootScope.path == "/debtors") {
+                $route.reload();
+            } else {
+                location.hash = "!/debtors";
             }
         };
 

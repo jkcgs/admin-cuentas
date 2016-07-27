@@ -32,7 +32,7 @@
                         <td>{{acc.fecha_facturacion}}</td>
                         <td class="text-right">{{acc.monto | formatMoney}}</td>
                         <td class="text-right">
-                            <a href="javascript:;" class="btn btn-xs btn-primary">
+                            <a href="javascript:;" class="btn btn-xs btn-primary" ng-click="createDebt(acc.id)">
                                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                             </a>
                             <a href="javascript:;" class="btn btn-xs btn-primary" ng-click="showEdit(acc.id)">
@@ -85,7 +85,7 @@
                         <td>{{acc.fecha_facturacion}}</td>
                         <td class="text-right">{{acc.monto | formatMoney}}</td>
                         <td class="text-right" ng-disabled="saving">
-                            <a href="javascript:;" class="btn btn-xs btn-primary">
+                            <a href="javascript:;" class="btn btn-xs btn-primary" ng-click="createDebt(acc.id)">
                                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                             </a>
                             <a href="javascript:;" class="btn btn-xs btn-primary">
