@@ -3,9 +3,9 @@
 
     angular
         .module('app')
-        .controller('ExternalDebts', ['$timeout', 'external', ExternalDebts])
+        .controller('ExternalDebts', ['$rootScope', '$timeout', 'external', ExternalDebts])
 
-    function ExternalDebts($timeout, external){
+    function ExternalDebts($rootScope, $timeout, external){
         var vm = this;
 
         vm.loading = false;
@@ -23,6 +23,9 @@
                 }
 
                 vm.data = res.data;
+                vm.loading = false;
+            }).error(function(res){
+                vm.error = "No se pudo cargar los datos. Por favor intenta nuevamente.";
                 vm.loading = false;
             });
         };

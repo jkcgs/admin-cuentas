@@ -4,7 +4,7 @@
 use PHPHtmlParser\Dom;
 
 $randint = random_int(PHP_INT_MIN, PHP_INT_MAX);
-$urlBase = "https://www.ripley.cl/tarjeta/";
+$urlBase = "https://www.tarjetaripley.cl/tarjeta/";
 $urlLogin = $urlBase."login.do";
 $urlMov = $urlBase."movimientos/movimientos.do";
 $urlLogout = $urlBase."cerrarSesion.do?_r=$randint";
@@ -19,13 +19,17 @@ $data = array(
 $result = $ch->post($urlLogin, $data);
 
 if (strpos($result, "\"logueado\" : true") === false) {
-    throw_error("No se pudo iniciar sesión en el sitio externo: " . $result);
+    throw_error("No se pudo iniciar sesión en el sitio externo");
 }
 
 // Cargar movimientos y cerrar sesión
 $movimientos = $ch->get($urlMov);
 $ch->get($urlLogout);
 $ch->close();
+
+if(!$movimientos) {
+    throw_error("No se pudo obtener los datos externos");
+}
 
 // Parsear página buscando movimientos
 $dom = new Dom;

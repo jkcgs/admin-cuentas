@@ -32,12 +32,23 @@
         });
     }
 
-    run.$inject = ['$rootScope', '$location', 'session'];
-    function run($rootScope, $location, session) {
+    run.$inject = ['$rootScope', '$location', '$route', 'session'];
+    function run($rootScope, $location, $route, session) {
         $rootScope.logout = function() {
             session.logout().then(function(){
                 location.hash = "!/";
             });
+        };
+
+        $rootScope.addAccount = function(data) {
+            $rootScope.accAddData = data;
+            $('#ext-debts').modal("hide");
+
+            if($rootScope.path == "/accounts") {
+                $route.reload();
+            } else {
+                location.hash = "!/accounts";
+            }
         };
 
         $rootScope.$on('$locationChangeStart', function(event){
@@ -45,7 +56,7 @@
             session.isLogged();
         });  
         
-        session.isLogged();      
+        session.isLogged();
     }
 
     authInterceptor.$inject = ['$q'];

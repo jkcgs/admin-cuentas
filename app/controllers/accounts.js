@@ -4,7 +4,7 @@
     angular
         .module('app')
         .config(config)
-        .controller('AccountsController', ['$scope', 'accounts', AccountsController]);
+        .controller('AccountsController', ['$rootScope', '$scope', 'accounts', AccountsController]);
     
     config.$inject = ['$routeProvider', '$locationProvider', '$httpProvider'];
     function config($routeProvider, $locationProvider, $httpProvider) {
@@ -34,7 +34,7 @@
         });
     }
 
-    function AccountsController($scope, accounts){
+    function AccountsController($rootScope, $scope, accounts){
         $scope.loaded = false;
         $scope.saving = false;
         $scope.accounts = [];
@@ -52,9 +52,17 @@
             billingDate.setMonth(month == 11 ? 0 : month+1);
         }
         $scope.masterForm = {
+            nombre: "",
+            descripcion: "",
             fecha_compra: new Date(),
             fecha_facturacion: billingDate,
-            num_cuotas: 0
+            monto_original: 0,
+            divisa_original: "CLP",
+            monto: 0,
+            num_cuotas: 0,
+            pagado: 0,
+            info: "",
+            id: null
         };
 
         $scope.getSumUnpaid = function() {
@@ -93,7 +101,7 @@
                 return null;
             }
 
-            var account = angular.copy(data);
+            var account = $.extend($scope.masterForm, data);
             // Preformatting
             account.monto_original = parseFloat(account.monto_original);
             account.monto = parseFloat(account.monto);
@@ -104,11 +112,15 @@
             return account;
         }
 
+        // Reset form
+        var formReset = function() {
+            $scope.accform = angular.copy($scope.masterForm);
+        };
+
         $scope.showAdd = function(filldata) {
-            $scope.formReset();
+            formReset();
             if(typeof filldata !== "undefined") {
                 $scope.accform = dataPreprocess(filldata);
-                $scope.accform.id = "";
             }
             
             $scope.modalTitle = "Agregar cuenta";
@@ -126,7 +138,7 @@
 
             $scope.modalTitle = "Editar cuenta #" + id;
             $scope.modalSubmit = "Guardar";
-            $scope.formReset();
+            formReset();
 
             $scope.accform = account;
             $('#modal-cuenta').modal('show');
@@ -140,11 +152,6 @@
             }
 
             $scope.showAdd(account);
-        };
-
-        // Reset form
-        $scope.formReset = function() {
-            $scope.accform = angular.copy($scope.masterForm);
         };
 
         // Add and edit
@@ -222,5 +229,24 @@
                 $scope.loaded = true;
             });
         }
+
+        angular.element(window).ready(function() {
+            if($rootScope.accAddData) {
+                var data = angular.copy($rootScope.accAddData);
+                $rootScope.accAddData = null;
+
+                var formData = {
+                    nombre: data.comercio,
+                    fecha_compra: new Date(data.fecha),
+                    monto_original: data.valor,
+                    divisa_original: "CLP",
+                    monto: data.valor,
+                    cuotas: data.cuotas,
+                    info: data.documento ? "Documento: " + data.documento : ""
+                };
+
+                $scope.showAdd(formData);
+            }
+        });
     }
 }());
