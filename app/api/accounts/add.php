@@ -13,7 +13,7 @@ $gump->validation_rules(
         'divisa_original'   => 'required|exact_len,3',
         'monto'             => 'required|float',
         'num_cuotas'        => 'required|integer',
-        'pagado'            => 'exact_len,1|contains,1',
+        'pagado'            => 'exact_len,1|contains,1 0',
         'info'              => 'text'
     )
 );
