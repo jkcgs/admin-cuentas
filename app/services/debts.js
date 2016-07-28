@@ -28,6 +28,13 @@
                 var url = 'api.php?debts/paid&id='+id+'&paid='+paid;
                 return $http.get(url);
             },
+
+            setPaidFor: function(id, paid) {
+                paid = paid ? "1" : "0";
+
+                var url = 'api.php?debts/paidFor&id='+id+'&paid='+paid;
+                return $http.get(url);
+            },
             
             deleteDebt: function(id) {
                 var url = 'api.php?debts/delete&id='+id;

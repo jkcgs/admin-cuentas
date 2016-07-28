@@ -1,16 +1,31 @@
 <?php
 define("INCLUDED", true);
+require "app/includes/config.php";
+
 @session_start();
 
 if(!isset($_SESSION['logged'])) {
     $_SESSION['logged'] = false;
 }
 
+header("Content-Type: application/json");
+if($config['maintenance']) {
+    die(json_encode([
+        "success" => false,
+        "message" => "Sistema en mantención."
+    ]));
+}
+
+if(!file_exists("vendor/autoload.php")) {
+    die(json_encode([
+        "success" => false,
+        "message" => "No existe el archivo de autocarga de dependencias. Pruebe a ejecutar 'composer install' en la raíz de la aplicación."
+    ]));
+}
+
 require "vendor/autoload.php";
-require "app/includes/config.php";
 require "app/includes/functions.php";
 require "app/includes/database.php";
-header("Content-Type: application/json");
 
 reset($_GET);
 $route = key($_GET);

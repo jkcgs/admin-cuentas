@@ -20,13 +20,15 @@
         $scope.username = "";
         $scope.password = "";
         $scope.loading = false;
+        $scope.appError = false;
 
         $scope.send = function() {
             $scope.loading = true;
             session.login($scope.username, $scope.password)
                 .then(function(res){
                     if(!res.data.success) {
-                        return alert("Error: " + res.data.message);
+                        var error = res.data.message || res.data;
+                        return alert("Error: " + error);
                     }
 
                     location.hash = "!/accounts";
@@ -38,9 +40,11 @@
         init();
         function init(){
             session.isLogged().then(function(res){
-                if(res.data.data.logged) {
+                if(res.success && res.data.data.logged) {
                     location.hash = "!/accounts";
-                }
+                } else {
+                    $scope.appError = res.data.message;
+                }    
             });
         }
     }

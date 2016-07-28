@@ -1,6 +1,8 @@
 <?php defined("INCLUDED") or die("nel");
 
 $config = [
+    'maintenance' => false,
+
     # Datos de cuenta
     'web-user' => "",
     'web-pass' => "",

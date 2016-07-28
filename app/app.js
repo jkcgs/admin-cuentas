@@ -22,9 +22,8 @@
         $httpProvider.interceptors.push(function($q) {
             return {
                 'responseError': function(response) {
-                    if(response.headers()['content-type'] == "application/json") {
-                        alert("Error: " + response.data.message);
-                    }
+                    var error = response.data.message || response.data || response;
+                    alert("Error: " + error);
 
                     return $q.reject(response);
                 }

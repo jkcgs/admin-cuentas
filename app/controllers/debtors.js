@@ -11,7 +11,7 @@
         $routeProvider
         .when('/debtors', {
             controller: 'DebtorsController',
-            templateUrl: 'app/views/debtors.html'
+            templateUrl: 'app/views/debts.html'
         });
 
         $httpProvider.interceptors.push(function($q, $timeout) {
@@ -268,6 +268,35 @@
                 });
             });
         };
+
+        
+        $scope.debtsPaidFor = function(id) {
+            var debtor = getDebtorByID(id);
+            
+            if(debtor === null) {
+                alert("El deudor no existe");
+                return;
+            }
+
+            $scope.saving = true;
+            $('[data-setpf-id="'+id+'"]').addClass("btn-loading");
+
+            debts.setPaidFor(id).success(function(res){
+                $scope.saving = false;
+                $('[data-setpf-id="'+id+'"]').removeClass("btn-loading");
+                if(!res.success) {
+                    alert(res.message);
+                    return;
+                }
+
+                for(var i = 0; i < $scope.debts.length; i++) {
+                    if($scope.debts[i].deudor == id) {
+                        $scope.debts[i].pagada = "1";
+                    }
+                }
+            });
+        };
+
 
         // Modal debts
         $scope.debtModal = {

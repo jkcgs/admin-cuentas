@@ -31,8 +31,8 @@
                         <td>{{debtor.descripcion}}</td>
                         <td>{{sumDebt(debtor.id) | formatMoney}}</td>
                         <td>
-                            <a href="javascript:;" class="btn btn-xs btn-success"
-                                title="Marcar pagadas">
+                            <a href="javascript:;" class="btn btn-xs btn-success" ng-click="debtsPaidFor(debtor.id)"
+                                title="Marcar pagadas" data-setpf-id="{{debtor.id}}">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                             </a>
                             <a href="javascript:;" class="btn btn-xs btn-primary" ng-click="debtorShowEdit(debtor.id)">

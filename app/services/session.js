@@ -12,6 +12,11 @@
                     if(res.success && res.data.logged) {
                         $rootScope.$emit('loggedIn');
                         $rootScope.logged = true;
+                    } else if(!res.success) {
+                        $rootScope.logged = false;
+                        if($rootScope.path != "/login") {
+                            location.hash = "!/login";
+                        }
                     }
                 });
             },
