@@ -21,42 +21,6 @@ GUMP::add_validator("text", function($field, $input, $param = NULL) {
     return preg_match("/[a-zA-Z0-9 \\-_\\$\\.\X]*/", $val);
 });
 
-function throw_error($msg, $data = null) {
-    $m = json_encode([
-        "success" => false,
-        "message" => $msg,
-        "data" => $data
-    ]);
-
-    die($m);
-}
-
-function throw_success($data = null) {
-    die(json_encode([
-        "success" => true,
-        "data" => $data
-    ]));
-}
-
-function json_data($data) {
-    return json_encode([
-        "success" => true,
-        "message" => null,
-        "data" => $data
-    ]);
-}
-
-function throw_data($data) {
-    die(json_data($data));
-}
-
-function try_logged() {
-    if(!isset($_SESSION['logged']) || !$_SESSION['logged']) {
-        header("HTTP/1.1 401 Unauthorized");
-        throw_error("Not logged");
-    }
-}
-
 ////// Funciones cURL
 use \Curl\Curl;
 

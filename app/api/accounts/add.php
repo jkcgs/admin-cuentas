@@ -1,4 +1,4 @@
-<?php defined("INCLUDED") or die("Denied");
+<?php defined("INCLUDED") or die("Denied"); try_logged();
 
 $gump = new GUMP();
 $_POST = $gump->sanitize($_POST);

@@ -12,4 +12,4 @@ if($user != $config['web_user'] || $pass != $config['web_pass']) {
 }
 
 $_SESSION["logged"] = true;
-die(json_data(["logged" => true]));
+throw_success();

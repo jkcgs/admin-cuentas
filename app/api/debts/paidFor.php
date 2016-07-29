@@ -1,4 +1,4 @@
-<?php
+<?php defined('INCLUDED') or die('Denied'); try_logged();
 
 $id = verify_id('deudores');
 

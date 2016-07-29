@@ -6,7 +6,6 @@
         'ngCookies',
         'routeStyles'
     ])
-    .service('authInterceptor', authInterceptor)
     .config(config)
     .run(run)
     .directive('menubar', menubar)
@@ -15,16 +14,19 @@
     config.$inject = ['$routeProvider', '$locationProvider', '$httpProvider'];
     function config($routeProvider, $locationProvider, $httpProvider) {
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-        $httpProvider.interceptors.push('authInterceptor');
         $locationProvider.hashPrefix('!');
         $routeProvider.otherwise({ redirectTo: '/login' });
 
         $httpProvider.interceptors.push(function($q) {
             return {
                 'responseError': function(response) {
-                    var error = response.data.message || response.data || response;
-                    alert("Error: " + error);
-
+                    if (response.status == 401){
+                        location.hash = "!/login";
+                    } else {
+                        var error = response.data.message || response.data || "Error desconocido";
+                        alert("Error: " + error);
+                    }
+                    
                     return $q.reject(response);
                 }
             };
@@ -35,7 +37,7 @@
     function run($rootScope, $location, $route, session) {
         $rootScope.logout = function() {
             session.logout().then(function(){
-                location.hash = "!/";
+                $location.path("/login");
             });
         };
 
@@ -46,7 +48,7 @@
             if($rootScope.path == "/accounts") {
                 $route.reload();
             } else {
-                location.hash = "!/accounts";
+                $location.path("/accounts");
             }
         };
 
@@ -57,28 +59,22 @@
             if($rootScope.path == "/debtors") {
                 $route.reload();
             } else {
-                location.hash = "!/debtors";
+                $location.path("/debtors");
             }
         };
 
-        $rootScope.$on('$locationChangeStart', function(event){
-            $rootScope.path = $location.path();
-            session.isLogged();
-        });  
-        
-        session.isLogged();
-    }
+        $rootScope.$on('$locationChangeSuccess', function(event){
+            var path = $location.path();
+            $rootScope.path = path;
 
-    authInterceptor.$inject = ['$q'];
-    function authInterceptor($q) {
-        return {
-            'responseError': function(response) {
-                if (response.status == 401){
-                    location.hash = "!/login";
+            session.isLogged(function(logged, error){
+                if(error) {
+                    $rootScope.appError = error;
+                } else if(logged && path == "/login") {
+                    $location.path("/accounts");
                 }
-                return $q.reject(response);
-            }
-        };
+            });
+        });
     }
 
     function menubar() {

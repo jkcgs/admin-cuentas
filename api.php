@@ -1,26 +1,22 @@
 <?php
+
 define("INCLUDED", true);
-require "app/includes/config.php";
-
 @session_start();
+require "app/includes/config.php";
+require "app/includes/functions_noreq.php";
 
-if(!isset($_SESSION['logged'])) {
-    $_SESSION['logged'] = false;
-}
+session_var_init("logged", false);
 
 header("Content-Type: application/json");
 if($config['maintenance']) {
-    die(json_encode([
-        "success" => false,
-        "message" => "Sistema en mantención."
-    ]));
+    throw_error("Sistema en mantención.");
 }
 
 if(!file_exists("vendor/autoload.php")) {
-    die(json_encode([
-        "success" => false,
-        "message" => "No existe el archivo de autocarga de dependencias. Pruebe a ejecutar 'composer install' en la raíz de la aplicación."
-    ]));
+    throw_error(
+        "No existe el archivo de autocarga de dependencias. " .
+        "Pruebe a ejecutar 'composer install' en la raíz de la aplicación."
+    );
 }
 
 require "vendor/autoload.php";

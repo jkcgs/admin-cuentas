@@ -21,6 +21,7 @@
         $scope.password = "";
         $scope.loading = false;
         $scope.appError = false;
+        $scope.errorMessage = false;
 
         $scope.send = function() {
             $scope.loading = true;
@@ -28,25 +29,17 @@
                 .then(function(res){
                     if(!res.data.success) {
                         var error = res.data.message || res.data;
-                        return alert("Error: " + error);
+                        alert("Error: " + error);
+                    } else {
+                        location.hash = "!/accounts";
                     }
-
-                    location.hash = "!/accounts";
-                }).finally(function(){
+                })
+                .catch(function(reason){
+                    $scope.appError = reason;
+                })
+                .finally(function(){
                     $scope.loading = false;
                 });
         };
-
-        init();
-        function init(){
-            session.isLogged().then(function(res){
-                if(res.success && res.data.data.logged) {
-                    location.hash = "!/accounts";
-                } else {
-                    $scope.appError = res.data.message;
-                }    
-            });
-        }
     }
-
 }());

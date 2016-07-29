@@ -10,6 +10,27 @@ Promise.prototype.finally = function(onResolveOrReject) {
     }).then(onResolveOrReject);
 };
 
+function checkData(res, mustHaveData) {
+    if(typeof res.success == "undefined") {
+        console.log("Datos desconocidos recibidos", res);
+        throw new Error("Datos incorrectos recibidos");
+    }
+
+    if(!res.success) {
+        if(typeof res.message == "undefined") {
+            throw new Error("Error desconocido");
+        } else {
+            throw new Error(res.message);
+        }
+    }
+
+    if(mustHaveData && typeof res.data == "undefined") {
+        throw new Error("No se recibieron los datos esperados");
+    }
+
+    return res;
+}
+
 function strPadding(str, pad, num) {
     if(str.length >= num) {
         return str;
