@@ -43,3 +43,11 @@ function try_logged() {
         throw_error("Not logged");
     }
 }
+
+function text_find($text, $init, $end = false, $reverse = false) {
+	$pos_init = $reverse ? strrpos($text, $init) : strpos($text, $init);
+    $offset = $pos_init + strlen($init);
+	$length = $end === false ? null : (strpos($text, $end, $offset) - $offset);
+
+    return substr($text, $offset, $length);
+}

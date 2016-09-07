@@ -18,9 +18,12 @@ $config = [
             'user' => '', # RUT sin puntos ni guión
             'pass' => ''
         ],
-        'bestado' => [
-            'user' => '', # RUT con puntos y guión
-            'pass' => ''
+        'banks' => [
+            [
+                'bank' => '',
+                'user' => '', # RUT con puntos y guión
+                'pass' => ''
+            ]
         ]
     ]
 ];

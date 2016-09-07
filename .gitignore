@@ -1,3 +1,4 @@
 # Config file
 app/includes/config.php
 vendor/
+.idea/

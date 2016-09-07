@@ -3,45 +3,66 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <a href="" class="pull-right" style="margin-right: 4px" ng-click="vm.load()"><span class="glyphicon glyphicon-refresh"></span></a>
+                <a href="" class="pull-right" style="margin-right: 4px" ng-click="vm.loadDebts()"><span class="glyphicon glyphicon-refresh"></span></a>
                 <h4 class="modal-title">Importar cuentas</h4>
             </div>
-            <div class="modal-body">
-                <center ng-if="vm.loading"><span class="mini-loading"></span> Cargando...</center>
+            <div class="modal-body">                
+                <div role="tabpanel">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#ext-credito" aria-controls="Crédito" role="tab" data-toggle="tab">Crédito</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#ext-saldos" aria-controls="tab" role="tab" data-toggle="tab">Saldos</a>
+                        </li>
+                    </ul>
+                
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="ext-credito">
+                            <div class="table-responsive" ng-hide="vm.loadingDebts || vm.dataDebts.length == 0 || vm.errorDebts">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Comercio</th>
+                                            <th>Fecha</th>
+                                            <th>Monto</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="account in vm.dataDebts">
+                                            <td>{{account.comercio}}</td>
+                                            <td>{{account.fecha}}</td>
+                                            <td>{{account.valor | formatMoney}}</td>
+                                            <td>
+                                                <a href="javascript:;" class="btn btn-xs btn-primary" ng-click="addAccount(account)">
+                                                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
-                <div class="table-responsive" ng-hide="vm.loading || vm.data.length == 0">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Comercio</th>
-                                <th>Fecha</th>
-                                <th>Monto</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="account in vm.data">
-                                <td>{{account.comercio}}</td>
-                                <td>{{account.fecha}}</td>
-                                <td>{{account.valor | formatMoney}}</td>
-                                <td>
-                                    <a href="javascript:;" class="btn btn-xs btn-primary" ng-click="addAccount(account)">
-                                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            <center ng-if="vm.loadingDebts"><span class="mini-loading"></span> Cargando...</center>
+                            <div ng-if="!vm.loadingDebts && vm.dataDebts.length == 0">
+                                <p>No se cargaron cuentas</p>
+                            </div>
+
+                            <div ng-if="vm.errorDebts && !vm.loadingDebts" class="alert alert-danger text-center">
+                                <strong>Error</strong>: {{vm.error}}
+                                <p>Intenta nuevamente.</p>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="ext-saldos">
+                            nada xd
+                        </div>
+                    </div>
                 </div>
 
-                <div ng-if="!vm.loading && vm.data.length == 0">
-                    <p>No se cargaron cuentas</p>
-                </div>
+                
 
-                <div ng-if="vm.error">
-                    <p><b>Error</b>: {{vm.errorMsg}}</p>
-                    <p>Intenta nuevamente.</p>
-                </div>
+                
             </div>
         </div>
     </div>

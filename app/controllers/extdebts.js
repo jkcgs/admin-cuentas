@@ -1,41 +1,48 @@
-(function(){
+(function() {
     'use strict';
 
     angular
         .module('app')
         .controller('ExternalDebts', ['$rootScope', '$timeout', 'external', ExternalDebts])
 
-    function ExternalDebts($rootScope, $timeout, external){
+    function ExternalDebts($rootScope, $timeout, external) {
         var vm = this;
 
-        vm.loading = false;
-        vm.data = null;
-        vm.error = false;
+        vm.loadingDebts = false;
+        vm.dataDebts = null;
+        vm.errorDebts = false;
 
-        vm.load = function() {
-            if(vm.loading) return;
+        vm.loadDebts = function() {
+            if (vm.loadingDebts) return;
 
-            vm.loading = true;
-            external.getCreditDebts().success(function(res){
-                if(!res.success) {
-                    vm.error = res.message;
+            vm.loadingDebts = true;
+            vm.errorDebts = false;
+            external.getCreditDebts().success(function(res) {
+                vm.loadingDebts = false;
+                if (!res.success) {
+                    vm.errorDebts = res.message;
                     return;
                 }
 
-                vm.data = res.data;
-                vm.loading = false;
-            }).error(function(res){
-                vm.error = "No se pudo cargar los datos. Por favor intenta nuevamente.";
-                vm.loading = false;
+                vm.dataDebts = res.data;
+            }).error(function(res) {
+                vm.errorDebts = "No se pudo cargar los datos. Por favor intenta nuevamente.";
+                vm.loadingDebts = false;
             });
         };
 
-        $timeout(function(){
+        $timeout(function() {
             $('#ext-debts').on('show.bs.modal', function(e) {
-                if(vm.data === null) vm.load();
+                if (vm.dataDebts === null) vm.loadDebts();
+            });
+            
+            $('#ext-debts a[role=tab]').click(function(e) {
+                e.preventDefault();
+                $(this).tab('show');
             });
         }, 200);
-        
+
+
     }
 
 }());

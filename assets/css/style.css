@@ -136,4 +136,14 @@ footer {
     top: 2px;
 }
 
+#ext-debts .tab-pane {
+    padding: .8em 1em;
+    border: 1px solid #ddd;
+    border-top: none;
+}
+
+#ext-debts .table {
+    margin-bottom: 0;
+}
+
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

@@ -15,6 +15,10 @@ $data = array(
     'password' => $config['external']['ripley']['pass']
 );
 
+if(empty($data['rut']) || empty($data['password'])) {
+    throw_error("No se ha configurado la cuenta remota.");
+}
+
 //// Login
 $result = $ch->post($urlLogin, $data);
 
