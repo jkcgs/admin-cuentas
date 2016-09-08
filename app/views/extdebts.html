@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <a href="" class="pull-right" style="margin-right: 4px" ng-click="vm.loadDebts()"><span class="glyphicon glyphicon-refresh"></span></a>
+                <a href="" class="pull-right" style="margin-right: 4px" ng-click="vm.load()"><span class="glyphicon glyphicon-refresh"></span></a>
                 <h4 class="modal-title">Importar cuentas</h4>
             </div>
             <div class="modal-body">                
@@ -44,7 +44,7 @@
                                 </table>
                             </div>
 
-                            <center ng-if="vm.loadingDebts"><span class="mini-loading"></span> Cargando...</center>
+                            <div ng-if="vm.loadingDebts" class="text-center"><span class="mini-loading"></span> Cargando...</div>
                             <div ng-if="!vm.loadingDebts && vm.dataDebts.length == 0">
                                 <p>No se cargaron cuentas</p>
                             </div>
@@ -54,15 +54,41 @@
                                 <p>Intenta nuevamente.</p>
                             </div>
                         </div>
+
                         <div role="tabpanel" class="tab-pane" id="ext-saldos">
-                            nada xd
+                            <div class="table-responsive" ng-hide="vm.loadingAccs || vm.dataAccs.length == 0 || vm.errorAccs">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Banco</th>
+                                        <th>Tipo</th>
+                                        <th>Número</th>
+                                        <th>Monto</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="account in vm.dataAccs">
+                                        <td>{{account.bank}}</td>
+                                        <td>{{account.type}}</td>
+                                        <td>{{account.number}}</td>
+                                        <td>{{account.balance | formatMoney}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div ng-if="vm.loadingAccs" class="text-center"><span class="mini-loading"></span> Cargando...</div>
+                            <div ng-if="!vm.loadingAccs && vm.dataAccs.length == 0">
+                                <p>No se cargaron cuentas</p>
+                            </div>
+
+                            <div ng-if="vm.errorAccs && !vm.loadingAccs" class="alert alert-danger text-center">
+                                <strong>Error</strong>: {{vm.errorAccs}}
+                                <p>Intenta nuevamente.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                
-
-                
             </div>
         </div>
     </div>

@@ -76,7 +76,8 @@ class Estado extends Bank {
             $nc = [
                 "type" => trim($contf[0]),
                 "number" => trim($contf[1]),
-                "balance" => intval(preg_replace("/[\$\.]/", "", $contf[3]))
+                "balance" => intval(preg_replace("/[\$\.]/", "", $contf[3])),
+                "bank" => $this->bank_name
             ];
 
             $cuentas[] = $nc;

@@ -14,7 +14,7 @@ foreach($bank_accounts as $acc) {
 
 $data = [];
 foreach($bank_ins as $b) {
-    $data[] = $b->getAccounts();
+    $data = array_merge($data, $b->getAccounts());
     $b->logout();
 }
 
