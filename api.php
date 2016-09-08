@@ -2,8 +2,14 @@
 
 define("INCLUDED", true);
 @session_start();
-require "app/includes/config.php";
 require "app/includes/functions_noreq.php";
+if(!file_exists("app/includes/config.php")) {
+    throw_error("No existe el archivo de configuración. ".
+    "Prueba a copiar el archivo de configuración de ejemplo y completa los ajustes. ".
+    "No olvides ejecutar 'composer install' en la raiz de la aplicación.");
+}
+
+require "app/includes/config.php";
 
 session_var_init("logged", false);
 
@@ -15,7 +21,7 @@ if($config['maintenance']) {
 if(!file_exists("vendor/autoload.php")) {
     throw_error(
         "No existe el archivo de autocarga de dependencias. " .
-        "Pruebe a ejecutar 'composer install' en la raíz de la aplicación."
+        "¿Ejecutaste 'composer install' en la raíz de la aplicación?"
     );
 }
 

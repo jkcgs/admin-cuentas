@@ -4,7 +4,7 @@
     angular
         .module('app')
         .config(config)
-        .controller('LoginController', ['$scope', 'session', LoginController]);
+        .controller('LoginController', ['$scope', '$rootScope', 'session', LoginController]);
     
     config.$inject = ['$routeProvider', '$locationProvider'];
     function config($routeProvider, $locationProvider) {
@@ -16,11 +16,10 @@
             });
     }
 
-    function LoginController($scope, session){
+    function LoginController($scope, $rootScope, session){
         $scope.username = "";
         $scope.password = "";
         $scope.loading = false;
-        $scope.appError = false;
         $scope.errorMessage = false;
 
         $scope.send = function() {
@@ -35,7 +34,7 @@
                     }
                 })
                 .catch(function(reason){
-                    $scope.appError = reason;
+                    $rootScope.appError = reason;
                 })
                 .finally(function(){
                     $scope.loading = false;

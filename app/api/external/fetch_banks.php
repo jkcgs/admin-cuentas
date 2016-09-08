@@ -14,5 +14,8 @@ foreach($bank_accounts as $acc) {
 
 $data = [];
 foreach($bank_ins as $b) {
-    $b->login();
+    $data[] = $b->getAccounts();
+    $b->logout();
 }
+
+throw_data($data);

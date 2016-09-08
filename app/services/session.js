@@ -12,16 +12,10 @@
 
                 $http.get('api.php?session/logged').then(function(response){
                     var res = checkData(response.data, true);
-                    if(res.data.logged) {
-                        $rootScope.logged = true;
-                    } else {
-                        $rootScope.logged = false;
-                    }
+                    $rootScope.logged = res.data.logged;
 
                     callback($rootScope.logged, null);
                 }).catch(function(cause){
-                    console.error("Could not check session status");
-                    console.error(cause);
                     $rootScope.logged = false;
                     callback(false, cause);
                 });

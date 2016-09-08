@@ -69,7 +69,7 @@
 
             session.isLogged(function(logged, error){
                 if(error) {
-                    $rootScope.appError = error;
+                    $rootScope.appError = error.message || error;
                 } else if(logged && path == "/login") {
                     $location.path("/accounts");
                 }
