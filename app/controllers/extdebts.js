@@ -59,6 +59,17 @@
             vm.loadAccs();
         };
 
+        vm.loadCurrent = function() {
+            var el = document.querySelector('#ext-debts .tab-pane.active');
+            if(!el) return;
+
+            if(el.id == "ext-credito") {
+                vm.loadDebts();
+            } else if(el.id == "ext-saldos") {
+                vm.loadAccs();
+            }
+        };
+
         $timeout(function() {
             $('#ext-debts').on('show.bs.modal', function(e) {
                 if (vm.dataDebts === null){

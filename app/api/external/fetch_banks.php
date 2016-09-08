@@ -14,7 +14,26 @@ foreach($bank_accounts as $acc) {
 
 $data = [];
 foreach($bank_ins as $b) {
-    $data = array_merge($data, $b->getAccounts());
+    $attempts = 0;
+    while(true) {
+        try {
+            $d = $b->getAccounts();
+            if($d) {
+                $data = array_merge($data, $d);
+            }
+            
+            break;
+        } catch (Exception $e) {
+            if(get_class($e) != "TemporalError" || $attempts > 3) {
+                break;
+            }
+
+            $attempts++;
+        }
+    }
+    
+    
+
     $b->logout();
 }
 

@@ -23,8 +23,20 @@
                     if (response.status == 401){
                         location.hash = "!/login";
                     } else {
-                        var error = response.data.message || response.data || "Error desconocido";
-                        alert("Error: " + error);
+                        var error = "Error desconocido";
+                        if("data" in response) {
+                            if("message" in response.data) {
+                                error = response.data.message;
+                            } else {
+                                error = response.data;
+                            }
+                        } else if("message" in response) {
+                            error = response.message;
+                        } else if(typeof response == "string") {
+                            error = response;
+                        }
+                        
+                        console.log("Error: " + error);
                     }
                     
                     return $q.reject(response);

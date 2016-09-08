@@ -29,3 +29,6 @@ class Bank {
         return $this->bank_name;
     }
 }
+
+// Usado para reintentar
+class TemporalError extends Exception { }
