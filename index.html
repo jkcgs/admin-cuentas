@@ -13,7 +13,7 @@
         <link href="assets/css/style.css" rel="stylesheet">
     </head>
     <body>
-        <menubar ng-if="logged"></menubar>
+        <menubar ng-if="logged", data-dolar="{{dolar}}"></menubar>
         <div ng-view></div>
         <div ng-if="logged" ng-controller="ExternalDebts as vm" ng-include="'app/views/extdebts.html'"></div>
 

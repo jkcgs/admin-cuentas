@@ -45,8 +45,8 @@
         });
     }
 
-    run.$inject = ['$rootScope', '$location', '$route', 'session'];
-    function run($rootScope, $location, $route, session) {
+    run.$inject = ['$rootScope', '$location', '$route', 'session', 'external'];
+    function run($rootScope, $location, $route, session, external) {
         $rootScope.logout = function() {
             session.logout().then(function(){
                 $location.path("/login");
@@ -87,6 +87,14 @@
                 }
             });
         });
+
+        var fetchDolar = function() {
+            external.getDolar().success(function(res, status){
+                $rootScope.dolar = res.data;
+                setTimeout(fetchDolar, 10000);
+            });
+        }
+        fetchDolar();
     }
 
     menubar.$inject = ['$timeout'];
@@ -104,7 +112,10 @@
         });
 
         return {
-            templateUrl: "app/views/directives/menubar.html"
+            templateUrl: "app/views/directives/menubar.html",
+            scope: {
+                'dolar': '@'
+            }
         };
     }
 

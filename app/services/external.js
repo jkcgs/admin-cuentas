@@ -13,6 +13,10 @@
 
             getBankAccounts: function() {
                 return $http.get('api.php?external/fetch_banks');
+            },
+
+            getDolar: function() {
+                return $http.get('api.php?external/dolar');
             }
         };
     }
