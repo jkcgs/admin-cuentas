@@ -89,7 +89,20 @@
         });
     }
 
-    function menubar() {
+    menubar.$inject = ['$timeout'];
+    function menubar($timeout) {
+        $timeout(function(){
+            angular.element(document).ready(function() {
+                $(document).click(function (event) {
+                    var clickover = $(event.target);
+                    var _opened = $(".navbar-collapse").hasClass("in");
+                    if (_opened === true && !clickover.hasClass("navbar-toggle")) {
+                        $('.collapse').collapse('hide');
+                    }
+                });
+            });
+        });
+
         return {
             templateUrl: "app/views/directives/menubar.html"
         };
