@@ -70,7 +70,7 @@
             }
         };
 
-        $timeout(function() {
+        vm.init = function() {
             $('#ext-debts').on('show.bs.modal', function(e) {
                 if (vm.dataDebts === null){
                     vm.loadDebts();
@@ -84,7 +84,7 @@
                 e.preventDefault();
                 $(this).tab('show');
             });
-        }, 200);
+        };
 
 
     }
