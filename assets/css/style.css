@@ -37,6 +37,11 @@ footer {
     top: 2px;
 }
 
+.navbar li hr {
+    margin: 0;
+    margin-bottom: 0.4em;
+}
+
 .mtop {
 	margin-top: 15px;
 }
@@ -123,6 +128,12 @@ footer {
     margin-top: -9px;
 }
 
+.btn-link,
+.btn-link:active,
+.btn-link:focus {
+    outline: none;
+}
+
 .mini-loading {
     display: inline-block;
     width: 15px;
@@ -134,6 +145,15 @@ footer {
     vertical-align: top;
     position: relative;
     top: 2px;
+}
+
+#table-accunpaid td:last-child,
+#table-accounts td:last-child {
+    min-width: 100px;
+}
+
+.form-control.visible-xs-block {
+    margin-bottom: 1em;
 }
 
 #ext-debts .tab-pane {

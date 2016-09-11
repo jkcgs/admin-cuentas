@@ -13,7 +13,7 @@
             </button>
         </div>
         <div class="panel-body table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover" id="table-accunpaid">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -58,55 +58,58 @@
         <div class="panel-heading">
             <span class="panel-title">Todas las cuentas</span>
             <div class="pull-right text-right" id="acc-list-heading">
-                <input class="form-control input-sm" type="text" placeholder="Búsqueda..." ng-model="accListText">
+                <input class="form-control input-sm hidden-xs" type="text" placeholder="Búsqueda..." ng-model="accListText">
                 <button type="button" class="btn btn-success btn-xs" ng-click="showAdd()">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     Agregar
                 </button>
             </div>
         </div>
-        <div class="panel-body table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Facturación</th>
-                        <th class="text-right">Pagar</th>
-                        <th class="text-right">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="acc in accounts | filter:accListText as results">
-                        <td>{{acc.id}}</td>
-                        <td>{{acc.nombre}}</td>
-                        <td>{{acc.descripcion}}<small class="text-muted" ng-show="acc.info"><br>{{acc.info}}</small></td>
-                        <td>{{acc.fecha_facturacion}}</td>
-                        <td class="text-right">{{acc.monto | formatMoney}}</td>
-                        <td class="text-right" ng-disabled="saving">
-                            <a href="javascript:;" class="btn btn-xs btn-primary" ng-click="createDebt(acc.id)">
-                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                            </a>
-                            <a href="javascript:;" class="btn btn-xs btn-primary">
-                                <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="showEdit(acc.id)"></span>
-                            </a>
-                            <a href="javascript:;" class="btn btn-xs btn-danger" data-del-id="{{acc.id}}" ng-click="delAccount(acc.id)">
-                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr ng-hide="results.length == 0">
-                        <td colspan="3"></td>
-                        <td class="text-right"><b>Total</b></td>
-                        <td class="text-right">{{getSumUnpaid() | formatMoney}}</td>
-                        <td></td>
-                    </tr>
-                    <tr ng-if="results.length == 0">
-                        <td colspan="6" class="text-center"><i>No hubo resultados...</i></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="panel-body">
+            <input class="form-control input-sm visible-xs-block" type="text" placeholder="Búsqueda..." ng-model="accListText">
+            <div class="table-responsive">
+                <table class="table table-hover" id="table-accounts">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Facturación</th>
+                            <th class="text-right">Pagar</th>
+                            <th class="text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="acc in accounts | filter:accListText as results">
+                            <td>{{acc.id}}</td>
+                            <td>{{acc.nombre}}</td>
+                            <td>{{acc.descripcion}}<small class="text-muted" ng-show="acc.info"><br>{{acc.info}}</small></td>
+                            <td>{{acc.fecha_facturacion}}</td>
+                            <td class="text-right">{{acc.monto | formatMoney}}</td>
+                            <td class="text-right" ng-disabled="saving">
+                                <a href="javascript:;" class="btn btn-xs btn-primary" ng-click="createDebt(acc.id)">
+                                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                                </a>
+                                <a href="javascript:;" class="btn btn-xs btn-primary">
+                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="showEdit(acc.id)"></span>
+                                </a>
+                                <a href="javascript:;" class="btn btn-xs btn-danger" data-del-id="{{acc.id}}" ng-click="delAccount(acc.id)">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr ng-hide="results.length == 0">
+                            <td colspan="3"></td>
+                            <td class="text-right"><b>Total</b></td>
+                            <td class="text-right">{{getSumUnpaid() | formatMoney}}</td>
+                            <td></td>
+                        </tr>
+                        <tr ng-if="results.length == 0">
+                            <td colspan="6" class="text-center"><i>No hubo resultados...</i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

@@ -8,22 +8,26 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="#!/accounts">Panel</a>
+            <div class="pull-right navbar-text visible-xs-inline" style="padding-right: 20px" ng-if="dolar">
+                Dólar: ${{dolar}}
+            </div>
         </div>
         
         <div class="collapse navbar-collapse" id="navcol">
             <ul class="nav navbar-nav">
-                <li ng-class="{'active': path == '/accounts'}">
+                <li ng-class="{'active': $root.path == '/accounts'}">
                     <a href="#!/accounts">Cuentas</a>
                 </li>
-                <li ng-class="{'active': path == '/debtors'}">
+                <li ng-class="{'active': $root.path == '/debtors'}">
                     <a href="#!/debtors">Deudores</a>
                 </li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li class="navbar-text" ng-if="dolar">Dólar: ${{dolar}}</li>
+                <li class="visible-xs-block"><hr></li>
+                <li class="navbar-text hidden-xs" ng-if="dolar">Dólar: ${{dolar}}</li>
                 <li><a href="javascript:;" data-toggle="modal" data-target="#ext-debts">Externas</a></li>
-                <li><a href="javascript:;" ng-click="logout()">Cerrar sesión</a></li>
+                <li><a href="javascript:;" ng-click="$root.logout()">Cerrar sesión</a></li>
             </ul>
         </div>
     </div>
