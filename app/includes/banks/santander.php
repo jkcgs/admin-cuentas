@@ -40,6 +40,10 @@ class Santander extends Bank {
         $cuentas = [];
         preg_match_all("/pasacuenta\(.*\)/", $data, $cuentas);
         for($i = 0; $i < count($cuentas); $i++) {
+            if(!isset($cuentas[$i][0])) {
+                continue;
+            }
+
             $pasacuenta = str_replace("'", "\"", text_find($cuentas[$i][0], "pasacuenta(", ")"));
             $decoded = json_decode("[" . $pasacuenta . "]");
 

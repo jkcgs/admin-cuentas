@@ -18,7 +18,7 @@ foreach($bank_ins as $b) {
     while(true) {
         try {
             $d = $b->getAccounts();
-            if($d) {
+            if($d && $d != []) {
                 $data = array_merge($data, $d);
             }
             

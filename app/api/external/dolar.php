@@ -53,5 +53,5 @@ if(!$cache || (time() - $cache->ts) > $cache_ttl) {
 
     throw_data($valor);
 } else {
-    throw_data($cache->valor);
+    throw_data($cache->value);
 }
