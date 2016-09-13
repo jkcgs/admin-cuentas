@@ -7,10 +7,16 @@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <span class="panel-title">Cuentas sin pagar</span>
-            <button type="button" class="btn btn-success btn-xs pull-right" ng-click="showAdd()">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                Agregar
-            </button>
+            <div class="pull-right">
+                <button type="button" class="btn btn-success btn-xs" ng-click="setUnpaidPaid()" id="acc-set-unpaid-paid">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    Marcar pagadas
+                </button>
+                <button type="button" class="btn btn-success btn-xs" ng-click="showAdd()">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    Agregar
+                </button>
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <table class="table table-hover" id="table-accunpaid">

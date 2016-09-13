@@ -51,6 +51,7 @@
             var month = billingDate.getMonth();
             billingDate.setMonth(month == 11 ? 0 : month+1);
         }
+
         $scope.masterForm = {
             nombre: "",
             descripcion: "",
@@ -236,6 +237,37 @@
                 }
 
                 $scope.accounts.splice(accIndex, 1);
+            });
+        };
+
+        $scope.setUnpaidPaid = function() {
+            if($scope.saving) {
+                return;
+            }
+
+            var unpaid = $scope.accounts.filter(function(acc){
+                return acc.pagado === "0";
+            });
+
+            var unpaIDs = unpaid.map(function(acc){
+                return acc.id;
+            });
+
+            var $b = $("#acc-set-unpaid-paid");
+            $b.addClass("btn-loading");
+            $scope.saving = true;
+            accounts.setPaid(unpaIDs).success(function(res){
+                $scope.saving = false;
+                $b.removeClass("btn-loading");
+
+                if(!res.success) {
+                    alert("Error: " + res.message);
+                    return;
+                }
+
+                unpaIDs.forEach(function(id) {
+                    getByID(id).pagado = "1";
+                }, this);
             });
         };
 

@@ -10,6 +10,7 @@
         this.add = add;
         this.edit = edit;
         this.del = del;
+        this.setPaid = setPaid;
 
         function get(id){
             var ep = 'api.php?accounts/get';
@@ -33,6 +34,11 @@
         function del(id) {
             var ep = 'api.php?accounts/delete&id='+id;
             return $http.get(ep);
+        }
+
+        function setPaid(ids) {
+            var ep = 'api.php?accounts/set_paid';
+            return $http.post(ep, $.param({"ids": ids}));
         }
     }
 

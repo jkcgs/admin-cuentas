@@ -4,7 +4,7 @@ $bank_accounts = $config["external"]["banks"];
 $bank_ins = [];
 
 foreach($bank_accounts as $acc) {
-    $bpath = "app/includes/banks/".$acc["bank"].".php";
+    $bpath = "app/includes/banks/{$acc["bank"]}.php";
     if(file_exists($bpath)) {
         require_once($bpath);
         $bn = ucfirst($acc["bank"]);
@@ -18,7 +18,7 @@ foreach($bank_ins as $b) {
     while(true) {
         try {
             $d = $b->getAccounts();
-            if($d && $d != []) {
+            if($d && count($d) > 0 && isset($d[0]["bank"])) {
                 $data = array_merge($data, $d);
             }
             
