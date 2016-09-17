@@ -10,11 +10,11 @@ switch ($db->connect_errno) {
 		break;
 
 	case 1045:
-		die("No se pudo conectar al servidor MySQL: Permiso denegado (usando contraseña)");
+		throw_error("No se pudo conectar al servidor MySQL: Permiso denegado (usando contraseña)");
 		break;
 	
 	default:
-		die("Fallo al conectar a MySQL: #{$db->connect_errno} {$db->connect_error}");
+		throw_error("Fallo al conectar a MySQL: #{$db->connect_errno} {$db->connect_error}");
 		break;
 }
 
