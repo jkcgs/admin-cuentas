@@ -274,6 +274,13 @@
         init();
         function init() {
             accounts.get().success(function(data){
+                if("success" in data && !data.success) {
+                    $rootScope.appError = "No se pudo cargar las cuentas: " + data.message;
+                    $scope.loaded = true;
+
+                    return;
+                }
+
                 $scope.accounts = data;
                 $scope.loaded = true;
             });

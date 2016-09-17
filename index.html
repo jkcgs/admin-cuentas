@@ -13,9 +13,25 @@
         <link href="assets/css/style.css" rel="stylesheet">
     </head>
     <body>
-        <menubar ng-if="logged", data-dolar="{{dolar}}"></menubar>
-        <div ng-view></div>
+        <menubar ng-if="logged" ng-hide="appError" data-dolar="{{dolar}}" ></menubar>
+        <div ng-view ng-hide="appError"></div>
         <div ng-if="logged" ng-controller="ExternalDebts as vm" ng-include="'app/views/extdebts.html'"></div>
+
+        <div ng-if="appError">
+            <div class="container" style="margin-top: 2em">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Error de aplicación</h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>Ha ocurrido un error en la aplicación. Por favor contacte a un administrador.</p>
+                            <small class="text-muted text-xs"><samp>{{appError}}</samp></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
