@@ -1,11 +1,7 @@
-<?php defined("INCLUDED") or die("nel");
+<?php defined("INCLUDED") or die();
 
 $config = [
     'maintenance' => false,
-
-    # Datos de cuenta
-    'web-user' => "",
-    'web-pass' => "",
 
     # Datos de base de datos
     'db_host' => "",

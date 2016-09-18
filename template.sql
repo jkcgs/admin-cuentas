@@ -4,6 +4,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user` VARCHAR(30) NOT NULL,
+  `password` VARCHAR(60) NOT NULL,
+  UNIQUE `users_idx` (`id`),
+  UNIQUE `users_user_idx` (`user`)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `cuentas`
 --
 
@@ -34,7 +48,7 @@ CREATE TABLE `deudas` (
   `monto` float NOT NULL DEFAULT '0',
   `fecha` date NOT NULL,
   `pagada` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -46,7 +60,7 @@ CREATE TABLE `deudores` (
   `id` int(11) NOT NULL,
   `nombre` text NOT NULL,
   `descripcion` text
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Índices para tablas volcadas

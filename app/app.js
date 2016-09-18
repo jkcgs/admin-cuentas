@@ -80,6 +80,8 @@
             $rootScope.path = path;
 
             session.isLogged(function(logged, error){
+                fetchDolar(false);
+
                 if(error) {
                     $rootScope.appError = error.message || error;
                 } else if(logged && path == "/login") {
@@ -88,11 +90,18 @@
             });
         });
 
-        var fetchDolar = function() {
-            external.getDolar().success(function(res, status){
-                $rootScope.dolar = res.data;
-                setTimeout(fetchDolar, 10000);
-            });
+        var fetchDolar = function(daemon) {
+            if(typeof daemon == "undefined") daemon = true;
+
+            // No cargar dolar si no se ha iniciado sesión
+            if($rootScope.logged) {
+                external.getDolar().success(function(res, status){
+                    $rootScope.dolar = res.data;
+                    if(daemon) setTimeout(fetchDolar, 10000);
+                });
+            } else {
+                if(daemon) setTimeout(fetchDolar, 10000);
+            }
         }
         fetchDolar();
     }
