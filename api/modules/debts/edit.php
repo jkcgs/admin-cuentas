@@ -27,10 +27,10 @@ if($data === false) {
     throw_error(var_export($gump->get_errors_array(), true));
 }
 
-$stmt = $db->prepare('UPDATE deudas SET deudor = ?, descripcion = ?, monto = ?, fecha = ?, pagada = ? WHERE id = ?');
+$stmt = $db->prepare('UPDATE deudas SET deudor = ?, descripcion = ?, monto = ?, fecha = ?, pagada = ? WHERE id = ? AND usuario_id = ?');
 
 if(!isset($data['pagada'])) $data['pagada'] = 0;
-$stmt->bind_param('isisii', $data['deudor'], $data['descripcion'], $data['monto'], $data['fecha'], $data['pagada'], $id);
+$stmt->bind_param('isisiii', $data['deudor'], $data['descripcion'], $data['monto'], $data['fecha'], $data['pagada'], $id, $UID);
 $stmt->execute();
 
 if(!empty($stmt->error)) {

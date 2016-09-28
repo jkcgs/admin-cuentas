@@ -12,7 +12,7 @@ $pass = base64_decode($_POST['password']);
 
 // Ejecutar sentencia sql
 $user = $db->escape_string($user);
-$sql = "SELECT user, password FROM usuarios WHERE user = '$user'";
+$sql = "SELECT * FROM usuarios WHERE user = '$user'";
 $res = $db->query($sql);
 
 if(!$res) {
@@ -28,4 +28,5 @@ if($db->affected_rows < 1 || !password_verify($pass, $user_data['password'])) {
 // Registrar sesión iniciada
 $_SESSION["logged"] = true;
 $_SESSION["logged_user"] = $user_data['user'];
+$_SESSION["logged_id"] = $user_data['id'];
 throw_success();

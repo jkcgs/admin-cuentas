@@ -11,6 +11,10 @@ if(!file_exists("config.php")) {
 
 require "config.php";
 session_var_init("logged", false);
+session_var_init("logged_id", false);
+if($_SESSION["logged_id"] !== false) {
+    $UID = $_SESSION["logged_id"];
+}
 
 header("Content-Type: application/json");
 if($config['maintenance']) {
@@ -32,7 +36,7 @@ reset($_GET);
 $route = key($_GET);
 
 if($route != preg_replace("/[^a-zA-Z0-9_\-\/]/", "", $route)) {
-    throw_error("Carácteres inválidos en la ruta");
+    throw_error("API no encontrada");
 }
 
 $route = is_dir($route) ? "modules/$route/index.php" : "modules/$route.php";

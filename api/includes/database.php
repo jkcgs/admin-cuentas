@@ -27,25 +27,31 @@ function dbGetAll($q) {
     return $r;
 }
 
-function get_id($obj, $id = true) {
+function get_id($obj, $id = true, $owner_id = null) {
     global $db;
 
     if($id === true) {
-        $id = verificar_id($obj);
+        $id = verify_id($obj);
     }
 
-    $s = $db->prepare("SELECT * FROM $obj WHERE id = ? LIMIT 1");
-    $s->bind_param('i', $id);
+    if($owner_id) {
+        $s = $db->prepare("SELECT * FROM $obj WHERE id = ? AND usuario_id = ? LIMIT 1");
+        $s->bind_param('ii', $id, $owner_id);
+    } else {
+        $s = $db->prepare("SELECT * FROM $obj WHERE id = ? LIMIT 1");
+        $s->bind_param('i', $id);
+    }
+    
     $s->execute();
     
     if($s->error) {
         return jerr($s->error);
     } else {
-        $r = stmt_fetch_all($s);
+        $r = $s->get_result();
         if ($r == NULL) {
             return throw_error("No se encontró un elemento con el ID seleccionado");
         } else {
-            return json_encode($r);
+            return json_encode($r->fetch_assoc());
         }
     }
 }
@@ -66,36 +72,44 @@ function get_by_id($obj, $id = true) {
     }
 }
 
-function delete_obj($obj, $id = true, $ddie = true) {
+function delete_obj($obj, $id = true, $owner_id = null) {
     global $db;
     if($id === true) {
         $id = verify_id($obj);
     }
 
-    $s = $db->prepare("DELETE FROM $obj WHERE id = ? LIMIT 1");
-    $s->bind_param('i', $id);
+    if($owner_id) {
+        $s = $db->prepare("DELETE FROM $obj WHERE id = ? AND usuario_id = ?LIMIT 1");
+        $s->bind_param('ii', $id, $owner_id);
+    } else {
+        $s = $db->prepare("DELETE FROM $obj WHERE id = ? LIMIT 1");
+        $s->bind_param('i', $id);
+    }
+    
     $s->execute();
 
-    if($ddie) {
-        if($s->error) {
-            throw_error($s->error);
-        } else {
-            throw_success();
-        }
+    if($s->error) {
+        throw_error($s->error);
     } else {
-        return $s->error ? $s->error : true;
+        throw_success();
     }
 }
 
-function exists_obj($itm, $id) {
+function exists_obj($itm, $id, $owner_id = null) {
     global $db;
     
-    $s = $db->prepare("SELECT * FROM $itm WHERE id = ? LIMIT 1");
+    if($owner_id) {
+        $s = $db->prepare("SELECT * FROM $itm WHERE id = ? AND usuario_id = ? LIMIT 1");
+        $s->bind_param('ii', $id, $owner_id);
+    } else {
+        $s = $db->prepare("SELECT * FROM $itm WHERE id = ? LIMIT 1");
+        $s->bind_param('i', $id);
+    }
+    
     if(!$s) {
         throw_error($db->error);
     }
 
-    $s->bind_param('i', $id);
     $s->execute();
     $s->store_result();
     
@@ -109,17 +123,17 @@ function exists_obj($itm, $id) {
 }
 
 // Checks if an ID has been sent and if exists
-function verify_id($obj) {
+function verify_id($obj, $owner_id = null) {
     if(!isset($_GET['id'])) {
         throw_error("ID no ingresado");
     } else {
         $id = $_GET['id'];
-        if((string)(int)$id != $id) {
+        if((string)(int)$id != $id || !preg_match("/[0-9]/", $id)) {
             throw_error("ID no numérica");
         }
         
-        if(!exists_obj($obj, $id)) {
-            throw_error("ID no numérica");
+        if(!exists_obj($obj, $id, $owner_id)) {
+            throw_error("El elemento no existe");
         }
 
         return $id;

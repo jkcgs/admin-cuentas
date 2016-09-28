@@ -12,7 +12,7 @@ if(!in_array($set_paid, array("0", "1"))) {
 }
 
 
-$q = $db->query("UPDATE deudas SET pagada = $set_paid WHERE deudor = $id");
+$q = $db->query("UPDATE deudas SET pagada = $set_paid WHERE deudor = $id AND usuario_id = $UID");
 
 if(!$q) {
     throw_error("Error: " . $db->error);

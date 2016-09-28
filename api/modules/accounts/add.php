@@ -40,8 +40,9 @@ if ($data === false) {
 }
 
 $stmt = $db->prepare(
-    'INSERT INTO cuentas (nombre, descripcion, fecha_compra, fecha_facturacion, monto_original, divisa_original, monto, num_cuotas, info, pagado)'.
-    'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    'INSERT INTO cuentas (nombre, user_id descripcion, fecha_compra, fecha_facturacion, '.
+    'monto_original, divisa_original, monto, num_cuotas, info, pagado) '.
+    'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
 );
    
 if (!$stmt) {
@@ -50,7 +51,7 @@ if (!$stmt) {
 
 if(!isset($data['pagado'])) $data['pagado'] = 0;
 $stmt->bind_param(
-    'ssssdsdisi', $data['nombre'], $data['descripcion'], $data['fecha_compra'], $data['fecha_facturacion'],
+    'sisssdsdisi', $data['nombre'], $UID, $data['descripcion'], $data['fecha_compra'], $data['fecha_facturacion'],
     $data['monto_original'], $data['divisa_original'], $data['monto'], $data['num_cuotas'], $data['info'], $data['pagado']
 );
 $stmt->execute();

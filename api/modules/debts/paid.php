@@ -11,7 +11,7 @@ if(!in_array($set_paid, array("0", "1"))) {
     throw_error("Invalid paid value");
 }
 
-$q = $db->query("UPDATE deudas SET pagada = $set_paid WHERE id = $id");
+$q = $db->query("UPDATE deudas SET pagada = $set_paid WHERE id = $id AND usuario_id = $UID");
 
 if(!$q) {
     throw_error("Error: " . $db->error);

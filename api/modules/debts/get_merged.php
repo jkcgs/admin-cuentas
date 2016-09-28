@@ -8,7 +8,7 @@ if(!$q1) {
 $q2 = $db->query(
     "SELECT d.id, d.deudor, de.nombre AS nombreDeudor, d.descripcion, d.monto, d.fecha, d.pagada ".
     "FROM deudas AS d INNER JOIN deudores AS de ON d.deudor = de.id ".
-    "ORDER BY id DESC, fecha DESC"
+    "WHERE d.usuario_id = $UID ORDER BY id DESC, fecha DESC"
 );
 if(!$q2) {
     throw_error($db->error);

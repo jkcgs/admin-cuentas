@@ -1,7 +1,7 @@
 <?php defined("INCLUDED") or die("Acceso denegado."); try_logged();
 
 if(!isset($_GET['id'])) {
-    $q = $db->query("SELECT * FROM cuentas order by id desc, fecha_facturacion desc");
+    $q = $db->query("SELECT * FROM cuentas WHERE usuario_id = $UID order by id desc, fecha_facturacion desc");
     if(!$q) {
         throw_error($db->error);
     }
@@ -13,5 +13,5 @@ if(!isset($_GET['id'])) {
     
     echo json_encode($r);
 } else {
-    echo get_id('cuentas');
+    echo get_id('cuentas', true, $UID);
 }

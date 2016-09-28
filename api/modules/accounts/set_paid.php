@@ -14,7 +14,7 @@ foreach($ids as $id) {
 }
 
 $sql_ids = join(", ", $ids);
-$sql_check = "SELECT id FROM cuentas WHERE id IN ($sql_ids)";
+$sql_check = "SELECT id FROM cuentas WHERE id IN ($sql_ids) AND usuario_id = $UID";
 $db->query($sql_check);
 
 if($db->affected_rows == -1) {
@@ -25,7 +25,7 @@ if($db->affected_rows != count($ids)) {
     throw_error("Uno o más IDs de cuentas no existen");
 }
 
-$sql_upd = "UPDATE cuentas SET pagado = '1' WHERE id IN ($sql_ids)";
+$sql_upd = "UPDATE cuentas SET pagado = '1' WHERE id IN ($sql_ids) AND usuario_id = $UID";
 $db->query($sql_upd);
 
 if($db->affected_rows == -1) {

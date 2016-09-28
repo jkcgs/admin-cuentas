@@ -35,7 +35,7 @@ if(!$deudor) {
 }
 
 $stmt = $db->prepare(
-    'INSERT INTO deudas (deudor, descripcion, monto, fecha, pagada) '.
+    'INSERT INTO deudas (usuario_id, deudor, descripcion, monto, fecha, pagada) '.
     'VALUES (?, ?, ?, ?, ?)'
 );
    
@@ -48,7 +48,7 @@ if (!isset($data['pagada'])) {
 } 
 
 $stmt->bind_param(
-    'isdsi', $data['deudor'], $data['descripcion'], $data['monto'], $data['fecha'], $data['pagada']
+    'iisdsi', $UID, $data['deudor'], $data['descripcion'], $data['monto'], $data['fecha'], $data['pagada']
 );
 $stmt->execute();
 

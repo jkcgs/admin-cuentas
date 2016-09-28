@@ -1,6 +1,6 @@
 <?php defined("INCLUDED") or die("Denied"); try_logged();
 
-$id = verify_id('cuentas');
+$id = verify_id('cuentas', $UID);
 
 $gump = new GUMP();
 $_POST = $gump->sanitize($_POST);
