@@ -30,7 +30,6 @@ if(!file_exists("vendor/autoload.php")) {
 
 require "vendor/autoload.php";
 require "includes/functions.php";
-require "includes/database.php";
 
 reset($_GET);
 $route = key($_GET);
@@ -45,6 +44,15 @@ if(!file_exists($route)) {
 }
 
 try {
+    $flevels = explode("/", $route);
+    $fcont = "";
+    foreach($flevels as $flevel) {
+        $fcont .= $flevel . "/";
+        if(file_exists($fcont . "index.php")) {
+            require_once $fcont . "index.php";
+        }
+    }
+
     require $route;
 } catch(Exception $e) {
     header("HTTP/1.1 500 Internal Server Error");
