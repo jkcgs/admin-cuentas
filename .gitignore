@@ -1,5 +1,6 @@
 # Config file
 api/config.php
+api/composer.lock
 api/vendor/
 api/tmp/
 .idea/
