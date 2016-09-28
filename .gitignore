@@ -1,5 +1,5 @@
 # Config file
-app/includes/config.php
-vendor/
+api/config.php
+api/vendor/
+api/tmp/
 .idea/
-app/tmp/

@@ -10,7 +10,7 @@
             isLogged: function (callback){
                 callback = callback || function(){};
 
-                $http.get('api.php?session/logged').then(function(response){
+                $http.get('api/?session/logged').then(function(response){
                     var res = checkData(response.data, true);
                     $rootScope.logged = res.data.logged;
 
@@ -23,7 +23,7 @@
 
             login: function(user, pass) {
                 var d = {username: user, password: btoa(pass)};
-                return $http.post('api.php?session/login', $.param(d))
+                return $http.post('api/?session/login', $.param(d))
                     .then(function(res){
                         $rootScope.logged = !!res.success;
                         return res;
@@ -31,7 +31,7 @@
             },
 
             logout: function() {
-                return $http.get('api.php?session/logout').then(function(res){
+                return $http.get('api/?session/logout').then(function(res){
                     $rootScope.logged = false;
                     return res;
                 });

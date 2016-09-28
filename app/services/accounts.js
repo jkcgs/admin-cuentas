@@ -13,7 +13,7 @@
         this.setPaid = setPaid;
 
         function get(id){
-            var ep = 'api.php?accounts/get';
+            var ep = 'api/?accounts/get';
             if(typeof id != "undefined") {
                 ep += '?id=' + id;
             }
@@ -22,22 +22,22 @@
         }
 
         function add(data) {
-            var ep = 'api.php?accounts/add';
+            var ep = 'api/?accounts/add';
             return $http.post(ep, $.param(data));
         }
 
         function edit(data){
-            var ep = 'api.php?accounts/edit&id='+data.id;
+            var ep = 'api/?accounts/edit&id='+data.id;
             return $http.post(ep, $.param(data));
         }
 
         function del(id) {
-            var ep = 'api.php?accounts/delete&id='+id;
+            var ep = 'api/?accounts/delete&id='+id;
             return $http.get(ep);
         }
 
         function setPaid(ids) {
-            var ep = 'api.php?accounts/set_paid';
+            var ep = 'api/?accounts/set_paid';
             return $http.post(ep, $.param({"ids": ids}));
         }
     }
