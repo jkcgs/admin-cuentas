@@ -26,4 +26,17 @@ class Encryption {
 
         return $cipher->decrypt(base64_decode($encrypted));
     }
+
+    static function decrypt_user_pass($pass) {
+        if(!isset($_SESSION['logged']) || !$_SESSION['logged']) {
+            return false;
+        }
+
+        if(!function_exists("get_user_data")) {
+            require_once dirname(__FILE__) . "/database.php";
+        }
+
+        $user_pass = md5(get_user_data()["password"]);
+        return Encryption::decrypt($pass, $user_pass);
+    }
 }

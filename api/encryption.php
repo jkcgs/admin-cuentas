@@ -15,6 +15,10 @@ if(isset($_POST['untext'])) {
     die(Encryption::decrypt($_POST["untext"], $_POST["unkey"]));
 }
 
+
+if(isset($_POST['md5text'])) {
+    die(md5($_POST['md5text']));
+}
 ?>
 
 <!DOCTYPE html>
@@ -172,6 +176,36 @@ if(isset($_POST['untext'])) {
                         </form>
                     </div>
                 </div>
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Generar MD5</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        <form action="javascript:;" method="POST" class="form-horizontal" role="form" onsubmit="send_md5_text()">
+                            <div class="form-group">
+                                <label for="inputmd5" class="col-sm-2 control-label">Texto:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="md5text" id="inputmd5" class="form-control" required="required" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-10 col-sm-offset-2">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group hidden" id="resmd5">
+                                <div class="col-sm-10 col-sm-offset-2">
+                                    <strong>Respuesta:</strong><br>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -238,6 +272,22 @@ if(isset($_POST['untext'])) {
 
                 send_post("?", data, function(data) {
                     var cont = document.querySelector("#resunkey");
+                    cont.className = "form-group";
+                    cont.querySelector("span").innerHTML = data;
+                });
+            }
+
+            function send_md5_text() {
+                var text = document.querySelector("#inputmd5").value.trim();
+                if(text == "") {
+                    return;
+                }
+
+                var data = "";
+                data += "md5text=" + encodeURIComponent(text);
+
+                send_post("?", data, function(data) {
+                    var cont = document.querySelector("#resmd5");
                     cont.className = "form-group";
                     cont.querySelector("span").innerHTML = data;
                 });

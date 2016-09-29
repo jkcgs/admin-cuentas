@@ -1,6 +1,18 @@
 <?php defined("INCLUDED") or die("Denied"); try_logged();
 
-$bank_accounts = $config["external"]["banks"];
+require_once "includes/database.php";
+require_once "includes/encryption.class.php";
+
+$res = $db->query("SELECT user, password, nombre FROM cuenta_bancaria WHERE usuario_id = $UID AND tipo = 1");
+$bank_accounts = [];
+while($account = $res->fetch_assoc()) {
+    $bank_accounts[] = [
+        "user" => $account['user'],
+        "pass" => Encryption::decrypt_user_pass($account['password']),
+        "bank" => $account['nombre']
+    ];
+}
+
 $bank_ins = [];
 
 foreach($bank_accounts as $acc) {

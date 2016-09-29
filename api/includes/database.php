@@ -1,7 +1,29 @@
 <?php defined("INCLUDED") or die("Denied");
+if(!isset($config)) {
+    include dirname(__FILE__) . "/../config.php";
+}
+
+// Se muestra en el mensaje de error cuando se utilizó configuración por defecto
+$db_defaults = false;
+
+if(empty($config['db_host'])) {
+    $config['db_host'] = "localhost";
+    $db_defaults = true;
+}
+
+if(empty($config['db_user']) == "") {
+    $config['db_user'] = "root";
+    $db_defaults = true;
+}
+
+if(empty($config['db_name'])) {
+    throw_error("No se ha definido el nombre de la base de datos");
+    exit;
+}
 
 $db_error = false;
-@$db = new mysqli($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name']);
+@$db = new mysqli($config['db_host'], $config['db_user'], $config['db_pass']);
+$def_info = $db_defaults ? " - Se utilizó configuración por defecto" : "";
 
 /* Renombrar errores */
 switch ($db->connect_errno) {
@@ -10,12 +32,17 @@ switch ($db->connect_errno) {
 		break;
 
 	case 1045:
-		throw_error("No se pudo conectar al servidor MySQL: Permiso denegado (usando contraseña)");
+		throw_error("No se pudo conectar al servidor MySQL: Permiso denegado (usando contraseña)" . $db_defaults);
 		break;
 	
 	default:
-		throw_error("Fallo al conectar a MySQL: #{$db->connect_errno} {$db->connect_error}");
+		throw_error("Fallo al conectar a MySQL: #{$db->connect_errno} {$db->connect_error}" . $db_defaults);
 		break;
+}
+
+if(!$db->select_db($config['db_name'])) {
+    throw_error("No se pudo seleccionar la base de datos");
+    exit;
 }
 
 function dbGetAll($q) {
@@ -26,6 +53,7 @@ function dbGetAll($q) {
 
     return $r;
 }
+
 
 function get_id($obj, $id = true, $owner_id = null) {
     global $db;
@@ -49,7 +77,7 @@ function get_id($obj, $id = true, $owner_id = null) {
     } else {
         $r = $s->get_result();
         if ($r == NULL) {
-            return throw_error("No se encontró un elemento con el ID seleccionado");
+            throw_error("No se encontró un elemento con el ID seleccionado");
         } else {
             return json_encode($r->fetch_assoc());
         }
@@ -138,4 +166,30 @@ function verify_id($obj, $owner_id = null) {
 
         return $id;
     }
+}
+
+
+function get_user_data() {
+    if(!isset($_SESSION['logged_id'])) {
+        return false;
+    }
+
+    if(!preg_match("/^[0-9]+$/", $_SESSION['logged_id'])) {
+        return null;
+    }
+
+    global $db;
+    $id = $db->escape_string($_SESSION['logged_id']);
+    $res = $db->query("SELECT * from usuarios WHERE id = $id LIMIT 1");
+
+    if(!$res) {
+        throw new Exception($db->error);
+    }
+
+    if($res && $res->num_rows > 0) {
+        return $res->fetch_assoc();
+    } else {
+        return null;
+    }
+
 }

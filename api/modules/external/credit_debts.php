@@ -1,16 +1,15 @@
 <?php defined("INCLUDED") or die("Denied"); try_logged();
 
+require_once "includes/encryption.class.php";
+require_once "includes/database.php";
 require_once "includes/credit_banks/ripley.php";
-$data = array(
-    'rut' => $config['external']['ripley']['user'],
-    'password' => $config['external']['ripley']['pass']
-);
-
-if(empty($data['rut']) || empty($data['password'])) {
-    throw_error("No se ha configurado la cuenta remota.");
+$res = $db->query("SELECT user, password FROM cuenta_bancaria WHERE usuario_id = $UID AND tipo = 2 AND nombre = 'ripley' LIMIT 1");
+if($res->num_rows < 1) {
+    throw_error("No hay una cuenta configurada");
 }
 
-$ripley = new Credit_Ripley($data['rut'], $data['password']);
+$data = $res->fetch_assoc();
+$ripley = new Credit_Ripley($data['user'], Encryption::decrypt_user_pass($data['password']));
 
 //// Login
 if(!$ripley->login()){

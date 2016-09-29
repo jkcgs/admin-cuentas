@@ -4,4 +4,5 @@ if(!isset($_SESSION['logged'])) {
     $_SESSION['logged'] = false;
 }
 
-echo json_data(["logged" => $_SESSION['logged']]);
+$data = ["logged" => $_SESSION['logged']];
+echo json_data($data);
