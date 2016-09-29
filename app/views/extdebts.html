@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <a href="" class="pull-right" style="margin-right: 4px" ng-click="vm.loadCurrent()"><span class="glyphicon glyphicon-refresh"></span></a>
+                <a href="" class="pull-right" style="margin-right: 4px" data-ng-click="loadCurrent()"><span class="glyphicon glyphicon-refresh"></span></a>
                 <h4 class="modal-title">Cuentas Externas</h4>
             </div>
             <div class="modal-body">                
@@ -19,7 +19,7 @@
                 
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="ext-credito">
-                            <div class="table-responsive" ng-hide="vm.loadingDebts || vm.dataDebts.length == 0 || vm.errorDebts">
+                            <div class="table-responsive" ng-hide="loadingDebts || dataDebts.length == 0 || errorDebts">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
@@ -30,12 +30,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="account in vm.dataDebts">
+                                        <tr ng-repeat="account in dataDebts">
                                             <td>{{account.comercio}}</td>
                                             <td>{{account.fecha}}</td>
                                             <td>{{account.valor | formatMoney}}</td>
                                             <td>
-                                                <a href="javascript:;" class="btn btn-xs btn-primary" ng-click="addAccount(account)">
+                                                <a href="javascript:;" class="btn btn-xs btn-primary" data-ng-click="addAccount(account)">
                                                     <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                                                 </a>
                                             </td>
@@ -44,19 +44,19 @@
                                 </table>
                             </div>
 
-                            <div ng-if="vm.loadingDebts" class="text-center"><span class="mini-loading"></span> Cargando...</div>
-                            <div ng-if="!vm.loadingDebts && vm.dataDebts.length == 0">
+                            <div ng-if="loadingDebts" class="text-center"><span class="mini-loading"></span> Cargando...</div>
+                            <div ng-if="!loadingDebts && dataDebts.length == 0">
                                 <p>No se cargaron cuentas</p>
                             </div>
 
-                            <div ng-if="vm.errorDebts && !vm.loadingDebts" class="alert alert-danger text-center">
-                                <strong>Error</strong>: {{vm.errorDebts}}
+                            <div ng-if="errorDebts && !loadingDebts" class="alert alert-danger text-center">
+                                <strong>Error</strong>: {{errorDebts}}
                                 <p>Intenta nuevamente.</p>
                             </div>
                         </div>
 
                         <div role="tabpanel" class="tab-pane" id="ext-saldos">
-                            <div class="table-responsive" ng-hide="vm.loadingAccs || vm.dataAccs.length == 0 || vm.errorAccs">
+                            <div class="table-responsive" ng-hide="loadingAccs || dataAccs.length == 0 || errorAccs">
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
@@ -67,7 +67,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="account in vm.dataAccs">
+                                    <tr ng-repeat="account in dataAccs">
                                         <td>{{account.bank}}</td>
                                         <td>{{account.type}}</td>
                                         <td class="hidden-xs">{{account.number}}</td>
@@ -77,13 +77,13 @@
                                 </table>
                             </div>
 
-                            <div ng-if="vm.loadingAccs" class="text-center"><span class="mini-loading"></span> Cargando...</div>
-                            <div ng-if="!vm.loadingAccs && vm.dataAccs.length == 0">
+                            <div ng-if="loadingAccs" class="text-center"><span class="mini-loading"></span> Cargando...</div>
+                            <div ng-if="!loadingAccs && dataAccs.length == 0">
                                 <p>No se cargaron cuentas</p>
                             </div>
 
-                            <div ng-if="vm.errorAccs && !vm.loadingAccs" class="alert alert-danger text-center">
-                                <strong>Error</strong>: {{vm.errorAccs}}
+                            <div ng-if="errorAccs && !loadingAccs" class="alert alert-danger text-center">
+                                <strong>Error</strong>: {{errorAccs}}
                             </div>
                         </div>
                     </div>
@@ -93,4 +93,4 @@
     </div>
 </div>
 
-{{ vm.init() }}
+{{ init() }}

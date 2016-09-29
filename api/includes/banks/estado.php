@@ -1,5 +1,5 @@
 <?php defined("INCLUDED") or die("Denied"); try_logged();
-require_once("app/includes/base_bank.php");
+require_once("includes/base_bank.php");
 use PHPHtmlParser\Dom;
 
 class Estado extends Bank {

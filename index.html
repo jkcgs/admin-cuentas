@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="es" ng-app="app">
+<html lang="es" data-ng-app="app">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Jonathan Gutiérrez">
-        <link rel="icon" href="assets/img/favicon.ico"-->
+        <link rel="icon" href="assets/img/favicon.ico">
         <title>Administración de cuentas</title>
 
         <!-- Bootstrap CSS -->
@@ -13,21 +13,19 @@
         <link href="assets/css/style.css" rel="stylesheet">
     </head>
     <body>
-        <menubar ng-if="logged" ng-hide="appError" data-dolar="{{dolar}}" ></menubar>
-        <div ng-view ng-hide="appError"></div>
-        <div ng-if="logged" ng-controller="ExternalDebts as vm" ng-include="'app/views/extdebts.html'"></div>
+        <div data-menubar data-ng-if="logged" data-ng-hide="appError" data-dolar="{{dolar}}" ></div>
+        <div data-ng-view data-ng-hide="appError"></div>
+        <div data-ng-if="logged" data-ng-controller="ExternalDebts" data-ng-include="'app/views/extdebts.html'"></div>
 
-        <div ng-if="appError">
-            <div class="container" style="margin-top: 2em">
-                <div class="col-sm-6 col-sm-offset-3">
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Error de aplicación</h3>
-                        </div>
-                        <div class="panel-body">
-                            <p>Ha ocurrido un error en la aplicación. Por favor contacte a un administrador.</p>
-                            <small class="text-muted text-xs"><samp>{{appError}}</samp></small>
-                        </div>
+        <div class="container" data-ng-if="appError" style="margin-top: 2em">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Error de aplicación</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>Ha ocurrido un error en la aplicación. Por favor contacte a un administrador.</p>
+                        <small class="text-muted text-xs"><samp>{{appError}}</samp></small>
                     </div>
                 </div>
             </div>

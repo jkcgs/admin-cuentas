@@ -3,84 +3,83 @@
 
     angular
         .module('app')
-        .controller('ExternalDebts', ['$rootScope', '$timeout', 'external', ExternalDebts])
+        .controller('ExternalDebts', ['$scope', '$timeout', 'external', ExternalDebts])
 
-    function ExternalDebts($rootScope, $timeout, external) {
-        var vm = this;
+    function ExternalDebts($scope, $timeout, external) {
 
-        vm.loadingDebts = false;
-        vm.dataDebts = null;
-        vm.errorDebts = false;
+        $scope.loadingDebts = false;
+        $scope.dataDebts = null;
+        $scope.errorDebts = false;
 
-        vm.loadingAccs = false;
-        vm.dataAccs = null;
-        vm.errorAccs = false;
+        $scope.loadingAccs = false;
+        $scope.dataAccs = null;
+        $scope.errorAccs = false;
 
-        vm.loadDebts = function() {
-            if (vm.loadingDebts) return;
+        $scope.loadDebts = function() {
+            if ($scope.loadingDebts) return;
 
-            vm.loadingDebts = true;
-            vm.errorDebts = false;
+            $scope.loadingDebts = true;
+            $scope.errorDebts = false;
             external.getCreditDebts().success(function(res) {
-                vm.loadingDebts = false;
+                $scope.loadingDebts = false;
                 if (!res.success) {
-                    vm.errorDebts = res.message;
+                    $scope.errorDebts = res.message;
                     return;
                 }
 
-                vm.dataDebts = res.data;
+                $scope.dataDebts = res.data;
             }).error(function(res) {
-                vm.errorDebts = "No se pudo cargar los datos. Por favor intenta nuevamente.";
-                vm.loadingDebts = false;
+                $scope.errorDebts = "No se pudo cargar los datos. Por favor intenta nuevamente.";
+                $scope.loadingDebts = false;
             });
         };
 
-        vm.loadAccs = function() {
-            if (vm.loadingAccs) return;
+        $scope.loadAccs = function() {
+            if ($scope.loadingAccs) return;
 
-            vm.loadingAccs = true;
-            vm.errorAccs = false;
+            $scope.loadingAccs = true;
+            $scope.errorAccs = false;
             external.getBankAccounts().success(function(res) {
-                vm.loadingAccs = false;
+                $scope.loadingAccs = false;
                 if (!res.success) {
-                    vm.errorAccs = res.message;
+                    $scope.errorAccs = res.message;
                     return;
                 }
 
-                vm.dataAccs = res.data;
+                $scope.dataAccs = res.data;
             }).error(function(res) {
-                vm.errorAccs = "No se pudo cargar los datos. Por favor intenta nuevamente.";
-                vm.loadingAccs = false;
+                $scope.errorAccs = "No se pudo cargar los datos. Por favor intenta nuevamente.";
+                $scope.loadingAccs = false;
             });
         };
 
-        vm.load = function() {
-            vm.loadDebts();
-            vm.loadAccs();
+        $scope.load = function() {
+            $scope.loadDebts();
+            $scope.loadAccs();
         };
 
-        vm.loadCurrent = function() {
+        $scope.loadCurrent = function() {
             var el = document.querySelector('#ext-debts .tab-pane.active');
             if(!el) return;
 
             if(el.id == "ext-credito") {
-                vm.loadDebts();
+                $scope.loadDebts();
             } else if(el.id == "ext-saldos") {
-                vm.loadAccs();
+                $scope.loadAccs();
             }
         };
 
-        vm.init = function() {
+        $scope.init = function() {
             $('#ext-debts').on('show.bs.modal', function(e) {
-                if (vm.dataDebts === null){
-                    vm.loadDebts();
+                if ($scope.dataDebts === null){
+                    $scope.loadDebts();
                 }
-                if (vm.dataAccs === null){
-                    vm.loadAccs();
+                if ($scope.dataAccs === null){
+                    $scope.loadAccs();
                 }
             });
             
-            $('#ext-debts a[role=tab]').click(function(e) {
+            $('a[role=tab]').click(function(e) {
                 e.preventDefault();
                 $(this).tab('show');
             });
