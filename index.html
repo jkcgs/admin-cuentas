@@ -16,20 +16,7 @@
         <div data-menubar data-ng-if="logged" data-ng-hide="appError" data-dolar="{{dolar}}" ></div>
         <div data-ng-view data-ng-hide="appError"></div>
         <div data-ng-if="logged" data-ng-controller="ExternalDebts" data-ng-include="'app/views/extdebts.html'"></div>
-
-        <div class="container" data-ng-if="appError" style="margin-top: 2em">
-            <div class="col-sm-6 col-sm-offset-3">
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Error de aplicación</h3>
-                    </div>
-                    <div class="panel-body">
-                        <p>Ha ocurrido un error en la aplicación. Por favor contacte a un administrador.</p>
-                        <small class="text-muted text-xs"><samp>{{appError}}</samp></small>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div data-ng-if="appError" data-ng-include="'app/views/apperror.html'"></div>
 
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
