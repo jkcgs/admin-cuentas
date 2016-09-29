@@ -2,18 +2,24 @@
 -- version 4.6.4
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 28-09-2016 a las [muy tarde]
--- Versión del servidor: 10.1.17-MariaDB
--- Versión de PHP: 7.0.11
+-- Host: localhost
+-- Generation Time: Sep 29, 2016 at 04:23 PM
+-- Server version: 10.1.17-MariaDB
+-- PHP Version: 7.0.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `cuentas`
+-- Table structure for table `cuentas`
 --
 
 CREATE TABLE `cuentas` (
@@ -34,7 +40,22 @@ CREATE TABLE `cuentas` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `deudas`
+-- Table structure for table `cuenta_bancaria`
+--
+
+CREATE TABLE `cuenta_bancaria` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `tipo` int(10) UNSIGNED NOT NULL,
+  `usuario_id` int(10) UNSIGNED NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  `user` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `deudas`
 --
 
 CREATE TABLE `deudas` (
@@ -50,7 +71,7 @@ CREATE TABLE `deudas` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `deudores`
+-- Table structure for table `deudores`
 --
 
 CREATE TABLE `deudores` (
@@ -62,7 +83,26 @@ CREATE TABLE `deudores` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuarios`
+-- Table structure for table `tipo_cuenta_bancaria`
+--
+
+CREATE TABLE `tipo_cuenta_bancaria` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `nombre` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tipo_cuenta_bancaria`
+--
+
+INSERT INTO `tipo_cuenta_bancaria` (`id`, `nombre`) VALUES
+(1, 'Débito'),
+(2, 'Crédito');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `usuarios`
 --
 
 CREATE TABLE `usuarios` (
@@ -72,18 +112,27 @@ CREATE TABLE `usuarios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Índices para tablas volcadas
+-- Indexes for dumped tables
 --
 
 --
--- Indices de la tabla `cuentas`
+-- Indexes for table `cuentas`
 --
 ALTER TABLE `cuentas`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_cuentas_usuarios_idx` (`usuario_id`);
 
 --
--- Indices de la tabla `deudas`
+-- Indexes for table `cuenta_bancaria`
+--
+ALTER TABLE `cuenta_bancaria`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_UNIQUE` (`id`),
+  ADD KEY `fk_cuenta_bancaria_tipo_cuenta_bancaria1_idx` (`tipo`),
+  ADD KEY `fk_cuenta_bancaria_usuarios1_idx` (`usuario_id`);
+
+--
+-- Indexes for table `deudas`
 --
 ALTER TABLE `deudas`
   ADD PRIMARY KEY (`id`),
@@ -91,55 +140,63 @@ ALTER TABLE `deudas`
   ADD KEY `fk_deudas_deudores1_idx` (`deudor`);
 
 --
--- Indices de la tabla `deudores`
+-- Indexes for table `deudores`
 --
 ALTER TABLE `deudores`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `usuarios`
+-- Indexes for table `tipo_cuenta_bancaria`
+--
+ALTER TABLE `tipo_cuenta_bancaria`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_UNIQUE` (`id`);
+
+--
+-- Indexes for table `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `users_user_idx` (`user`);
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de la tabla `cuentas`
+-- AUTO_INCREMENT for table `cuenta_bancaria`
 --
-ALTER TABLE `cuentas`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
+ALTER TABLE `cuenta_bancaria`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
--- AUTO_INCREMENT de la tabla `deudas`
+-- AUTO_INCREMENT for table `tipo_cuenta_bancaria`
 --
-ALTER TABLE `deudas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+ALTER TABLE `tipo_cuenta_bancaria`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
--- AUTO_INCREMENT de la tabla `deudores`
---
-ALTER TABLE `deudores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
---
--- AUTO_INCREMENT de la tabla `usuarios`
---
-ALTER TABLE `usuarios`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- Restricciones para tablas volcadas
+-- Constraints for dumped tables
 --
 
 --
--- Filtros para la tabla `cuentas`
+-- Constraints for table `cuentas`
 --
 ALTER TABLE `cuentas`
   ADD CONSTRAINT `fk_cuentas_usuarios` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `deudas`
+-- Constraints for table `cuenta_bancaria`
+--
+ALTER TABLE `cuenta_bancaria`
+  ADD CONSTRAINT `fk_cuenta_bancaria_tipo_cuenta_bancaria1` FOREIGN KEY (`tipo`) REFERENCES `tipo_cuenta_bancaria` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_cuenta_bancaria_usuarios1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `deudas`
 --
 ALTER TABLE `deudas`
   ADD CONSTRAINT `fk_deudas_deudores1` FOREIGN KEY (`deudor`) REFERENCES `deudores` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_deudas_usuarios1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
