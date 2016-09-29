@@ -15,7 +15,6 @@ if(isset($_POST['untext'])) {
     die(Encryption::decrypt($_POST["untext"], $_POST["unkey"]));
 }
 
-
 if(isset($_POST['md5text'])) {
     die(md5($_POST['md5text']));
 }

@@ -2,7 +2,7 @@
 require_once("includes/base_bank.php");
 use PHPHtmlParser\Dom;
 
-class Estado extends Bank {
+class Bank_Estado extends Bank {
     protected $bank_name = "Banco Estado";
 
     private $url_prefix = "https://bancapersonas.bancoestado.cl/eBankingBech/";

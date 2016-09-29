@@ -1,7 +1,7 @@
 <?php defined("INCLUDED") or die("Denied"); try_logged();
 require_once("includes/base_bank.php");
 
-class Santander extends Bank {
+class Bank_Santander extends Bank {
     protected $bank_name = "Banco Santander";
 
     private $url_prefix = "https://www.santander.cl/";

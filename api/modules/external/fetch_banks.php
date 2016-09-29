@@ -19,7 +19,7 @@ foreach($bank_accounts as $acc) {
     $bpath = "includes/banks/{$acc["bank"]}.php";
     if(file_exists($bpath)) {
         require_once($bpath);
-        $bn = ucfirst($acc["bank"]);
+        $bn = "Bank_" . ucfirst($acc["bank"]);
         $bank_ins[] = new $bn($acc["user"], $acc["pass"]);
     }
 }
