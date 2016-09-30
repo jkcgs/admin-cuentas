@@ -11,10 +11,15 @@
                 callback = callback || function(){};
 
                 $http.get('api/?session/logged').then(function(response){
-                    var res = checkData(response.data, true);
-                    $rootScope.logged = res.data.logged;
+                    try {
+                        var res = checkData(response.data, true);
+                        $rootScope.logged = res.data.logged;
 
-                    callback($rootScope.logged, null);
+                        callback($rootScope.logged, null);
+                    } catch(e) {
+                        $rootScope.logged = false;
+                        callback(false, e);
+                    }
                 }).catch(function(cause){
                     $rootScope.logged = false;
                     callback(false, cause);

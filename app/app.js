@@ -22,24 +22,25 @@
                 'responseError': function(response) {
                     if (response.status == 401){
                         location.hash = "!/login";
-                    } else {
-                        var error = "Error desconocido";
-                        if("data" in response) {
-                            if("message" in response.data) {
-                                error = response.data.message;
-                            } else {
-                                error = response.data;
-                            }
-                        } else if("message" in response) {
-                            error = response.message;
-                        } else if(typeof response == "string") {
-                            error = response;
-                        }
-                        
-                        console.log("Error: " + error);
+                        return $q.reject("Sesión no iniciada");
                     }
-                    
-                    return $q.reject(response);
+
+                    var error = "Error desconocido";
+                    if (typeof response == "string") {
+                        error = response;
+                    } else if ("data" in response) {
+                        if (typeof response.data == "object" && "message" in response.data) {
+                            error = response.data.message;
+                        } else if(response.data.trim() == "File not found.") {
+                            error = "El backend no está funcionando.";
+                        } else {
+                            error = response.data;
+                        }
+                    } else if("message" in response) {
+                        error = response.message;
+                    }
+
+                    return $q.reject(error);
                 }
             };
         });
