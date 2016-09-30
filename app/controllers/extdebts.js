@@ -27,7 +27,7 @@
                     return;
                 }
 
-                $scope.dataDebts = res.data;
+                $scope.dataDebts = res.data[0];
             }).error(function(res) {
                 $scope.errorDebts = "No se pudo cargar los datos. Por favor intenta nuevamente.";
                 $scope.loadingDebts = false;

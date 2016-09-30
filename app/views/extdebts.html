@@ -19,7 +19,11 @@
                 
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="ext-credito">
-                            <div class="table-responsive" ng-hide="loadingDebts || dataDebts.length == 0 || errorDebts">
+                            <div ng-if="!loadingDebts && dataDebts.balanceUsed" class="text-center">
+                                Saldo utilizado: {{dataDebts.balanceUsed | formatMoney}} -
+                                Disponible: {{dataDebts.balanceAvailable | formatMoney}}
+                            </div>
+                            <div class="table-responsive" ng-hide="loadingDebts || dataDebts.accounts.length == 0 || errorDebts">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
@@ -30,7 +34,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="account in dataDebts">
+                                        <tr ng-repeat="account in dataDebts.accounts">
                                             <td>{{account.comercio}}</td>
                                             <td>{{account.fecha}}</td>
                                             <td>{{account.valor | formatMoney}}</td>

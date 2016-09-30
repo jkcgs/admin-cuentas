@@ -1,12 +1,11 @@
 <?php defined("INCLUDED") or die("Denied"); try_logged();
-require_once("includes/base_bank.php");
+
+require_once __DIR__ . "/../base_bank.php";
 use PHPHtmlParser\Dom;
 
 class Bank_Estado extends Bank {
     protected $bank_name = "Banco Estado";
-
     private $url_prefix = "https://bancapersonas.bancoestado.cl/eBankingBech/";
-    //private $url_home = "home/home.htm";
 
     function login() {
         $loginform = $this->url_prefix . "login/login.htm";

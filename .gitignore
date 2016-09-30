@@ -3,4 +3,5 @@ api/config.php
 api/composer.lock
 api/vendor/
 api/tmp/
+api/modules/tests/
 .idea/

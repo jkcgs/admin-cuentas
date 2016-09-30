@@ -1,5 +1,7 @@
 <?php defined("INCLUDED") or die("Denied"); try_logged();
-require_once("includes/base_bank.php");
+
+require_once __DIR__ . "/../base_bank.php";
+use PHPHtmlParser\Dom;
 
 class Bank_Santander extends Bank {
     protected $bank_name = "Banco Santander";
@@ -30,31 +32,30 @@ class Bank_Santander extends Bank {
             return false;
         }
 
-        $data = $this->curl->get($this->url_prefix . "transa/productos/tt/mis_productos/miscuentas_inicio-v2.asp");
-        if(!$data || !strpos($data, "name='numcuenta'")) {
+        $data = $this->curl->get($this->url_prefix . "transa/productos/saldoC/SaldoCnvo/saldoc.asp");
+        $dom = new Dom;
+        $dom->load($data);
+
+        if(!$data || !strpos($data, "Saldos Consolidados")) {
             // Página incorrecta recibida
             throw new \Exception("Wrong page received");
         }
 
-        $cuentas = [];
-        preg_match_all("/pasacuenta\(.*\)/", $data, $cuentas);
-        for($i = 0; $i < count($cuentas); $i++) {
-            if(!isset($cuentas[$i][0])) {
-                continue;
-            }
+        $cuentas_resp = [];
+        $dom_rows = $dom->find("table table")[0]->find("tr");
 
-            $pasacuenta = str_replace("'", "\"", text_find($cuentas[$i][0], "pasacuenta(", ")"));
-            $decoded = json_decode("[" . $pasacuenta . "]");
+        for($i = 3; $i < count($dom_rows); $i++) {
+            $tds = $dom_rows[$i]->find("td");
 
-            $cuentas[$i] = [
-                "type" => trim($decoded[2]),
-                "number" => trim($decoded[0]),
-                "balance" => $decoded[3],
-                "bank" => $this->bank_name
+            $cuentas_resp[] = [
+                "type" => trim($tds[0]->text),
+                "number" => trim(str_replace("-", "", $tds[1]->text)),
+                "balance" => intval(trim($tds[4]->text)),
+                "bank" => trim($this->bank_name)
             ];
         }
 
-        return $cuentas;
+        return $cuentas_resp;
     }
 
     function logout() {

@@ -4,6 +4,7 @@ use PHPHtmlParser\Dom;
 
 class Credit_Ripley extends Bank {
     protected $url_prefix = "https://www.tarjetaripley.cl/tarjeta/";
+    protected $bank_name = "Ripley";
 
     function login() {
         $data = array(
@@ -32,9 +33,8 @@ class Credit_Ripley extends Bank {
 
         $url_movimientos = $this->url_prefix . "movimientos/movimientos.do";
         $movimientos = $this->curl->get($url_movimientos);
-        $this->logout();
 
-        if(!$movimientos) {
+        if(!$movimientos || !strpos($movimientos, "&nbsp;/ Movimientos")) {
             return false;
         }
 
@@ -71,6 +71,29 @@ class Credit_Ripley extends Bank {
             }
         }
 
-        return array_reverse($cuentas);
+        $data = [
+            "name" => $this->bank_name,
+            "accounts" => array_reverse($cuentas)
+        ];
+
+        // Saldos
+        $url_saldos = $this->url_prefix . "saldo/saldo.do?_r=550432025871";
+        $cont_saldos = $this->curl->get($url_saldos);
+
+        if($cont_saldos && strpos($cont_saldos, "&nbsp;/ Saldo")) {
+            $dom = new Dom;
+            $dom->load($cont_saldos);
+
+            $tds = $dom->find("table")[0]->find("tr")[1]->find("td");
+            $saldos = [
+                "balanceUsed" => intval(preg_replace("/[^0-9]/", "", $tds[0]->text)),
+                "balanceAvailable" => intval(preg_replace("/[^0-9]/", "", $tds[1]->text))
+            ];
+
+            $data = array_merge($data, $saldos);
+        }
+
+        $this->logout();
+        return [$data];
     }
 }

@@ -1,8 +1,7 @@
 <?php defined("INCLUDED") or die("Denied"); try_logged();
 
-$BASEPATH = dirname(__FILE__) . "/../../";
-require_once $BASEPATH . "includes/database.php";
-require_once $BASEPATH . "includes/encryption.class.php";
+require_once __DIR__ . "/../../includes/database.php";
+require_once __DIR__ . "/../../includes/encryption.class.php";
 
 $type_id = count($route_args) > 0 ? trim($route_args[0]) : "";
 
@@ -65,11 +64,11 @@ foreach ($accounts as $acc) {
     $class_name = $mod_prefix . ucfirst($acc['nombre']);
     $ins = new $class_name($acc['user'], $acc['password']);
 
-    $response = $ins->getAccounts();
+    $response = $ins->getAccounts(true);
     @$ins->logout();
 
     if($response && count($response) > 0) {
-        $acc_data[] = $response;
+        $acc_data = array_merge($acc_data, $response);
     } else {
         throw_error($response);
     }
