@@ -35,7 +35,7 @@ class Credit_Ripley extends Bank {
         $this->logout();
 
         if(!$movimientos) {
-            throw_error("No se pudo obtener los datos externos");
+            return false;
         }
 
         // Parsear página buscando movimientos
