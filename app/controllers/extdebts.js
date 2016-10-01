@@ -27,7 +27,11 @@
                     return;
                 }
 
-                $scope.dataDebts = res.data[0];
+                if(res.data.length > 0) {
+                    $scope.dataDebts = res.data;
+                } else {
+                    $scope.errorDebts = "No se han configurado cuentas remotas.";
+                }
             }).error(function(res) {
                 $scope.errorDebts = "No se pudo cargar los datos. Por favor intenta nuevamente.";
                 $scope.loadingDebts = false;
@@ -46,7 +50,11 @@
                     return;
                 }
 
-                $scope.dataAccs = res.data;
+                if(res.data.length > 0) {
+                    $scope.dataAccs = res.data;
+                } else {
+                    $scope.errorAccs = "No se han configurado cuentas remotas.";
+                }
             }).error(function(res) {
                 $scope.errorAccs = "No se pudo cargar los datos. Por favor intenta nuevamente.";
                 $scope.loadingAccs = false;

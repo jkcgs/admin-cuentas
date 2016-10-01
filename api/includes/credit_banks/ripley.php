@@ -73,7 +73,8 @@ class Credit_Ripley extends Bank {
 
         $data = [
             "name" => $this->bank_name,
-            "accounts" => array_reverse($cuentas)
+            "accounts" => array_reverse($cuentas),
+            "user" => $this->user
         ];
 
         // Saldos

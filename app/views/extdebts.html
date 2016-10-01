@@ -19,35 +19,41 @@
                 
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="ext-credito">
-                            <div ng-if="!loadingDebts && dataDebts.balanceUsed" class="text-center">
-                                Saldo utilizado: {{dataDebts.balanceUsed | formatMoney}} -
-                                Disponible: {{dataDebts.balanceAvailable | formatMoney}}
-                            </div>
-                            <div class="table-responsive" ng-hide="loadingDebts || dataDebts.accounts.length == 0 || errorDebts">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Comercio</th>
-                                            <th>Fecha</th>
-                                            <th>Monto</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="account in dataDebts.accounts">
-                                            <td>{{account.comercio}}</td>
-                                            <td>{{account.fecha}}</td>
-                                            <td>{{account.valor | formatMoney}}</td>
-                                            <td>
-                                                <a href="javascript:;" class="btn btn-xs btn-primary" data-ng-click="addAccount(account)">
-                                                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <div ng-repeat="debts in dataDebts">
+                                <h4 class="text-center">Cuenta: {{debts.name}} {{debts.user}}</h4>
+                                <p ng-if="!loadingDebts && debts.balanceUsed" class="text-center">
+                                    Utilizado: <strong>{{debts.balanceUsed | formatMoney}}</strong> -
+                                    Disponible: <strong>{{debts.balanceAvailable | formatMoney}}</strong>
+                                </p>
+                                <div class="table-responsive" ng-if="debts.accounts.length > 0">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Comercio</th>
+                                                <th>Fecha</th>
+                                                <th>Monto</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="account in debts.accounts">
+                                                <td>{{account.comercio}}</td>
+                                                <td>{{account.fecha}}</td>
+                                                <td>{{account.valor | formatMoney}}</td>
+                                                <td>
+                                                    <a href="javascript:;" class="btn btn-xs btn-primary" 
+                                                        data-ng-click="addAccount(account)" title="Agregar como cuenta">
 
+                                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
                             <div ng-if="loadingDebts" class="text-center"><span class="mini-loading"></span> Cargando...</div>
                             <div ng-if="!loadingDebts && dataDebts.length == 0">
                                 <p>No se cargaron cuentas</p>
@@ -55,7 +61,6 @@
 
                             <div ng-if="errorDebts && !loadingDebts" class="alert alert-danger text-center">
                                 <strong>Error</strong>: {{errorDebts}}
-                                <p>Intenta nuevamente.</p>
                             </div>
                         </div>
 
