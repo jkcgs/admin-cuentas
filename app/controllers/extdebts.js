@@ -3,7 +3,7 @@
 
     angular
         .module('app')
-        .controller('ExternalDebts', ['$scope', '$timeout', 'external', ExternalDebts])
+        .controller('ExternalDebts', ['$scope', '$timeout', 'external', ExternalDebts]);
 
     function ExternalDebts($scope, $timeout, external) {
 
@@ -14,6 +14,13 @@
         $scope.loadingAccs = false;
         $scope.dataAccs = null;
         $scope.errorAccs = false;
+
+        $scope.accounts = [];
+        $scope.addAccountType = "1";
+        
+        external.getAccounts().then(function(res) {
+            $scope.accountsData = res.data.data;
+        });
 
         $scope.loadDebts = function() {
             if ($scope.loadingDebts) return;
@@ -92,8 +99,6 @@
                 $(this).tab('show');
             });
         };
-
-
     }
 
 }());

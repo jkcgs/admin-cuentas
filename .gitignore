@@ -1,4 +1,5 @@
 # Config file
+database.mwb.bak
 api/config.php
 api/composer.lock
 api/vendor/

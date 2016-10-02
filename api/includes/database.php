@@ -45,7 +45,7 @@ if(!$db->select_db($config['db_name'])) {
     exit;
 }
 
-function dbGetAll($q) {
+function db_fetch_all($q) {
     $r = array();
     while ($row = $q->fetch_assoc()) {
 	    $r[] = $row;

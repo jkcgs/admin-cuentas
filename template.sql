@@ -108,7 +108,9 @@ INSERT INTO `tipo_cuenta_bancaria` (`id`, `nombre`) VALUES
 CREATE TABLE `usuarios` (
   `id` int(10) UNSIGNED NOT NULL,
   `user` varchar(30) NOT NULL,
-  `password` varchar(60) NOT NULL
+  `password` varchar(60) NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `is_admin` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

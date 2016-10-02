@@ -16,6 +16,6 @@ if(!$q2) {
 
 echo json_encode([
     "success" => true,
-    "debtors" => dbGetAll($q1),
-    "debts" => dbGetAll($q2)
+    "debtors" => db_fetch_all($q1),
+    "debts" => db_fetch_all($q2)
 ]);

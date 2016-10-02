@@ -8,15 +8,19 @@
     function external($http){
         return {
             getCreditDebts: function(){
-                return $http.get('api/?bank_accounts/2');
+                return $http.get('api/?bank_accounts/load/2');
             },
 
             getBankAccounts: function() {
-                return $http.get('api/?bank_accounts/1');
+                return $http.get('api/?bank_accounts/load/1');
             },
 
             getDolar: function() {
                 return $http.get('api/?external/dolar');
+            },
+
+            getAccounts: function() {
+                return $http.get('api/?bank_accounts/get_all');
             }
         };
     }
