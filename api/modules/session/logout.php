@@ -2,6 +2,8 @@
 
 session_destroy();
 $_SESSION['logged'] = false;
-$_SESSION['logged_user'] = null;
+$_SESSION['logged_id'] = null;
 
-echo json_data(["logged" => $_SESSION['logged'], "user" => $_SESSION['logged_user']]);
+throw_data([
+    "logged" => $_SESSION['logged']
+]);

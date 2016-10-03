@@ -1,42 +1,36 @@
 <?php defined("INCLUDED") or die("Denied");
 
+// Incluye funciones que no tienen dependencias de otros
+// archivos o librerías
+
+// Inicializa una variable de sesión
 function session_var_init($key, $val) {
     if(!isset($_SESSION[$key])) {
         $_SESSION[$key] = $val;
     }
 }
 
-function throw_error($msg, $data = null) {
-    $m = json_encode([
-        "success" => false,
-        "message" => $msg,
+// Muestra datos JSON y termina el proceso
+function throw_data($data, $success = true, $message = null) {
+    die(json_encode([
+        "success" => $success,
+        "message" => $message,
         "data" => $data
-    ]);
-
-    die($m);
+    ]));
 }
 
+// Muestra datos JSON con flag de éxito
 function throw_success($data = null) {
-    $res = ["success" => true];
-    if($data != null) {
-        $res["data"] = $data;
-    }
-
-    die(json_encode($res));
+    throw_data($data);
 }
 
-function json_data($data) {
-    return json_encode([
-        "success" => true,
-        "message" => null,
-        "data" => $data
-    ]);
+// Muestra un error vía JSON
+function throw_error($msg, $data = null) {
+    throw_data($data, false, $msg);
 }
 
-function throw_data($data) {
-    die(json_data($data));
-}
-
+// Si no se ha iniciado sesión, se genera un error con
+// un estado HTTP 401 (no autorizado)
 function try_logged() {
     if(!isset($_SESSION['logged']) || !$_SESSION['logged']) {
         header("HTTP/1.1 401 Unauthorized");

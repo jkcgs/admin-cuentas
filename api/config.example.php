@@ -1,6 +1,6 @@
 <?php defined("INCLUDED") or die();
 
-$config = [
+return [
     'maintenance' => false,
 
     # Datos de base de datos

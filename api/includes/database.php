@@ -1,6 +1,6 @@
 <?php defined("INCLUDED") or die("Denied");
 if(!isset($config)) {
-    include dirname(__FILE__) . "/../config.php";
+    $config = include dirname(__FILE__) . "/../config.php";
 }
 
 // Se muestra en el mensaje de error cuando se utilizó configuración por defecto
@@ -23,7 +23,7 @@ if(empty($config['db_name'])) {
 
 $db_error = false;
 @$db = new mysqli($config['db_host'], $config['db_user'], $config['db_pass']);
-$def_info = $db_defaults ? " - Se utilizó configuración por defecto" : "";
+$def_info = $db_defaults ? " - Se utilizó configuración por defecto." : "";
 
 /* Renombrar errores */
 switch ($db->connect_errno) {
@@ -32,11 +32,11 @@ switch ($db->connect_errno) {
 		break;
 
 	case 1045:
-		throw_error("No se pudo conectar al servidor MySQL: Permiso denegado (usando contraseña)" . $db_defaults);
+		throw_error("No se pudo conectar al servidor MySQL: Permiso denegado (usando contraseña)" . $def_info);
 		break;
 	
 	default:
-		throw_error("Fallo al conectar a MySQL: #{$db->connect_errno} {$db->connect_error}" . $db_defaults);
+		throw_error("Fallo al conectar a MySQL: #{$db->connect_errno} {$db->connect_error}" . $def_info);
 		break;
 }
 
