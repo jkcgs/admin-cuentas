@@ -6,3 +6,4 @@ api/vendor/
 api/tmp/
 api/modules/tests/
 .idea/
+.DS_Store

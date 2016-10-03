@@ -38,6 +38,9 @@
                         }
                     } else if("message" in response) {
                         error = response.message;
+                        if(error.indexOf("Unexpected token <") === 0) {
+                            error = "Error en backend. Contacta a un administrador.";
+                        }
                     }
 
                     return $q.reject(error);

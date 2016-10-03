@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 29, 2016 at 04:23 PM
+-- Generation Time: Oct 03, 2016 at 07:12 PM
 -- Server version: 10.1.17-MariaDB
--- PHP Version: 7.0.10
+-- PHP Version: 7.0.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -59,7 +59,7 @@ CREATE TABLE `cuenta_bancaria` (
 --
 
 CREATE TABLE `deudas` (
-  `id` int(11) NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
   `usuario_id` int(10) UNSIGNED NOT NULL,
   `deudor` int(11) NOT NULL,
   `descripcion` text,
@@ -91,10 +91,6 @@ CREATE TABLE `tipo_cuenta_bancaria` (
   `nombre` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `tipo_cuenta_bancaria`
---
-
 INSERT INTO `tipo_cuenta_bancaria` (`id`, `nombre`) VALUES
 (1, 'Débito'),
 (2, 'Crédito');
@@ -122,6 +118,7 @@ CREATE TABLE `usuarios` (
 --
 ALTER TABLE `cuentas`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_UNIQUE` (`id`),
   ADD KEY `fk_cuentas_usuarios_idx` (`usuario_id`);
 
 --
@@ -138,6 +135,7 @@ ALTER TABLE `cuenta_bancaria`
 --
 ALTER TABLE `deudas`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_UNIQUE` (`id`),
   ADD KEY `fk_deudas_usuarios1_idx` (`usuario_id`),
   ADD KEY `fk_deudas_deudores1_idx` (`deudor`);
 
@@ -145,7 +143,8 @@ ALTER TABLE `deudas`
 -- Indexes for table `deudores`
 --
 ALTER TABLE `deudores`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_UNIQUE` (`id`);
 
 --
 -- Indexes for table `tipo_cuenta_bancaria`
@@ -159,21 +158,42 @@ ALTER TABLE `tipo_cuenta_bancaria`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_user_idx` (`user`);
+  ADD UNIQUE KEY `users_user_idx` (`user`),
+  ADD UNIQUE KEY `id_UNIQUE` (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
+-- AUTO_INCREMENT for table `cuentas`
+--
+ALTER TABLE `cuentas`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `cuenta_bancaria`
 --
 ALTER TABLE `cuenta_bancaria`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `deudas`
+--
+ALTER TABLE `deudas`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `deudores`
+--
+ALTER TABLE `deudores`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tipo_cuenta_bancaria`
 --
 ALTER TABLE `tipo_cuenta_bancaria`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `usuarios`
+--
+ALTER TABLE `usuarios`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Constraints for dumped tables

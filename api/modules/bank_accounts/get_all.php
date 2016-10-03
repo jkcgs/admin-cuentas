@@ -1,6 +1,5 @@
 <?php defined("INCLUDED") or die("Denied"); try_logged();
 
-
 $res_accounts = $db->query("SELECT id, tipo, nombre, user FROM cuenta_bancaria WHERE usuario_id = $UID;");
 if(!$res_accounts) {
     throw_error("Error de DB: " . $db->error);
