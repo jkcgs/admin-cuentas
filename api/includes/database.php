@@ -103,14 +103,20 @@ function get_by_id($obj, $id = true) {
 function delete_obj($obj, $id = true, $owner_id = null) {
     global $db;
     if($id === true) {
-        $id = verify_id($obj);
+        $id = verify_id($obj, $owner_id, $id);
     }
 
     if($owner_id) {
-        $s = $db->prepare("DELETE FROM $obj WHERE id = ? AND usuario_id = ?LIMIT 1");
+        $s = $db->prepare("DELETE FROM $obj WHERE id = ? AND usuario_id = ? LIMIT 1");
+        if(!$s) {
+            throw_error($db->error);
+        }
         $s->bind_param('ii', $id, $owner_id);
     } else {
         $s = $db->prepare("DELETE FROM $obj WHERE id = ? LIMIT 1");
+        if(!$s) {
+            throw_error($db->error);
+        }
         $s->bind_param('i', $id);
     }
     
@@ -151,11 +157,11 @@ function exists_obj($itm, $id, $owner_id = null) {
 }
 
 // Checks if an ID has been sent and if exists
-function verify_id($obj, $owner_id = null) {
-    if(!isset($_GET['id'])) {
+function verify_id($obj, $owner_id = null, $id = true) {
+    $id = $id === true && isset($_GET['id']) ? $_GET['id'] : $id;
+    if($id === null) {
         throw_error("ID no ingresado");
     } else {
-        $id = $_GET['id'];
         if((string)(int)$id != $id || !preg_match("/[0-9]/", $id)) {
             throw_error("ID no numérica");
         }

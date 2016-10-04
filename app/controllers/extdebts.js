@@ -3,9 +3,9 @@
 
     angular
         .module('app')
-        .controller('ExternalDebts', ['$scope', '$timeout', 'external', ExternalDebts]);
+            .controller('ExternalDebts', ['$scope', 'external', ExternalDebts]);
 
-    function ExternalDebts($scope, $timeout, external) {
+    function ExternalDebts($scope, external) {
 
         $scope.loadingDebts = false;
         $scope.dataDebts = null;
@@ -97,6 +97,48 @@
             $('a[role=tab]').click(function(e) {
                 e.preventDefault();
                 $(this).tab('show');
+            });
+        };
+
+        $scope.addAccount = function() {
+            if(!$scope.addAccountForm.$valid) {
+                return;
+            }
+
+            var data = $scope.addAccountData;
+            if(data.password != data.repass) {
+                alert("Las contraseñas no son iguales!");
+                return;
+            }
+
+            delete data.repass;
+
+            external.addAccount(data).success(function(res){
+                if(!res.success) {
+                    alert("No se pudo agregar la cuenta: " + res.message);
+                    return;
+                }
+
+                $scope.accountsData.accounts.push(res.data);
+                angular.element("[name=addAccountForm]")[0].reset();
+            }).error(function(reason){
+                alert("No se pudo agregar la cuenta: " + reason);
+            });
+        };
+
+        $scope.deleteAccount = function(id) {
+            external.deleteAccount(id).success(function(res) {
+                if(!res.success) {
+                    alert("Error al eliminar: " + res.message);
+                    return;
+                }
+
+                for(var i = 0; i < $scope.accountsData.accounts.length; i++) {
+                    if($scope.accountsData.accounts[i].id == id) {
+                        $scope.accountsData.accounts.splice(i, 1);
+                        break;
+                    }
+                }
             });
         };
     }

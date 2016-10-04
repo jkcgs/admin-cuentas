@@ -43,7 +43,7 @@
                                                 <td>{{account.fecha}}</td>
                                                 <td>{{account.valor | formatMoney}}</td>
                                                 <td>
-                                                    <a href="javascript:;" class="btn btn-xs btn-primary" data-ng-click="addAccount(account)" title="Agregar como cuenta">
+                                                    <a href="javascript:;" class="btn btn-xs btn-primary" data-ng-click="showAddAccount(account)" title="Agregar como cuenta">
 
                                                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                                         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
@@ -105,7 +105,6 @@
                                         <th>Tipo</th>
                                         <th>Nombre</th>
                                         <th>Usuario</th>
-                                        <th>Contraseña</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -114,11 +113,13 @@
                                         <td>{{account.tipo == 1 ? "Débito" : "Crédito"}}</td>
                                         <td>{{account.nombre}}</td>
                                         <td>{{account.user}}</td>
-                                        <td>&nbsp;</td>
-                                        <td><button class="btn btn-xs btn-primary">Editar</button></td>
+                                        <td>
+                                            <button class="btn btn-xs btn-primary">Editar</button>
+                                            <button class="btn btn-xs btn-danger" ng-click="deleteAccount(account.id)">Borrar</button>
+                                        </td>
                                     </tr>
                                     <tr ng-if="accountsData.accounts.length == 0">
-                                        <td colspan="5" class="text-center">No se cargaron cuentas</td>
+                                        <td colspan="4" class="text-center">No se cargaron cuentas</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -134,39 +135,47 @@
                                     </h3>
                                 </div>
                                 <div class="panel-collapse collapse" id="account-add">
-                                    <form action="" method="POST" role="form" class="panel-body">
+                                    <form role="form" class="panel-body" ng-submit="addAccount()" name="addAccountForm">
                                         <div class="form-group">
                                             <label for="addacc-type">Tipo de cuenta</label>
-                                            <select name="type" id="addacc-type" class="form-control" ng-model="addAccountType">
+                                            <select id="addacc-type" class="form-control" ng-model="addAccountData.tipo" required>
                                                 <option ng-repeat="type in accountsData.types" value="{{type.id}}">{{type.nombre}}</option>
                                             </select>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="addacc-bank">Banco</label>
-                                            <select name="bank" id="addacc-bank" class="form-control">
-                                                <option ng-repeat="bank in accountsData.banks | filter: {type: addAccountType}" 
+                                            <select id="addacc-bank" class="form-control" ng-model="addAccountData.nombre" required>
+                                                <option ng-repeat="bank in accountsData.banks | filter: {type: addAccountData.tipo}"
                                                     value="{{bank.id}}">{{bank.name}}</option>
                                             </select>
                                         </div>
                                         
                                         <div class="form-group">
                                             <label for="addacc-user">Usuario</label>
-                                            <input type="text" name="user" class="form-control" id="addacc-user">
+                                            <input type="text" class="form-control" id="addacc-user" ng-model="addAccountData.user" required>
                                         </div>
+
                                         <div class="form-group">
                                             <label for="addacc-pass">Contraseña</label>
-                                            <input type="password" name="pass" class="form-control" id="addacc-pass">
+                                            <input type="password" class="form-control" id="addacc-pass" ng-model="addAccountData.password" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="addacc-repass">Repetir contraseña</label>
+                                            <input type="password" class="form-control" id="addacc-repass" ng-model="addAccountData.repass" required>
                                         </div>
                                     
                                         <button type="submit" class="btn btn-primary">Agregar</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                                    </form> <!-- I don't hate this -->
+                                </div> <!-- I hate this - 9 in total -->
+                            </div> <!-- I hate this -->
+                        </div> <!-- I hate this -->
+                    </div> <!-- I hate this -->
+                </div> <!-- I hate this -->
+            </div> <!-- I hate this -->
+        </div> <!-- I hate this -->
+    </div> <!-- I hate this -->
+    {{ init() }}
+</div> <!-- I hate this -->
 
-        {{ init() }}

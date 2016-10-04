@@ -55,7 +55,7 @@
             });
         };
 
-        $rootScope.addAccount = function(data) {
+        $rootScope.showAddAccount = function(data) {
             $rootScope.accAddData = data;
             $('.modal').modal("hide");
 

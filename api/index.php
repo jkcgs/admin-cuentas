@@ -33,6 +33,7 @@ if (@!include("vendor/autoload.php")) {
 }
 
 // Inicializa la sesión
+$UID = null;
 session_var_init("logged", false);
 session_var_init("logged_id", false);
 if($_SESSION["logged_id"] !== false) {

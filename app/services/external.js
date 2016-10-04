@@ -21,6 +21,14 @@
 
             getAccounts: function() {
                 return $http.get('api/?bank_accounts/get_all');
+            },
+
+            addAccount: function(data) {
+                return $http.post('api/?bank_accounts/add', $.param(data));
+            },
+
+            deleteAccount: function(id) {
+                return $http.get('api/?bank_accounts/delete/' + id);
             }
         };
     }
