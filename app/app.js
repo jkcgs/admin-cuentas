@@ -3,12 +3,10 @@
 
     angular.module('app', [
         'ngRoute',
-        'ngCookies',
         'routeStyles'
     ])
     .config(config)
     .run(run)
-    .directive('menubar', menubar)
     .filter('formatMoney', formatMoney);
  
     config.$inject = ['$routeProvider', '$locationProvider', '$httpProvider'];
@@ -49,8 +47,8 @@
         });
     }
 
-    run.$inject = ['$rootScope', '$location', '$route', 'session', 'external'];
-    function run($rootScope, $location, $route, session, external) {
+    run.$inject = ['$rootScope', '$location', '$route', '$timeout', 'session', 'external'];
+    function run($rootScope, $location, $route, $timeout, session, external) {
         $rootScope.logout = function() {
             session.logout().then(function(){
                 $location.path("/login");
@@ -106,12 +104,9 @@
             } else {
                 if(daemon) setTimeout(fetchDolar, 10000);
             }
-        }
+        };
         fetchDolar();
-    }
 
-    menubar.$inject = ['$timeout'];
-    function menubar($timeout) {
         $timeout(function(){
             angular.element(document).ready(function() {
                 $(document).click(function (event) {
@@ -123,13 +118,6 @@
                 });
             });
         });
-
-        return {
-            templateUrl: "app/views/directives/menubar.html",
-            scope: {
-                'dolar': '@'
-            }
-        };
     }
 
     function formatMoney(){
