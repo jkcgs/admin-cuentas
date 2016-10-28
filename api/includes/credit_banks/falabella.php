@@ -91,8 +91,8 @@ class Credit_Falabella extends Bank {
             $disponible = $dom->find("[class=disponible_compra]")[3]->find("strong")[1]->text;
             $utilizado = $dom->find("[class=cupo_utilizado]")[3]->find("strong")[1]->text;
             $saldos = [
-                "balanceUsed" => intval(preg_replace("/[^0-9]/", "", $disponible)),
-                "balanceAvailable" => intval(preg_replace("/[^0-9]/", "", $utilizado))
+                "balanceUsed" => intval(preg_replace("/[^0-9]/", "", $utilizado)),
+                "balanceAvailable" => intval(preg_replace("/[^0-9]/", "", $disponible))
             ];
 
             $data = array_merge($data, $saldos);
