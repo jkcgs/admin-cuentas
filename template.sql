@@ -22,7 +22,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `cuentas`
 --
 
-CREATE TABLE `cuentas` (
+CREATE TABLE IF NOT EXISTS `cuentas` (
   `id` int(10) UNSIGNED NOT NULL,
   `usuario_id` int(10) UNSIGNED NOT NULL,
   `nombre` text NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE `cuentas` (
 -- Table structure for table `cuenta_bancaria`
 --
 
-CREATE TABLE `cuenta_bancaria` (
+CREATE TABLE IF NOT EXISTS `cuenta_bancaria` (
   `id` int(10) UNSIGNED NOT NULL,
   `tipo` int(10) UNSIGNED NOT NULL,
   `usuario_id` int(10) UNSIGNED NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE `cuenta_bancaria` (
 -- Table structure for table `deudas`
 --
 
-CREATE TABLE `deudas` (
+CREATE TABLE IF NOT EXISTS `deudas` (
   `id` int(11) UNSIGNED NOT NULL,
   `usuario_id` int(10) UNSIGNED NOT NULL,
   `deudor` int(11) NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE `deudas` (
 -- Table structure for table `deudores`
 --
 
-CREATE TABLE `deudores` (
+CREATE TABLE IF NOT EXISTS `deudores` (
   `id` int(11) NOT NULL,
   `nombre` text NOT NULL,
   `descripcion` text
@@ -86,7 +86,7 @@ CREATE TABLE `deudores` (
 -- Table structure for table `tipo_cuenta_bancaria`
 --
 
-CREATE TABLE `tipo_cuenta_bancaria` (
+CREATE TABLE IF NOT EXISTS `tipo_cuenta_bancaria` (
   `id` int(10) UNSIGNED NOT NULL,
   `nombre` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -101,7 +101,7 @@ INSERT INTO `tipo_cuenta_bancaria` (`id`, `nombre`) VALUES
 -- Table structure for table `usuarios`
 --
 
-CREATE TABLE `usuarios` (
+CREATE TABLE IF NOT EXISTS `usuarios` (
   `id` int(10) UNSIGNED NOT NULL,
   `user` varchar(30) NOT NULL,
   `password` varchar(60) NOT NULL,

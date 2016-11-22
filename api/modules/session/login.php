@@ -30,4 +30,7 @@ if($db->affected_rows < 1 || !password_verify($pass, $user_data['password'])) {
 $_SESSION["logged"] = true;
 $_SESSION["logged_id"] = $user_data['id'];
 
-throw_success();
+// Retornar datos de usuario
+$data = get_user_data();
+unset($data["password"]);
+throw_data($data);

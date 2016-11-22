@@ -16,8 +16,9 @@
         <!-- Main container -->
         <div data-ng-hide="appError">
             <div data-ng-include="'app/views/menubar.html'"></div>
-            <div data-ng-view ></div>
+            <div data-ng-view></div>
             <div data-ng-include="'app/views/extdebts.html'"></div>
+            <div data-ng-include="'app/views/users.html'"></div>
         </div>
 
         <!-- Error container -->
@@ -38,9 +39,11 @@
         <script src="app/controllers/accounts.js"></script>
         <script src="app/controllers/debtors.js"></script>
         <script src="app/controllers/extdebts.js"></script>
+        <script src="app/controllers/users.js"></script>
         <script src="app/services/session.js"></script>
         <script src="app/services/accounts.js"></script>
         <script src="app/services/debts.js"></script>
         <script src="app/services/external.js"></script>
+        <script src="app/services/users.js"></script>
     </body>
 </html>

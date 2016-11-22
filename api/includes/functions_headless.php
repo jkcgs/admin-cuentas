@@ -38,6 +38,16 @@ function try_logged() {
     }
 }
 
+function try_admin() {
+    try_logged();
+    require_once dirname(__FILE__) . "/database.php";
+    $user_data = get_user_data();
+    if($user_data == null || !$user_data['is_admin']) {
+        header("HTTP/1.1 401 Unauthorized");
+        throw_error("Not authorized");
+    }
+}
+
 function text_find($text, $init, $end = false, $reverse = false) {
 	$pos_init = $reverse ? strrpos($text, $init) : strpos($text, $init);
     $offset = $pos_init + strlen($init);

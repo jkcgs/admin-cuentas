@@ -14,6 +14,7 @@
                     try {
                         var res = checkData(response.data, true);
                         $rootScope.logged = res.data.logged;
+                        $rootScope.sessionInfo = res.data.user;
 
                         callback($rootScope.logged, null);
                     } catch(e) {
@@ -31,6 +32,7 @@
                 return $http.post('api/?session/login', $.param(d))
                     .then(function(res){
                         $rootScope.logged = !!res.success;
+                        $rootScope.sessionInfo = res.data.user;
                         return res;
                     });
             },

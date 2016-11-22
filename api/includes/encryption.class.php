@@ -33,7 +33,7 @@ class Encryption {
         }
 
         if(!function_exists("get_user_data")) {
-            require_once dirname(__FILE__) . "/database.php";
+            require_once dirname(__FILE__) . "/../includes/database.php";
         }
 
         $user_pass = md5(get_user_data()["password"]);
@@ -46,7 +46,7 @@ class Encryption {
         }
 
         if(!function_exists("get_user_data")) {
-            require_once dirname(__FILE__) . "/database.php";
+            require_once dirname(__FILE__) . "/../includes/database.php";
         }
 
         $user_pass = md5(get_user_data()["password"]);

@@ -27,7 +27,8 @@
                 <li class="visible-xs-block"><hr></li>
                 <li class="navbar-text hidden-xs" ng-if="dolar">Dólar: ${{dolar}}</li>
                 <li class="navbar-btn"><button class="btn btn-link" data-toggle="modal" data-target="#ext-debts">Externas</button></li>
-                <li class="navbar-btn"><button class="btn btn-link ng-click="$root.logout()">Cerrar sesión</button></li>
+                <li class="navbar-btn"><button class="btn btn-link" data-toggle="modal" data-target="#modal-users" ng-if="sessionInfo.is_admin">Usuarios</button></li>
+                <li class="navbar-btn"><button class="btn btn-link" ng-click="$root.logout()">Cerrar sesión ({{sessionInfo.user}})</button></li>
             </ul>
         </div>
     </div>
