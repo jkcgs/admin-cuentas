@@ -56,7 +56,6 @@
                 $scope.loaded = true;
 
                 if(!data.success) {
-                    alert(data.message);
                     return;
                 }
 

@@ -45,6 +45,9 @@ if(!$db->select_db($config['db_name'])) {
     exit;
 }
 
+// Usar UTF-8
+$db->query('SET CHARACTER SET utf8');
+
 function db_fetch_all($q) {
     $r = array();
     while ($row = $q->fetch_assoc()) {

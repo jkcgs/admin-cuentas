@@ -33,6 +33,12 @@
                     .then(function(res){
                         $rootScope.logged = !!res.success;
                         $rootScope.sessionInfo = res.data.user;
+
+                        $rootScope.$emit('loginAction', {
+                            logged: $rootScope.logged,
+                            sessionInfo: $rootScope.sessionInfo
+                        });
+
                         return res;
                     });
             },
