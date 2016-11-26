@@ -40,7 +40,7 @@ if ($data === false) {
 }
 
 $stmt = $db->prepare(
-    'INSERT INTO cuentas (nombre, user_id descripcion, fecha_compra, fecha_facturacion, '.
+    'INSERT INTO cuentas (nombre, usuario_id, descripcion, fecha_compra, fecha_facturacion, '.
     'monto_original, divisa_original, monto, num_cuotas, info, pagado) '.
     'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
 );
