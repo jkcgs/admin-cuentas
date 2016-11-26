@@ -280,7 +280,7 @@
             $scope.saving = true;
             $('[data-setpf-id="'+id+'"]').addClass("btn-loading");
 
-            debts.setPaidFor(id).success(function(res){
+            debts.setPaidFor(id, 1).success(function(res){
                 $scope.saving = false;
                 $('[data-setpf-id="'+id+'"]').removeClass("btn-loading");
                 if(!res.success) {
