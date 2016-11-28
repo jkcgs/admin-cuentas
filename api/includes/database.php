@@ -177,6 +177,21 @@ function verify_id($obj, $owner_id = null, $id = true) {
     }
 }
 
+function get_user($username) {
+    global $db;
+    $username = $db->escape_string($username);
+    $res = $db->query("SELECT * from usuarios WHERE user = \"$username\" LIMIT 1");
+
+    if(!$res) {
+        throw new Exception($db->error);
+    }
+
+    if($res && $res->num_rows > 0) {
+        return $res->fetch_assoc();
+    } else {
+        return null;
+    }
+}
 
 function get_user_data() {
     if(!isset($_SESSION['logged_id'])) {
