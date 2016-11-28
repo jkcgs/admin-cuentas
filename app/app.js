@@ -15,11 +15,11 @@
         $locationProvider.hashPrefix('!');
         $routeProvider.otherwise({ redirectTo: '/login' });
 
-        $httpProvider.interceptors.push(function($q) {
+        $httpProvider.interceptors.push(function($q, $location) {
             return {
                 'responseError': function(response) {
                     if (response.status == 401){
-                        location.hash = "!/login";
+                        $location.path("/login");
                         return $q.reject("Sesión no iniciada");
                     }
 
@@ -47,32 +47,28 @@
         });
     }
 
-    run.$inject = ['$rootScope', '$location', '$route', '$timeout', 'session', 'external'];
-    function run($rootScope, $location, $route, $timeout, session, external) {
+    run.$inject = ['$rootScope', '$location', '$route', '$timeout', 'Login', 'ExternalsService'];
+    function run($rootScope, $location, $route, $timeout, Login, ExternalsService) {
         $rootScope.logout = function() {
-            session.logout().then(function(){
+            Login.logout().then(function(){
                 $location.path("/login");
             });
         };
 
-        $rootScope.showAddAccount = function(data) {
-            $rootScope.accAddData = data;
-            $('.modal').modal("hide");
-
+        $rootScope.addAccount = function(data) {
             if($rootScope.path == "/accounts") {
-                $route.reload();
+                $rootScope.emit("addAccountAction", data);
             } else {
+                $rootScope.accAddData = data;
                 $location.path("/accounts");
             }
         };
 
         $rootScope.addDebt = function(data) {
-            $rootScope.debtAddData = data;
-            $('.modal').modal("hide");
-
             if($rootScope.path == "/debtors") {
-                $route.reload();
+                $rootScope.emit("addDebtAction", data);
             } else {
+                $rootScope.debtAddData = data;
                 $location.path("/debtors");
             }
         };
@@ -81,7 +77,7 @@
             var path = $location.path();
             $rootScope.path = path;
 
-            session.isLogged(function(logged, error){
+            Login.isLogged(function(logged, error){
                 fetchDolar(false);
 
                 if(error) {
@@ -97,7 +93,7 @@
 
             // No cargar dolar si no se ha iniciado sesión
             if($rootScope.logged) {
-                external.getDolar().success(function(res, status){
+                ExternalsService.getDolar().success(function(res, status){
                     $rootScope.dolar = res.data;
                     if(daemon) setTimeout(fetchDolar, 10000);
                 });

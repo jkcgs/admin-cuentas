@@ -61,8 +61,12 @@ foreach ($accounts as $acc) {
     $class_name = $mod_prefix . ucfirst($acc['nombre']);
     $ins = new $class_name($acc['user'], $acc['password']);
 
-    $response = $ins->getAccounts(true);
-    @$ins->logout();
+    try {
+        $response = $ins->getAccounts(true);
+        @$ins->logout();
+    } catch(Exception $e) {
+        throw_error($e->getMessage());
+    }
 
     if($response && count($response) > 0) {
         $acc_data = array_merge($acc_data, $response);

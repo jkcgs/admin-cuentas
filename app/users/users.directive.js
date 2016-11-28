@@ -1,9 +1,23 @@
 (function() {
-'use strict';
+    'use strict';
 
     angular
         .module('app')
-        .controller('UsersController', UsersController);
+        .directive('users', Users);
+
+    function Users() {
+        var directive = {
+            bindToController: true,
+            controller: UsersController,
+            controllerAs: 'vm',
+            restrict: 'A',
+            templateUrl: 'app/users/users.html'
+        };
+
+        return directive;
+    }
+
+    ////////////////
 
     UsersController.$inject = ['$rootScope', '$timeout', 'users'];
     function UsersController($rootScope, $timeout, users) {
@@ -16,12 +30,18 @@
 
         function activate() {
             $rootScope.$on('loginAction', function(data){
-                if(!data.logged || !data.sessionInfo.is_admin) {
-                    return false;
-                }
-
                 load();
             });
+
+            $rootScope.$on('logoutAction', function(){
+                vm.users = [];
+            });
+
+            $timeout(function(){
+                if($rootScope.logged && $rootScope.sessionInfo.is_admin) {
+                    load();
+                }
+            });            
         }
 
         function load() {
@@ -35,9 +55,5 @@
                 }
             );
         }
-
-        $timeout(function(){
-            load();
-        });
     }
 })();

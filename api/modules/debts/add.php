@@ -36,7 +36,7 @@ if(!$deudor) {
 
 $stmt = $db->prepare(
     'INSERT INTO deudas (usuario_id, deudor, descripcion, monto, fecha, pagada) '.
-    'VALUES (?, ?, ?, ?, ?)'
+    'VALUES (?, ?, ?, ?, ?, ?)'
 );
    
 if (!$stmt) {

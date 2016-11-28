@@ -17,8 +17,8 @@
         <div data-ng-hide="appError">
             <div data-ng-include="'app/views/menubar.html'"></div>
             <div data-ng-view></div>
-            <div data-ng-include="'app/views/extdebts.html'"></div>
-            <div data-ng-include="'app/views/users.html'"></div>
+            <div external-debts></div>
+            <div users></div>
         </div>
 
         <!-- Error container -->
@@ -33,17 +33,25 @@
         <script src="assets/js/angular-route.min.js"></script>
         <script src="assets/js/route-styles.js"></script>
 
-        <!-- Angular setup -->
+        <!-- Application -->
         <script src="app/app.js"></script>
-        <script src="app/controllers/login.js"></script>
-        <script src="app/controllers/accounts.js"></script>
-        <script src="app/controllers/debtors.js"></script>
-        <script src="app/controllers/extdebts.js"></script>
-        <script src="app/controllers/users.js"></script>
-        <script src="app/services/session.js"></script>
-        <script src="app/services/accounts.js"></script>
-        <script src="app/services/debts.js"></script>
-        <script src="app/services/external.js"></script>
-        <script src="app/services/users.js"></script>
+
+        <script src="app/accounts/accounts.config.js"></script>
+        <script src="app/accounts/accounts.controller.js"></script>
+        <script src="app/accounts/accounts.service.js"></script>
+
+        <script src="app/debts/debts.config.js"></script>
+        <script src="app/debts/debts.controller.js"></script>
+        <script src="app/debts/debts.service.js"></script>
+
+        <script src="app/login/login.config.js"></script>
+        <script src="app/login/login.controller.js"></script>
+        <script src="app/login/login.service.js"></script>
+
+        <script src="app/users/users.directive.js"></script>
+        <script src="app/users/users.service.js"></script>
+        
+        <script src="app/external-debts/external-debts.directive.js"></script>
+        <script src="app/external-debts/externals.service.js"></script>
     </body>
 </html>
