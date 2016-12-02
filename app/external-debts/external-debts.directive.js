@@ -10,6 +10,7 @@
             bindToController: true,
             controller: ExternalDebtsController,
             controllerAs: 'nyan',
+            link: link,
             restrict: 'A',
             templateUrl: 'app/external-debts/external-debts.html'
         };
@@ -19,8 +20,8 @@
 
     ////////////
 
-    ExternalDebtsController.$inject = ['$document', '$timeout', 'ExternalsService'];
-    function ExternalDebtsController($document, $timeout, ExternalsService) {
+    ExternalDebtsController.$inject = ['$scope', '$document', '$timeout', 'ExternalsService'];
+    function ExternalDebtsController($scope, $document, $timeout, ExternalsService) {
         var vm = this;
         vm.loadingDebts = false;
         vm.dataDebts = null;
@@ -46,21 +47,25 @@
                 vm.accountsData = res.data.data;
             });
 
-            $timeout(function(){
-                $document.find('#ext-debts').on('show.bs.modal', function(e) {                        
-                    if (vm.dataDebts === null){
-                        vm.loadDebts();
-                    } else {
-                        console.log("wut");
-                    }
-                    if (vm.dataAccs === null){
-                        vm.loadAccs();
-                    }
-                });
-                
-                $document.find('a[role=tab]').on('click', function(e) {
-                    e.preventDefault();
-                    $(this).tab('show');
+            angular.element(window).ready(function(){
+                $timeout(function(){
+                    $scope.$on('$viewContentLoaded', function(){
+                        $document.find('#ext-debts').on('show.bs.modal', function(e) {                        
+                            if (vm.dataDebts === null){
+                                vm.loadDebts();
+                            } else {
+                                console.log("wut");
+                            }
+                            if (vm.dataAccs === null){
+                                vm.loadAccs();
+                            }
+                        });
+                        
+                        $document.find('a[role=tab]').on('click', function(e) {
+                            e.preventDefault();
+                            $(this).tab('show');
+                        });
+                    }, 1000);
                 });
             });
             
