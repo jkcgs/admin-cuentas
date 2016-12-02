@@ -10,7 +10,6 @@
             bindToController: true,
             controller: ExternalDebtsController,
             controllerAs: 'nyan',
-            link: link,
             restrict: 'A',
             templateUrl: 'app/external-debts/external-debts.html'
         };
