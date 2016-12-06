@@ -1,4 +1,4 @@
-<div class="container" id="login" ng-hide="vm.logged">
+<div class="container" id="login" ng-hide="logged">
     <div class="col-sm-8 col-sm-offset-2 col-lg-4 col-lg-offset-4">
         <form ng-submit="vm.doLogin()" id="loginform" name="loginForm" method="POST" role="form" class="panel panel-default">
             <div class="panel-heading">
@@ -27,3 +27,8 @@
         &copy; 2016 Jonathan Gutiérrez<br />Todos los derechos reservados
     </footer>
 </div>
+
+<center class="loading-block" ng-if="logged">
+    <span class="mini-loading"></span><br>
+    Cargando...
+</center>
