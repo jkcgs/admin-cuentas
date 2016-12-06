@@ -49,31 +49,38 @@
 
     run.$inject = ['$rootScope', '$location', '$route', '$timeout', 'Login', 'ExternalsService'];
     function run($rootScope, $location, $route, $timeout, Login, ExternalsService) {
-        $rootScope.logout = function() {
-            Login.logout().then(function(){
-                $location.path("/login");
-            });
-        };
+        $rootScope.addAccount = addAccount;
+        $rootScope.addDebt = addDebt;
+        $rootScope.logout = logout;
+        $rootScope.$on('$locationChangeSuccess', onLocationChange);
 
-        $rootScope.addAccount = function(data) {
+        //////////////////
+
+        function addAccount(data) {
             if($rootScope.path == "/accounts") {
-                $rootScope.emit("addAccountAction", data);
+                $rootScope.$emit("addAccountAction", data);
             } else {
                 $rootScope.accAddData = data;
                 $location.path("/accounts");
             }
-        };
+        }
 
-        $rootScope.addDebt = function(data) {
+        function addDebt(data) {
             if($rootScope.path == "/debtors") {
-                $rootScope.emit("addDebtAction", data);
+                $rootScope.$emit("addDebtAction", data);
             } else {
                 $rootScope.debtAddData = data;
                 $location.path("/debtors");
             }
-        };
+        }
 
-        $rootScope.$on('$locationChangeSuccess', function(event){
+        function logout() {
+            Login.logout().then(function(){
+                $location.path("/login");
+            });
+        }
+
+        function onLocationChange(event){
             var path = $location.path();
             $rootScope.path = path;
 
@@ -86,7 +93,7 @@
                     $location.path("/accounts");
                 }
             });
-        });
+        }
 
         var fetchDolar = function(daemon) {
             if(typeof daemon == "undefined") daemon = true;

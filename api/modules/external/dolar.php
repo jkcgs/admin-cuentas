@@ -8,7 +8,7 @@ function dollar_get_cached() {
     global $cache_path;
     global $tmp_path;
     if(!is_dir($tmp_path)) {
-        if(!mkdir($tmp_path, 0777, true) || !chmod($tmp_path, 0777)) {
+        if(!@mkdir($tmp_path, 0777, true) || !@chmod($tmp_path, 0777)) {
             @rmdir($tmp_path);
             return null;
         }
@@ -23,7 +23,7 @@ function dollar_get_cached() {
 
 function dollar_set_cache($val) {
     global $cache_path;
-    if(!file_exists($cache_path) && !touch($cache_path)) {
+    if(!file_exists($cache_path) && @!touch($cache_path)) {
         return false;
     }
 

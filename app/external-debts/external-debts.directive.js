@@ -5,16 +5,39 @@
         .module('app')
         .directive('externalDebts', ExternalDebts);
 
-    function ExternalDebts() {
+    ExternalDebts.$inject = ["$timeout"];
+    function ExternalDebts($timeout) {
         var directive = {
             bindToController: true,
             controller: ExternalDebtsController,
             controllerAs: 'nyan',
+            link: link,
             restrict: 'A',
             templateUrl: 'app/external-debts/external-debts.html'
         };
 
         return directive;
+
+        function link(scope, element, attrs, controller) {
+            var d = angular.element(document);
+
+            $timeout(function(){
+                d.find('#ext-debts a[role=tab]').on('click', function(e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                });
+
+                d.find('#ext-debts').on('show.bs.modal', function(e) {
+                    if (controller.dataDebts === null){
+                        controller.loadDebts();
+                    }
+
+                    if (controller.dataAccs === null){
+                        controller.loadAccs();
+                    }
+                });
+            });
+        }
     }
 
     ////////////
@@ -44,30 +67,7 @@
         function activate() {
             ExternalsService.getAccounts().then(function(res) {
                 vm.accountsData = res.data.data;
-            });
-
-            angular.element(window).ready(function(){
-                $timeout(function(){
-                    $scope.$on('$viewContentLoaded', function(){
-                        $document.find('#ext-debts').on('show.bs.modal', function(e) {                        
-                            if (vm.dataDebts === null){
-                                vm.loadDebts();
-                            } else {
-                                console.log("wut");
-                            }
-                            if (vm.dataAccs === null){
-                                vm.loadAccs();
-                            }
-                        });
-                        
-                        $document.find('a[role=tab]').on('click', function(e) {
-                            e.preventDefault();
-                            $(this).tab('show');
-                        });
-                    }, 1000);
-                });
-            });
-            
+            });            
         }
         
         function addAccount() {

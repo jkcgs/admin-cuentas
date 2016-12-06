@@ -62,14 +62,13 @@
                     var data = angular.copy($rootScope.accAddData);
 
                     $rootScope.accAddData = null;
-                    $rootScope.emit("addAccountAction", data);
+                    $rootScope.$emit("addAccountAction", data);
                 }
             });
 
             // Receives new account data and shows the corresponding modal
-            $rootScope.$on('addAccountAction', function(data) {
+            $rootScope.$on('addAccountAction', function(ev, data) {
                 $('.modal').modal("hide");
-
                 var formData = {
                     nombre: data.comercio,
                     fecha_compra: new Date(data.fecha),
