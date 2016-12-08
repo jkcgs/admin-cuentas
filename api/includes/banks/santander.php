@@ -50,7 +50,7 @@ class Bank_Santander extends Bank {
             $cuentas_resp[] = [
                 "type" => trim($tds[0]->text),
                 "number" => trim(str_replace("-", "", $tds[1]->text)),
-                "balance" => intval(trim($tds[4]->text)),
+                "balance" => intval(str_replace(".", "", trim($tds[4]->text))),
                 "bank" => trim($this->bank_name)
             ];
         }

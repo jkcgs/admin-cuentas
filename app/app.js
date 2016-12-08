@@ -51,6 +51,7 @@
     function run($rootScope, $location, $route, $timeout, Login, ExternalsService) {
         $rootScope.addAccount = addAccount;
         $rootScope.addDebt = addDebt;
+        $rootScope.loadExternal = loadExternal;
         $rootScope.logout = logout;
         $rootScope.$on('$locationChangeSuccess', onLocationChange);
 
@@ -72,6 +73,10 @@
                 $rootScope.debtAddData = data;
                 $location.path("/debtors");
             }
+        }
+
+        function loadExternal() {
+            $rootScope.$emit("loadExternal");
         }
 
         function logout() {

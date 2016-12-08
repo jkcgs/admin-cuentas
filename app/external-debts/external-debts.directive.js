@@ -11,40 +11,19 @@
             bindToController: true,
             controller: ExternalDebtsController,
             controllerAs: 'nyan',
-            link: link,
             restrict: 'A',
             templateUrl: 'app/external-debts/external-debts.html'
         };
 
         return directive;
-
-        function link(scope, element, attrs, controller) {
-            var d = angular.element(document);
-
-            $timeout(function(){
-                d.find('#ext-debts a[role=tab]').on('click', function(e) {
-                    e.preventDefault();
-                    $(this).tab('show');
-                });
-
-                d.find('#ext-debts').on('show.bs.modal', function(e) {
-                    if (controller.dataDebts === null){
-                        controller.loadDebts();
-                    }
-
-                    if (controller.dataAccs === null){
-                        controller.loadAccs();
-                    }
-                });
-            });
-        }
     }
 
     ////////////
 
-    ExternalDebtsController.$inject = ['$scope', '$document', '$timeout', 'ExternalsService'];
-    function ExternalDebtsController($scope, $document, $timeout, ExternalsService) {
+    ExternalDebtsController.$inject = ['$rootScope', '$document', '$timeout', 'ExternalsService'];
+    function ExternalDebtsController($rootScope, $document, $timeout, ExternalsService) {
         var vm = this;
+        vm.initialized = false;
         vm.loadingDebts = false;
         vm.dataDebts = null;
         vm.errorDebts = false;
@@ -61,6 +40,31 @@
         vm.loadCurrent = loadCurrent;
 
         activate();
+
+        ////////////////
+
+        $rootScope.$on("loadExternal", function() {
+            console.log("received loadExternal");
+            if(vm.initialized) {
+                return;
+            }
+
+            vm.initialized = true;
+            var d = angular.element(document);
+
+            d.find('#ext-debts a[role=tab]').on('click', function(e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+
+            if (vm.dataDebts === null){
+                vm.loadDebts();
+            }
+
+            if (vm.dataAccs === null){
+                vm.loadAccs();
+            }
+        });
 
         ////////////////
 
