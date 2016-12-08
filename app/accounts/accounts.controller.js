@@ -22,6 +22,7 @@
         vm.cloneAccount = cloneAccount;
         vm.sendForm = sendForm;
         vm.delAccount = delAccount;
+        vm.setPaid = setPaid;
         vm.setUnpaidPaid = setUnpaidPaid;
 
         vm.masterForm = {
@@ -246,6 +247,28 @@
                     vm.accounts.splice(0, 0, res.data);
                 });
             }
+        }
+
+        function setPaid(id) {
+            if(vm.saving || !getByID(id)) {
+                return;
+            }
+
+
+            var $b = $("[data-asp-id='"+id+"']");
+            $b.addClass("btn-loading");
+            vm.saving = true;
+            Accounts.setPaid([id]).success(function(res){
+                vm.saving = false;
+                $b.removeClass("btn-loading");
+
+                if(!res.success) {
+                    alert("Error: " + res.message);
+                    return;
+                }
+
+               getByID(id).pagado = "1";
+            });
         }
 
         function setUnpaidPaid() {
