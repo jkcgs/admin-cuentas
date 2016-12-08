@@ -44,7 +44,6 @@
         ////////////////
 
         $rootScope.$on("loadExternal", function() {
-            console.log("received loadExternal");
             if(vm.initialized) {
                 return;
             }
