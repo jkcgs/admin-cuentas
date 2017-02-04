@@ -125,7 +125,6 @@
             var account = $.extend(angular.copy(vm.masterForm), data);
 
             // Preformatting
-            console.log(account);
             if(typeof account.fecha_facturacion === "string") {
                 var fact = account.fecha_facturacion.split("-");
                 fact = new Date(Date.UTC(fact[0], parseInt(fact[1]), fact[2]));
