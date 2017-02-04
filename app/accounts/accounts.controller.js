@@ -122,7 +122,7 @@
                 return null;
             }
 
-            var account = $.extend(vm.masterForm, data);
+            var account = $.extend(angular.copy(vm.masterForm), data);
             // Preformatting
             account.monto_original = parseFloat(account.monto_original);
             account.monto = parseFloat(account.monto);
