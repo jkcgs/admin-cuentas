@@ -31,13 +31,12 @@ class Credit_Falabella extends Bank {
     }
 
     function getAccounts($autologin = false) {
-        //if($autologin && !$this->login()) {
-        //    return false;
-        //}
+        if($autologin && !$this->login()) {
+            return false;
+        }
 
-        //$url_movimientos = $this->url_prefix . "CMRCORPAFSaldosUltiMovsAction.do?TIPOTJTA=15";
-        //$movimientos = $this->curl->get($url_movimientos);
-        $movimientos = file_get_contents("tmp/bf.html");
+        $url_movimientos = $this->url_prefix . "CMRCORPAFSaldosUltiMovsAction.do?TIPOTJTA=15";
+        $movimientos = $this->curl->get($url_movimientos);
 
         if(!$movimientos || !strpos($movimientos, "Total del mes a pagar")) {
             return false;
