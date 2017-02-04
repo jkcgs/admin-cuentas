@@ -127,7 +127,7 @@
             // Preformatting
             if(typeof account.fecha_facturacion === "string") {
                 var fact = account.fecha_facturacion.split("-");
-                fact = new Date(Date.UTC(fact[0], parseInt(fact[1]), fact[2]));
+                fact = new Date(Date.UTC(fact[0], parseInt(fact[1]), 1));
                 account.fecha_facturacion = fact;
             } else {
                 account.fecha_facturacion = getUTCDate(account.fecha_facturacion);
