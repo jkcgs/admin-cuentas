@@ -72,7 +72,7 @@
                 $('.modal').modal("hide");
                 var formData = {
                     nombre: data.comercio,
-                    fecha_compra: new Date(data.fecha),
+                    fecha_compra: data.fecha,
                     monto_original: data.valor,
                     divisa_original: "CLP",
                     monto: data.valor,
@@ -123,12 +123,28 @@
             }
 
             var account = $.extend(angular.copy(vm.masterForm), data);
+
             // Preformatting
+            console.log(account);
+            if(typeof account.fecha_facturacion === "string") {
+                var fact = account.fecha_facturacion.split("-");
+                fact = new Date(Date.UTC(fact[0], parseInt(fact[1]), fact[2]));
+                account.fecha_facturacion = fact;
+            } else {
+                account.fecha_facturacion = getUTCDate(account.fecha_facturacion);
+            }
+            
+            if(typeof account.fecha_compra === "string") {
+                var fcomp = account.fecha_compra.split("-");
+                fcomp = new Date(Date.UTC(fcomp[0], parseInt(fcomp[1]), fcomp[2]));
+                account.fecha_compra = fcomp;
+            } else {
+                account.fecha_compra = getUTCDate(account.fecha_compra);
+            }
+
             account.monto_original = parseFloat(account.monto_original);
             account.monto = parseFloat(account.monto);
             account.num_cuotas = parseInt(account.num_cuotas);
-            account.fecha_compra = new Date(account.fecha_compra);
-            account.fecha_facturacion = new Date(account.fecha_facturacion);
 
             return account;
         }
@@ -327,6 +343,12 @@
 
             vm.accountForm = account;
             $('#modal-cuenta').modal('show');
+        }
+
+        ///////
+
+        function getUTCDate(date) {
+            return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),  date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
         }
     }
 })();

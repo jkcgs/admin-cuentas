@@ -62,8 +62,10 @@ class Credit_Falabella extends Bank {
             }
 
             $comercio = substr($comercio, 8);
+            $fecha = explode("/", $this->byClass($cuenta, 'fecha'));
+
             $nc = [
-                'fecha' => $this->byClass($cuenta, 'fecha'),
+                'fecha' => $fecha[2] . '-' . $fecha[1] . '-' . $fecha[0],
                 'comercio' => $comercio,
                 'monto' => intval(preg_replace("/[\$\.]/", "", $this->byClass($cuenta, 'valor-compra'))),
                 'cuotas' => intval($this->byClass($cuenta, 'cuotas')),
