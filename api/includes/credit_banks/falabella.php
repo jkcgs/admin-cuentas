@@ -31,16 +31,24 @@ class Credit_Falabella extends Bank {
     }
 
     function getAccounts($autologin = false) {
-        if($autologin && !$this->login()) {
-            return false;
-        }
+        //if($autologin && !$this->login()) {
+        //    return false;
+        //}
 
-        $url_movimientos = $this->url_prefix . "CMRCORPAFSaldosUltiMovsAction.do?TIPOTJTA=15";
-        $movimientos = $this->curl->get($url_movimientos);
+        //$url_movimientos = $this->url_prefix . "CMRCORPAFSaldosUltiMovsAction.do?TIPOTJTA=15";
+        //$movimientos = $this->curl->get($url_movimientos);
+        $movimientos = file_get_contents("tmp/bf.html");
 
         if(!$movimientos || !strpos($movimientos, "Total del mes a pagar")) {
             return false;
         }
+
+        // A alguien se le olvidó cerrar un <tr> y me jodía todo el asunto
+        $movimientos = str_replace(
+            "<span class='puntos-acumulados'></span></td>",
+            "<span class='puntos-acumulados'></span></td></tr>",
+            $movimientos
+        );
 
         // Parsear página buscando movimientos
         $dom = new Dom;
