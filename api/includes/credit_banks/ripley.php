@@ -1,7 +1,7 @@
 <?php defined("INCLUDED") or die("Denied"); 
 require_once "includes/base_bank.php";
 use PHPHtmlParser\Dom;
-$fecha_arr = ["", "ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+$fecha_arr = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 class Credit_Ripley extends Bank {
     protected $url_prefix = "https://www.tarjetaripley.cl/tarjeta/";
@@ -59,8 +59,11 @@ class Credit_Ripley extends Bank {
                     $contf[] = str_replace("&nbsp;", "", $cont->text);
                 }
 
-                $fecha = explode("-", trim($contf[0]));
-                $fecha = $fecha[2] . "-" . array_search($fecha[1], $fecha_arr) . "-" . $fecha[0];
+                global $fecha_arr;
+                $fecha = explode(" ", trim($contf[0]));
+                $fecha = $fecha[2] . "-" . 
+                    str_pad(array_search($fecha[0], $fecha_arr), 2, "0", STR_PAD_LEFT) .
+                    "-" . str_pad(str_replace(",", "", $fecha[1]), 2, "0", STR_PAD_LEFT);
 
                 $nc = [
                     'fecha' => $fecha,
