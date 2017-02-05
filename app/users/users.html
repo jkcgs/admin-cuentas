@@ -18,19 +18,73 @@
                     <tbody>
                         <tr ng-repeat="user in vm.users">
                             <td>{{user.user}}</td>
-                            <td>{{user.enabled == "1" ? '&#10004;' : '&#x2718;'}}</td>
-                            <td>{{user.is_admin == "1" ? '&#10004;' : '&#x2718;'}}</td>
                             <td>
-                                <button class="btn btn-primary btn-xs">
-                                    Editar
-                                </button>
-                                <button class="btn btn-danger btn-xs">
-                                    Eliminar
-                                </button>
+                                <div ng-hide="user.id == vm.userEditData.id">
+                                    {{user.enabled == "1" ? '&#10004;' : '&#x2718;'}}
+                                </div>
+                                <div ng-if="user.id == vm.userEditData.id">
+                                    <input type="checkbox" name="" ng-model="vm.userEditData.enabled" ng-true-value="'1'" ng-false-value="'0'">
+                                </div>
+                            </td>
+                            <td>
+                                <div ng-hide="user.id == vm.userEditData.id">
+                                    {{user.is_admin == "1" ? '&#10004;' : '&#x2718;'}}
+                                </div>
+                                <div ng-if="user.id == vm.userEditData.id">
+                                    <input type="checkbox" name="" ng-model="vm.userEditData.is_admin" ng-true-value="'1'" ng-false-value="'0'">
+                                </div>
+                            </td>
+                            <td>
+                                <div ng-hide="user.id == vm.userEditData.id">
+                                    <button class="btn btn-primary btn-xs" ng-click="vm.doEdit(user.id)">
+                                        Editar
+                                    </button>
+                                    <button class="btn btn-danger btn-xs">
+                                        Eliminar
+                                    </button>
+                                </div>
+                                <div ng-if="user.id == vm.userEditData.id">
+                                    <button class="btn btn-primary btn-xs" ng-click="vm.saveUser()">
+                                        Guardar
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+
+                <div class="panel panel-primary panel-collapsible">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <a role="button" data-toggle="collapse" 
+                            data-target="#user-add" aria-expanded="false">
+                                Agregar un usuario
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="panel-collapse collapse" id="user-add">
+                        <form role="form" class="panel-body" ng-submit="vm.agregarUsuario()">
+                            <div class="form-group">
+                                <label for="addacc-user">Nombre de usuario</label>
+                                <input type="text" class="form-control" required ng-model="vm.nuevoUsuario.username">
+                            </div>
+                            <div class="form-group">
+                                <label for="addacc-pass">Contraseña</label>
+                                <input type="password" class="form-control" required ng-model="vm.nuevoUsuario.password">
+                            </div>
+                            <div class="form-group">
+                                <label for="addacc-repass">Repetir contraseña</label>
+                                <input type="password" class="form-control" required ng-model="vm.nuevoUsuario.repassword">
+                            </div>
+                            <div class="form-group">
+                                <label><input type="checkbox" ng-model="vm.nuevoUsuario.is_admin" ng-true-value="'1'" ng-false-value="'0'"> Admin</label>
+                                <label><input type="checkbox" ng-model="vm.nuevoUsuario.enabled" ng-true-value="'1'" ng-false-value="'0'"> Activo</label>
+                            </div>
+                        
+                            <button type="submit" class="btn btn-primary">Agregar</button>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

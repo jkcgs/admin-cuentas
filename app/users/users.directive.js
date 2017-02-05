@@ -23,6 +23,19 @@
     function UsersController($rootScope, $timeout, users) {
         var vm = this;
         vm.users = [];
+        vm.doEdit = doEdit;
+        vm.saveUser = saveUser;
+        vm.masterUsuario = {
+            id: null,
+            user: "",
+            password: "",
+            repassword: "",
+            enabled: "1",
+            is_admin: "0"
+        };
+        
+        vm.editUserData = angular.copy(vm.masterUsuario);
+        vm.nuevoUsuario = angular.copy(vm.masterUsuario);
 
         activate();
 
@@ -54,6 +67,21 @@
                     alert("No se pudo cargar los usuarios: " + reason);
                 }
             );
+        }
+
+        ///////////////
+
+        function doEdit(id) {
+            for(var i = 0; i < vm.users.length; i++) {
+                if(vm.users[i].id === id) {
+                    vm.userEditData = angular.copy(vm.users[i]);
+                    break;
+                }
+            }
+        }
+
+        function saveUser() {
+            vm.userEditData = angular.copy(vm.masterUsuario);
         }
     }
 })();
